@@ -1,0 +1,44 @@
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <i class="fa fa-chevron-circle-down"></i> Deseja realmente deletar os dados abaixo ?             
+                </div>
+            </div>
+            <div class="panel-body">
+                <dl class="dl-horizontal">
+                    <dt>Numeral:</dt>
+                    <dd><?php echo $this->policial->getNumeral(); ?></dd>
+                    <dt>Nome:</dt>
+                    <dd><?php echo $this->policial->getNome(); ?></dd>
+                    <dt>Nome Guerra:</dt>
+                    <dd><?php echo $this->policial->getNome_guerra(); ?></dd>
+                    <dt>Matrícula:</dt>
+                    <dd><?php echo $this->policial->getMatricula(); ?></dd>
+                    <dt>Graduação:</dt>
+                    <dd><?php echo $this->policial->getId_graduacao(); ?></dd>
+                    <dt>Data de Nascimento:</dt>
+                    <dd><?php echo $this->util()->toDateDMY($policial->getData_nasc()); ?></dd>
+                    <dt>Sexo:</dt>
+                    <dd>
+                        <?php
+                        if ($this->policial->getSexo() == 'F')
+                            echo "Feminino";
+                        else
+                            echo "Masculino";
+                        ?>
+                    </dd>
+                </dl>
+            </div>
+            <div class="panel-footer">
+                <a style="width: 100px" href="<?php echo $this->url('policiais', array('action' => 'deletar', 'id' => $this->policial->getId_policial(), 'confirm' => 1)); ?>" class="btn btn-success btn-lg">Sim</a>
+                <a style="width: 100px" href="<?php echo $this->url('policiais'); ?>" class="btn btn-danger btn-lg">Não</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
