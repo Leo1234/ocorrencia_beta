@@ -8,6 +8,7 @@ use Zend\View\Model\ViewModel;
 class ViaturaController extends AbstractActionController {
     
     private function getViaturaTable() {
+         $this->flashMessenger()->addSuccessMessage("Mensagem de teste");
         return $this->getServiceLocator()->get('ModelViatura');
     }
 
