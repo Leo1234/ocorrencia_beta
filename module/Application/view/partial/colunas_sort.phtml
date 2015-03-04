@@ -1,0 +1,27 @@
+<?php
+$estruturaColuna = function($label, $coluna_prefixo) {
+    $html = '';
+    $html .= "<a href='{$this->url('viaturas', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_prefixo' => $coluna_prefixo, 'coluna_sort' => ($this->coluna_prefixo != $coluna_prefixo ? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+
+    if ($this->coluna_prefixo == $coluna_prefixo) {
+        $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';
+        $html .= "<span class='glyphicon glyphicon-sort-by-attributes{$icon}'></span> ";
+    }
+
+    $html .= $label;
+
+    return $html;
+};
+?>
+<tr>
+    <th>
+        <?php echo $estruturaColuna('Nº Registro', 'id_vtr'); ?>
+    </th>
+    <th>
+        <?php echo $estruturaColuna('Prefixo', 'prefixo'); ?>
+    </th>
+    <th>
+        <?php echo $estruturaColuna('ID_área', 'id_area'); ?>
+    </th> 
+    <th>Ação</th>  
+</tr>

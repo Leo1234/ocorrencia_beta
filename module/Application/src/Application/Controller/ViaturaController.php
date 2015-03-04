@@ -8,12 +8,34 @@ use Zend\View\Model\ViewModel;
 class ViaturaController extends AbstractActionController {
     
     private function getViaturaTable() {
-         $this->flashMessenger()->addSuccessMessage("Mensagem de teste");
         return $this->getServiceLocator()->get('ModelViatura');
     }
 
-    public function indexAction(){
-        return new ViewModel(array('vtr' => $this->getViaturaTable()->fetchAll()));
+    public function indexAction() {
+        //return new ViewModel(array('vtr' => $this->getViaturaTable()->fetchAll()));
+        //$paginacao = $this->getViaturaTable()->fetchPaginator();
+        //return new ViewModel(['vtr' => $paginacao]);
+        
+        // colocar parametros da url em um array
+    $paramsUrl = [
+        'pagina_atual'  => $this->params()->fromQuery('pagina', 1),
+        'itens_pagina'  => $this->params()->fromQuery('itens_pagina', 10),
+        'coluna_prefixo'   => $this->params()->fromQuery('coluna_prefixo', 'prefixo'),
+        'coluna_sort'   => $this->params()->fromQuery('coluna_sort', 'ASC'),
+        'search'        => $this->params()->fromQuery('search', null),
+    ];
+ 
+    // configuar método de paginação
+    $paginacao = $this->getViaturaTable()->fetchPaginator(
+            /* $pagina */           $paramsUrl['pagina_atual'],
+            /* $itensPagina */      $paramsUrl['itens_pagina'],
+            /* $ordem */            "{$paramsUrl['coluna_prefixo']} {$paramsUrl['coluna_sort']}",
+            /* $search */           $paramsUrl['search'],
+            /* $itensPaginacao */   5
+    );
+ 
+    // retonar paginação mais os params de url para view
+    return new ViewModel(['vtr' => $paginacao] + $paramsUrl);
     }
 
     public function adicionarAction() {

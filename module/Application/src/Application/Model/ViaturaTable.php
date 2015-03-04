@@ -4,11 +4,12 @@ namespace Application\Model;
 
 use //Zend\Db\Adapter\Adapter,
     //Zend\Db\ResultSet\ResultSet,
-    Zend\Db\TableGateway\TableGateway,
-    Zend\Db\Sql\Select,
-    Zend\Paginator\Adapter\DbSelect,
-    Zend\Paginator\Paginator;
-
+ Zend\Db\ResultSet\HydratingResultSet,
+                             Zend\Db\TableGateway\TableGateway,
+                             Zend\Db\Sql\Select,
+                             Zend\Stdlib\Hydrator\Reflection,
+                             Zend\Paginator\Adapter\DbSelect,
+                             Zend\Paginator\Paginator;
 
 class ViaturaTable {
 
@@ -30,7 +31,43 @@ private function getViaturaTable()
         
      return $this->tableGateway->select();
     }
-
+public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo ASC', $like = null, $itensPaginacao = 5) 
+{
+    // preparar um select para tabela contato com uma ordem
+    $select = (new Select('vtr'))->order($ordem);
+    
+    if (isset($like)) {
+        $select
+                ->where
+                ->like('id_vtr', "%{$like}%")
+                ->or
+                ->like('prefixo', "%{$like}%")
+                ->or
+                ->like('id_area', "%{$like}%")
+        ;
+    }
+    
+    // criar um objeto com a estrutura desejada para armazenar valores
+    $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
+    
+    // criar um objeto adapter paginator
+    $paginatorAdapter = new DbSelect(
+        // nosso objeto select
+        $select,
+        // nosso adapter da tabela
+        $this->tableGateway->getAdapter(),
+        // nosso objeto base para ser populado
+        $resultSet
+    );
+    
+    // resultado da paginação
+    return (new Paginator($paginatorAdapter))
+            // pagina a ser buscada
+            ->setCurrentPageNumber((int) $pagina)
+            // quantidade de itens na página
+            ->setItemCountPerPage((int) $itensPagina)
+            ->setPageRange((int) $itensPaginacao);
+}
     /**
      * Recuperar todos os elementos da tabela policial
      * 
