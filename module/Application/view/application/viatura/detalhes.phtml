@@ -1,33 +1,21 @@
-<div class="row">
-
-    <div class="col-lg-12">
-        
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    Detalhes Contato ID <?php echo $this->id; ?>            
-                </div>
-            </div>
-            <div class="panel-body">
-                <dl class="dl-horizontal">
-                    <dt>Nome:</dt>
-                    <dd><?php echo $this->form["nome"]; ?></dd>
-                    <dt>Telefone Principal:</dt>
-                    <dd><?php echo $this->form["telefone_principal"]; ?></dd>
-                    <dt>Telefone Secundario:</dt>
-                    <dd><?php echo $this->form["telefone_secundario"]; ?></dd>
-                    <dt>Data Criação:</dt>
-                    <dd><?php echo $this->form["data_criacao"]; ?></dd>
-                    <dt>Data Atualização:</dt>
-                    <dd><?php echo $this->form["data_atualizacao"]; ?></dd>
-                </dl>
-            </div>
-            <div class="panel-footer">
-                <a href="<?php echo $this->url('vitimas', array('action' => 'editar', 'id' => $this->id)); ?>" class="btn btn-warning btn-sm">Editar Contato</a>
-                <a href="<?php echo $this->url('vitimas'); ?>" class="btn btn-default btn-sm">Voltar</a>
-            </div>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Detalhes Viatura ID <?php echo $viatura->getId_vtr(); ?>
         </div>
-
     </div>
-
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ID:</dt>
+            <dd><?php echo $viatura->getId_vtr(); ?></dd>
+            <dt>Prefixo:</dt>
+            <dd><?php echo $viatura->getPrefixo(); ?></dd>
+            <dt>Id_Área:</dt>
+            <dd><?php echo $viatura->getArea(); ?></dd>
+        </dl>
+    </div>
+    <div class="panel-footer">
+        <a href="<?php echo $this->url('viaturas', array('action' => 'editar','id' => $viatura->getId_vtr())); ?>" class="btn btn-warning btn-sm">Editar Viatura</a>
+        <a href="<?php echo $this->url('viaturas'); ?>" class="btn btn-default btn-sm">Voltar</a>
+    </div>
 </div>

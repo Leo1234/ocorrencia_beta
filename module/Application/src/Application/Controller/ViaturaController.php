@@ -4,9 +4,11 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Application\Form\ViaturaForm;
+use Application\Model\Viatura;
 
 class ViaturaController extends AbstractActionController {
-    
+
     private function getViaturaTable() {
         return $this->getServiceLocator()->get('ModelViatura');
     }
@@ -15,146 +17,288 @@ class ViaturaController extends AbstractActionController {
         //return new ViewModel(array('vtr' => $this->getViaturaTable()->fetchAll()));
         //$paginacao = $this->getViaturaTable()->fetchPaginator();
         //return new ViewModel(['vtr' => $paginacao]);
-        
         // colocar parametros da url em um array
-    $paramsUrl = [
-        'pagina_atual'  => $this->params()->fromQuery('pagina', 1),
-        'itens_pagina'  => $this->params()->fromQuery('itens_pagina', 10),
-        'coluna_prefixo'   => $this->params()->fromQuery('coluna_prefixo', 'prefixo'),
-        'coluna_sort'   => $this->params()->fromQuery('coluna_sort', 'ASC'),
-        'search'        => $this->params()->fromQuery('search', null),
-    ];
- 
-    // configuar método de paginação
-    $paginacao = $this->getViaturaTable()->fetchPaginator(
-            /* $pagina */           $paramsUrl['pagina_atual'],
-            /* $itensPagina */      $paramsUrl['itens_pagina'],
-            /* $ordem */            "{$paramsUrl['coluna_prefixo']} {$paramsUrl['coluna_sort']}",
-            /* $search */           $paramsUrl['search'],
-            /* $itensPaginacao */   5
-    );
- 
-    // retonar paginação mais os params de url para view
-    return new ViewModel(['vtr' => $paginacao] + $paramsUrl);
+        $paramsUrl = [
+            'pagina_atual' => $this->params()->fromQuery('pagina', 1),
+            'itens_pagina' => $this->params()->fromQuery('itens_pagina', 10),
+            'coluna_prefixo' => $this->params()->fromQuery('coluna_prefixo', 'prefixo'),
+            'coluna_sort' => $this->params()->fromQuery('coluna_sort', 'ASC'),
+            'search' => $this->params()->fromQuery('search', null),
+        ];
+
+        // configuar método de paginação
+        $paginacao = $this->getViaturaTable()->fetchPaginator(
+                /* $pagina */ $paramsUrl['pagina_atual'],
+                /* $itensPagina */ $paramsUrl['itens_pagina'],
+                /* $ordem */ "{$paramsUrl['coluna_prefixo']} {$paramsUrl['coluna_sort']}",
+                /* $search */ $paramsUrl['search'],
+                /* $itensPaginacao */ 5
+        );
+
+        // retonar paginação mais os params de url para view
+        return new ViewModel(['vtr' => $paginacao] + $paramsUrl);
     }
 
+// GET /contatos/novo
+    public function novoAction() {
+        return ['formViatura' => new ViaturaForm()];
+    }
+
+// POST /contatos/adicionar
     public function adicionarAction() {
         // obtém a requisição
         $request = $this->getRequest();
 
         // verifica se a requisição é do tipo post
         if ($request->isPost()) {
-            // obter e armazenar valores do post
-            $postData = $request->getPost()->toArray();
-            $formularioValido = true;
+            // instancia formulário
+            $form = new ViaturaForm();
+            // instancia model contato com regras de filtros e validações
+            $modelViatura = new Viatura();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity contato
+            $form->setInputFilter($modelViatura->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $form->setData($request->getPost());
 
             // verifica se o formulário segue a validação proposta
-            if ($formularioValido) {
+            if ($form->isValid()) {
                 // aqui vai a lógica para adicionar os dados à tabela no banco
-                // 1 - solicitar serviço para pegar o model responsável pela adição
-                // 2 - inserir dados no banco pelo model
+                // 1 - popular model com valores do formulário
+                $modelViatura->exchangeArray($form->getData());
+                // 2 - persistir dados do model para banco de dados
+                $this->getViaturaTable()->save($modelViatura);
+
                 // adicionar mensagem de sucesso
-                $this->flashMessenger()->addSuccessMessage("Vítima criada com sucesso");
+                $this->flashMessenger()
+                        ->addSuccessMessage("Viatura criada com sucesso!");
 
                 // redirecionar para action index no controller contatos
-                return $this->redirect()->toRoute('vitimas');
-            } else {
-                // adicionar mensagem de erro
-                $this->flashMessenger()->addErrorMessage("Erro ao criar a vítima");
-
-                // redirecionar para action novo no controllers contatos
-                return $this->redirect()->toRoute('vitimas', array('action' => 'index'));
+                return $this->redirect()->toRoute('viaturas');
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action novo com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formViatura', $form)
+                                ->setTemplate('application/viatura/novo');
             }
         }
-        //return new ViewModel();
     }
 
-    public function detalhesAction() {
+// GET /contatos/editar/id
+    public function editarAction() {
+        // filtra id passsado pela url
+        $id = (int) $this->params()->fromRoute('id', 0);
+        
+        
+         // se id = 0 ou não informado redirecione para contatos
+      
+       
+        if (!$id) {
+            // adicionar mensagem de erro
+            $this->flashMessenger()->addMessage("Viatura não encotrada");
+
+            // redirecionar para action index
+            return $this->redirect()->toRoute('viaturas');
+        }
+
+        try {
+            // variável com objeto contato localizado
+             
+           
+            $viatura = (array) $this->getViaturaTable()->find($id);
+              
+            
+        } catch (Exception $exc) {
+            // adicionar mensagem
+            $this->flashMessenger()->addErrorMessage($exc->getMessage());
+
+            // redirecionar para action index
+            return $this->redirect()->toRoute('viaturas');
+        }
+
+        // objeto form contato vazio
+        $form = new ViaturaForm();
+        // popula objeto form contato com objeto model contato
+        $form->setData($viatura);  
+        
+         $this->flashMessenger()
+                       ->addSuccessMessage( print_r($viatura) );
+        
+        // dados eviados para editar.phtml
+        return ['formViatura' => $form];     
+    }
+
+// POST /contatos/editar/id
+    public function atualizarAction() {
+         
+        // obtém a requisição
+        $request = $this->getRequest();
+        
+     // $this->flashMessenger()
+                      // ->addSuccessMessage( $request );
+                       
+        // verifica se a requisição é do tipo post
+        
+        if ($request->isPost()) {
+            
+  
+            // instancia formulário
+            $form = new ViaturaForm();
+            // instancia model contato com regras de filtros e validações
+            $modelViatura = new Viatura();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity contato
+              $form->setInputFilter($modelViatura->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $form->setData($request->getPost());     
+            // verifica se o formulário segue a validação proposta
+            if ($form->isValid()) {
+                // aqui vai a lógica para atualizar os dados à tabela no banco
+                // 1 - popular model com valores do formulário
+                $modelViatura->exchangeArray($form->getData());
+                
+                $this->flashMessenger()
+                        ->addSuccessMessage( $modelViatura->getPrefixo());
+                // 2 - atualizar dados do model para banco de dados
+                
+                $this->getViaturaTable()->update($modelViatura);
+
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Viatura editada com sucesso");
+
+                // redirecionar para action detalhes
+                return $this->redirect()->toRoute('viaturas', array("action" => "detalhes", "id" => $modelViatura->getId_vtr()));
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action editar com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                   
+                return (new ViewModel())
+                                ->setVariable('formViatura', $form)
+                                ->setTemplate('application/viatura/editar');
+            }
+        }
+      
+    }
+    
+    // DELETE /contatos/deletar/id
+public function deletarAction()
+{
+    // filtra id passsado pela url
+    $id = (int) $this->params()->fromRoute('id', 0);
+ 
+    // se id = 0 ou não informado redirecione para contatos
+    if (!$id) {
+        // adicionar mensagem de erro
+        $this->flashMessenger()->addMessage("Viatura não encotrada");
+    } else {
+        // aqui vai a lógica para deletar o contato no banco
+        // 1 - solicitar serviço para pegar o model responsável pelo delete
+        // 2 - deleta contato
+        $this->getViaturaTable()->delete($id);
+        
+        // adicionar mensagem de sucesso
+        $this->flashMessenger()->addSuccessMessage("Viatura de ID $id deletada com sucesso");
+    }
+ 
+    // redirecionar para action index
+    return $this->redirect()->toRoute('viaturas');
+}
+
+
+
+      // GET /contatos/detalhes/id
+    public function detalhesAction()
+    {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
 
         // se id = 0 ou não informado redirecione para contatos
         if (!$id) {
             // adicionar mensagem
-            $this->flashMessenger()->addMessage("Vítima não encotrada");
+            $this->flashMessenger()->addMessage("Viatura não encotrada");
 
             // redirecionar para action index
-            return $this->redirect()->toRoute('vitimas');
+            return $this->redirect()->toRoute('viaturas');
         }
 
-        // aqui vai a lógica para pegar os dados referente ao contato
-        // 1 - solicitar serviço para pegar o model responsável pelo find
-        // 2 - solicitar form com dados desse contato encontrado
-        // formulário com dados preenchidos
-        $form = array(
-            'nome' => 'Igor Rocha',
-            "telefone_principal" => "(085) 8585-8585",
-            "telefone_secundario" => "(085) 8585-8585",
-            "data_criacao" => "02/03/2013",
-            "data_atualizacao" => "02/03/2013",
-        );
+        try {
+            // aqui vai a lógica para pegar os dados referente ao contato
+            // 1 - solicitar serviço para pegar o model responsável pelo find
+            // 2 - solicitar form com dados desse contato encontrado
+            // formulário com dados preenchidos
+            $viatura = $this->getViaturaTable()->find($id);
+        } catch (Exception $exc) {
+            // adicionar mensagem
+            $this->flashMessenger()->addErrorMessage($exc->getMessage());
+
+            // redirecionar para action index
+            return $this->redirect()->toRoute('viaturas');
+        }
 
         // dados eviados para detalhes.phtml
-        return array('id' => $id, 'form' => $form);
-
-        return new ViewModel();
+        return ['viatura' => $viatura];
     }
 
-    public function editarAction() {
-        // obtém a requisição
-        $request = $this->getRequest();
+    /*
+      public function editarAction() {
+      // obtém a requisição
+      $request = $this->getRequest();
 
-        // verifica se a requisição é do tipo post
-        if ($request->isPost()) {
-            // obter e armazenar valores do post
-            $postData = $request->getPost()->toArray();
-            $formularioValido = true;
+      // verifica se a requisição é do tipo post
+      if ($request->isPost()) {
+      // obter e armazenar valores do post
+      $postData = $request->getPost()->toArray();
+      $formularioValido = true;
 
-            // verifica se o formulário segue a validação proposta
-            if ($formularioValido) {
-                // aqui vai a lógica para editar os dados à tabela no banco
-                // 1 - solicitar serviço para pegar o model responsável pela atualização
-                // 2 - editar dados no banco pelo model
-                // adicionar mensagem de sucesso
-                $this->flashMessenger()->addSuccessMessage("Vítima editado com sucesso");
+      // verifica se o formulário segue a validação proposta
+      if ($formularioValido) {
+      // aqui vai a lógica para editar os dados à tabela no banco
+      // 1 - solicitar serviço para pegar o model responsável pela atualização
+      // 2 - editar dados no banco pelo model
+      // adicionar mensagem de sucesso
+      $this->flashMessenger()->addSuccessMessage("Vítima editado com sucesso");
 
-                // redirecionar para action detalhes
-                return $this->redirect()->toRoute('vitimas', array("action" => "detalhes", "id" => $postData['id'],));
-            } else {
-                // adicionar mensagem de erro
-                $this->flashMessenger()->addErrorMessage("Erro ao editar a vítima");
+      // redirecionar para action detalhes
+      return $this->redirect()->toRoute('vitimas', array("action" => "detalhes", "id" => $postData['id'],));
+      } else {
+      // adicionar mensagem de erro
+      $this->flashMessenger()->addErrorMessage("Erro ao editar a vítima");
 
-                // redirecionar para action editar
-                return $this->redirect()->toRoute('vitimas', array('action' => 'editar', "id" => $postData['id'],));
-            }
-        }
+      // redirecionar para action editar
+      return $this->redirect()->toRoute('vitimas', array('action' => 'editar', "id" => $postData['id'],));
+      }
+      }
 
-        // filtra id passsado pela url
-        $id = (int) $this->params()->fromRoute('id', 0);
+      // filtra id passsado pela url
+      $id = (int) $this->params()->fromRoute('id', 0);
 
-        // se id = 0 ou não informado redirecione para contatos
-        if (!$id) {
-            // adicionar mensagem de erro
-            $this->flashMessenger()->addMessage("Contato não encotrado");
+      // se id = 0 ou não informado redirecione para contatos
+      if (!$id) {
+      // adicionar mensagem de erro
+      $this->flashMessenger()->addMessage("Contato não encotrado");
 
-            // redirecionar para action index
-            return $this->redirect()->toRoute('vitimas');
-        }
+      // redirecionar para action index
+      return $this->redirect()->toRoute('vitimas');
+      }
 
-        // aqui vai a lógica para pegar os dados referente ao contato
-        // 1 - solicitar serviço para pegar o model responsável pelo find
-        // 2 - solicitar form com dados desse contato encontrado
-        // formulário com dados preenchidos
-        $form = array(
-            'nome' => 'Igor Rocha',
-            "telefone" => "(085) 8585-8585",
-            "data_nascimento" => "(085) 8585-8585",
-        );
+      // aqui vai a lógica para pegar os dados referente ao contato
+      // 1 - solicitar serviço para pegar o model responsável pelo find
+      // 2 - solicitar form com dados desse contato encontrado
+      // formulário com dados preenchidos
+      $form = array(
+      'nome' => 'Igor Rocha',
+      "telefone" => "(085) 8585-8585",
+      "data_nascimento" => "(085) 8585-8585",
+      );
 
-        // dados eviados para editar.phtml
-        return array('id' => $id, 'form' => $form);
-        //return new ViewModel();
-    }
+      // dados eviados para editar.phtml
+      return array('id' => $id, 'form' => $form);
+      //return new ViewModel();
+      }
+
+    
 
     public function deletarAction() {
         // filtra id passsado pela url
@@ -175,6 +319,8 @@ class ViaturaController extends AbstractActionController {
         // redirecionar para action index
         return $this->redirect()->toRoute('vitimas');
     }
+     *  */
+     
 
     /*  private function getViaturaTable()
       {
@@ -185,7 +331,4 @@ class ViaturaController extends AbstractActionController {
       return new ModelViatura($tableGateway); // alias para ViaturaTable
       }
      */
-
-    
-
 }

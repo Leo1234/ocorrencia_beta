@@ -141,6 +141,13 @@ return array(
         ),
     ),
     
+    'view_helpers' => array(
+        'factories' => array(
+            'router' => function ($sm) {
+        return new \Application\View\Helper\Router($sm->getServiceLocator()->get('application')->getMvcEvent()->getRouteMatch());
+    },
+        ),
+    ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions' => true,

@@ -20,6 +20,8 @@ use Application\Model\Viatura,
 use Zend\Db\ResultSet\ResultSet,
     Zend\Db\TableGateway\TableGateway;
 
+use Application\View\Helper\ViaturaFilter;
+
 
 class Module {
 
@@ -46,27 +48,28 @@ class Module {
     /**
      * Register View Helper
      */
+ 
     public function getViewHelperConfig() {
         return array(
             # registrar View Helper com injecao de dependecia
             'factories' => array(
                 'menuAtivo' => function($sm) {
-                    return new View\Helper\MenuAtivo($sm->getServiceLocator()->
+            return new View\Helper\MenuAtivo($sm->getServiceLocator()->
                             get('Request'));
-                 },
-                         
+        },
                 'message' => function($sm) {
-                    return new View\Helper\Message($sm->getServiceLocator()->
+            return new View\Helper\Message($sm->getServiceLocator()->
                             get('ControllerPluginManager')->get('flashmessenger'));
-                },
+        },
                 'util' => function($sm) {
-                    return new View\Helper\Util();
-                },
+            return new View\Helper\Util();
+        },
+              
             )
         );
     }
-    
-     public function getServiceConfig()
+
+    public function getServiceConfig()
     {
         return array(
             'factories' => array(

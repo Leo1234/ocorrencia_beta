@@ -1,31 +1,29 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-            Editar Viatura ID:  <?php echo $this->id ?>  
+            Nova Viatura           
         </div>
     </div>
-    
     <?php
     // objeto form contato
-     $formViatura = $this->formViatura;
-       //var_dump ($formViatura);
+    $formViatura = $this->formViatura;
     // preparar elementos do formulário
     $formViatura->prepare();
     // configurar url formulário
-    $formViatura->setAttribute('action', $this->url('viaturas', ['action' => 'atualizar']));
-    ?>  
+    $formViatura->setAttribute('action', $this->url('viaturas', array('action' => 'adicionar')));
+    ?>
     
     <?php // renderiza html <form> com atributos configurados no objeto ?>
     <?php echo $this->form()->openTag($formViatura) ?>
-    
     <div class="panel-body">
+  
+
         <div class="form-group">
-            <label for="prefixo" class="col-lg-3 col-md-3 control-label">Prefixo*:</label>
-            <div class="col-lg-9 col-md-9">
-                <?php 
+            <label for="inputPrefixo" class="col-lg-3 col-md-3 control-label">Prefixo*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
                 // renderiza html input
                 echo $this->formInput($formViatura->get('prefixo'));
-                
                 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
@@ -36,9 +34,9 @@
                 ?>
             </div>
         </div>
- 
+
         <div class="form-group">
-            <label for="id_area" class="col-lg-3 col-md-3 control-label">Id_Área*:</label>
+            <label for="inputId_area" class="col-lg-3 col-md-3 control-label">Id Área:</label>
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
@@ -53,18 +51,20 @@
                 ?>
             </div>
         </div>
+
  
     </div>
     <div class="panel-footer">
         <?php
         // renderiza html input hidden para id
-        echo $this->formHidden($formViatura->get('id_vtr')); 
+        echo $this->formHidden($formViatura->get('id_vtr'));
+      
         ?>
- 
-        <button type="submit" class="btn btn-primary">Atualizar Viatura</button>
+
+        <button type="submit" class="btn btn-primary">Salvar Viatura</button>
         <a href="<?php echo $this->url('viaturas'); ?>" class="btn btn-default">Voltar</a>
     </div>
- 
+
     <?php // renderiza html </form> ?>
     <?php echo $this->form()->closeTag() ?>
 </div>

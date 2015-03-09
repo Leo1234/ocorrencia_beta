@@ -68,6 +68,39 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
             ->setItemCountPerPage((int) $itensPagina)
             ->setPageRange((int) $itensPaginacao);
 }
+
+   public function save(Viatura $viatura) {
+        $data = [
+            'prefixo' => $viatura->getPrefixo(),
+            'id_area' => $viatura->getArea(),
+        ];
+
+        return $this->tableGateway->insert($data);
+    }
+    
+    public function update(Viatura $viatura) {
+        $data = [
+            'prefixo' => $viatura->getPrefixo(),
+            'id_area' => $viatura->getArea(),
+        ];
+
+        $id = (int) $viatura->getId_vtr();
+        //$id = 1;
+        
+        if ($this->find($id)) {
+            $this->tableGateway->update($data, array('id_vtr' => $id));
+        } else {
+            throw new Exception("Viatura #{$id} inexistente");
+        }
+    }
+    public function delete($id) {
+        try {
+            $this->tableGateway->delete(array('id_vtr' => (int) $id));
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
     /**
      * Recuperar todos os elementos da tabela policial
      * 
@@ -116,7 +149,7 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
 
         return $row;
     }
-    
+    /*
     public function salvarViatura(Viatura $vtr)
     {
         $data = array(
@@ -142,6 +175,8 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
         
         
     }
+     * */
+     
     
     public function deleteViatura($id)
     {

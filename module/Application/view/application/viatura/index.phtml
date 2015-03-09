@@ -46,7 +46,8 @@
 
         <tbody>
             <?php foreach ($this->vtr as $viatura) : ?>
-                <tr>
+            <tr>
+
                     <td class="text-center"><?php echo $viatura->getId_vtr(); ?></td>
                     <td class="text-center"><?php echo $viatura->getPrefixo(); ?></td>
                     <td class="text-center"><?php echo $viatura->getArea(); ?></td>
@@ -55,7 +56,7 @@
                         <a class="btn btn-xs btn-warning" title="Editar" href="<?php echo $this->url('viaturas', array("action" => "editar", "id" => $viatura->getId_vtr(),)); ?>"><span class="glyphicon glyphicon-edit"></span></a>
                         <a class="btn btn-xs btn-danger" title="Deletar" href="<?php echo $this->url('viaturas', array("action" => "deletar", "id" => $viatura->getId_vtr(),)); ?>"><span class="glyphicon glyphicon-floppy-remove"></span></a>
                     </td>
-                </tr>
+                </tr>    
             <?php endforeach; ?>
         </tbody>
     </table>
