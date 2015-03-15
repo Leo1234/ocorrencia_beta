@@ -15,6 +15,9 @@ use Zend\Mvc\MvcEvent;
 
 use Application\Model\Viatura,
     Application\Model\ViaturaTable;
+
+use Application\Model\Area,
+    Application\Model\AreaTable;
  
 // import Zend\Db
 use Zend\Db\ResultSet\ResultSet,
@@ -73,6 +76,8 @@ class Module {
     {
         return array(
             'factories' => array(
+                
+                 ///----------------viatura--------------///
                 'ViaturaTableGateway' => function ($sm) {
                     // obter adapter db atraves do service manager
                     $adapter = $sm->get('AdapterDb');
@@ -87,7 +92,23 @@ class Module {
                 'ModelViatura' => function ($sm){
                     // return instacia Model ViaturaTable
                     return new ViaturaTable($sm->get('ViaturaTableGateway'));
-                }
+                },
+                ///----------------area--------------///
+                'AreaTableGateway' => function ($sm) {
+                    // obter adapter db atraves do service manager
+                    $adapter = $sm->get('AdapterDb');
+
+                    // configurar ResultSet com nosso model Contato
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Area());
+
+                    // return TableGateway configurado para nosso model Viatura
+                    return new TableGateway('area', $adapter, null, $resultSetPrototype);
+                },
+                          'ModelArea' => function ($sm){
+                    // return instacia Model ViaturaTable
+                    return new AreaTable($sm->get('AreaTableGateway'));
+                },
             ),
         );
     }

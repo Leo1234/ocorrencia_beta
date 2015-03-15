@@ -3,7 +3,7 @@
 namespace Application\Model;
 
 use //Zend\Db\Adapter\Adapter,
-    //Zend\Db\ResultSet\ResultSet,
+    Zend\Db\ResultSet\ResultSet,
  Zend\Db\ResultSet\HydratingResultSet,
                              Zend\Db\TableGateway\TableGateway,
                              Zend\Db\Sql\Select,
@@ -26,29 +26,53 @@ private function getViaturaTable()
 {
     return $this->getServiceLocator()->get('ModelViatura');
 }
- public function fetchAll()
-    {
+
+
+ public function fetchAll(){
+     
+      //return $this->tableGateway->select(); era essa instrução
+     
+        $select = new Select;
+        $select->from(array('v' => 'vtr'));
+        $select->columns(array('id_vtr', 'prefixo'));
+        $select->join(array('a' => 'area'), "v.id_area = a.id_area", array('id_area', 'descricao'));
+        $select->join(array('m' => 'municipio'), "a.id_muni = m.id_muni", array('id_muni', 'municipio'));
+        $select->order($ordem);
+        $resultSet = $this->tableGateway->selectWith($select); 
+        return $resultSet;
         
-     return $this->tableGateway->select();
-    }
-public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo ASC', $like = null, $itensPaginacao = 5) 
-{
-    // preparar um select para tabela contato com uma ordem
-    $select = (new Select('vtr'))->order($ordem);
-    
-    if (isset($like)) {
+        
+}
+
+    public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo ASC', $like = null, $itensPaginacao = 5)          
+{      
+        $select = new Select;
+        $select->from(array('v' => 'vtr'));
+        $select->columns(array('id_vtr', 'prefixo'));
+        $select->join(array('a' => 'area'), "v.id_area = a.id_area", array('id_area', 'descricao'));
+        $select->join(array('m' => 'municipio'), "a.id_muni = m.id_muni", array('id_muni', 'municipio'));
+        $select->order($ordem);
+
+        //echo $select->getSqlString();
+        // preparar um select para tabela vtr com uma ordem
+        //$select = (new Select('vtr'))->order($ordem);
+
+        if (isset($like)) {
         $select
                 ->where
                 ->like('id_vtr', "%{$like}%")
                 ->or
                 ->like('prefixo', "%{$like}%")
                 ->or
-                ->like('id_area', "%{$like}%")
+                ->like('descricao', "%{$like}%")
         ;
     }
     
     // criar um objeto com a estrutura desejada para armazenar valores
-    $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
+   // $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
+    
+     $resultSetPrototype = new ResultSet();
+     $resultSetPrototype->setArrayObjectPrototype( new Viatura());
     
     // criar um objeto adapter paginator
     $paginatorAdapter = new DbSelect(
@@ -57,8 +81,10 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
         // nosso adapter da tabela
         $this->tableGateway->getAdapter(),
         // nosso objeto base para ser populado
-        $resultSet
+        //$resultSet
+        $resultSetPrototype
     );
+   
     
     // resultado da paginação
     return (new Paginator($paginatorAdapter))
@@ -69,10 +95,12 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
             ->setPageRange((int) $itensPaginacao);
 }
 
+
+
    public function save(Viatura $viatura) {
         $data = [
             'prefixo' => $viatura->getPrefixo(),
-            'id_area' => $viatura->getArea(),
+            'id_area' => $viatura->getArea()->getId_area(),
         ];
 
         return $this->tableGateway->insert($data);
@@ -81,7 +109,7 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
     public function update(Viatura $viatura) {
         $data = [
             'prefixo' => $viatura->getPrefixo(),
-            'id_area' => $viatura->getArea(),
+            'id_area' => $viatura->getArea()->getId_area(),
         ];
 
         $id = (int) $viatura->getId_vtr();
@@ -99,6 +127,26 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
         } catch (\Exception $e) {
             return false;
         }
+    }
+       public function find($id) {
+        $id = (int) $id;
+
+        $select = new Select;
+        $select->from('vtr');
+        $select->columns(array('*'));
+        //$select->from(array('v' => 'vtr'));
+        $select->columns(array('id_vtr', 'prefixo'));
+        $select->join(array('a' => 'area'), "vtr.id_area = a.id_area", array('id_area', 'descricao'));
+        $select->join(array('m' => 'municipio'), "a.id_muni = m.id_muni", array('id_muni', 'municipio'));
+        $select->where(array('vtr.id_vtr' => $id));
+        
+
+        $rowset = $this->tableGateway->selectWith($select);
+        $row = $rowset->current();
+
+        if (!$row)
+            throw new \Exception("Não foi encontrado vtr de id = {$id}");
+        return $row;
     }
 
     /**
@@ -133,60 +181,9 @@ public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'prefixo
         return $paginator;
     }
 
-    /**
-     * Localizar linha especifico pelo id da tabela municipio
-     * 
-     * @param type $id
-     * @return \Model\Policial
-     * @throws \Exception
-     */
-    public function find($id) {
-        $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('id_vtr' => $id));
-        $row = $rowset->current();
-        if (!$row)
-            throw new \Exception("Não foi encontrado vtr de id = {$id}");
-
-        return $row;
-    }
-    /*
-    public function salvarViatura(Viatura $vtr)
-    {
-        $data = array(
-            'numeral'       => $policial->getNumeral(),
-            'nome'          => $policial->getNome(),
-            'nome_guerra'   => $policial->getNome_guerra(),
-            'matricula'     => $policial->getMatricula(),
-            'id_graduacao'  => $policial->getId_graduacao(),
-            'data_nasc'     => $policial->getData_nasc(),
-            'sexo'          => $policial->getSexo()
-        );
-
-        $id = (int)$policial->getId_policial();
-        if ($id == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->find($id)) {
-                $this->tableGateway->update($data, array('id_vtr' => $id));
-            } else {
-                throw new \Exception('Vtr não encontrado');
-            }
-        }
-        
-        
-    }
-     * */
+ */
      
     
-    public function deleteViatura($id)
-    {
-        try {
-            return $this->tableGateway->delete(array('id_vtr' => $id));
-        
-        }catch (\Exception $e) {
-            return false;
-        }
-        
-    }
+
 
 }

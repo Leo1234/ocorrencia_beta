@@ -16,13 +16,9 @@ class OcorrenciaController extends AbstractActionController {
     public function indexAction() {
         // Numero da página a ser exibida
         $currentPage = $this->params()->fromQuery('pagina');
-
         // Quantidade de itens por págima
         $countPerPage = "5";
         $ocorrencias = $this->getOcorrenciaTable()->fetchAll($currentPage, $countPerPage);
-
-
-
         // enviar para view o array com key policial e value com todos os policias
         return new ViewModel(array('ocorrencias' => $ocorrencias));
     }
@@ -49,6 +45,7 @@ class OcorrenciaController extends AbstractActionController {
 
                 $oc->setVtr($vtr);
                 $oc->setArea($area);
+                
                 $oc->setId_usuario(1);
                 $oc->setData($postData['data']);
                 $oc->setHorario($postData['horario']);
@@ -234,7 +231,7 @@ class OcorrenciaController extends AbstractActionController {
     }
 
     //função que retorna uma instancia da classe PoliciaTable 
-    private function getOcorrenciaTable() {
+    private function getOcorrenciaTable(){
         // localizar adapter do banco
         $adapter = $this->getServiceLocator()->get('AdapterDb');
 

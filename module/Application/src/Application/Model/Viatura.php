@@ -6,24 +6,27 @@ use Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\InputFilterInterface;
 
+use Application\Model\Area;
+
 class Viatura implements InputFilterAwareInterface {
 
     public $id_vtr;
     public $prefixo;
-    public $id_area;
+    public $area;
     protected $inputFilter;
 
-    function __construct($id_vtr = 0, $prefixo = null, $id_area = 0) {
+    function __construct($id_vtr = 0, $prefixo = null, $area = null) {
         $this->id_vtr = $id_vtr;
         $this->prefixo = $prefixo;
-        $this->id_area = $id_area;
+        $this->area = $area;
     }
 
     public function exchangeArray($data) {
         $this->id_vtr = (!empty($data['id_vtr'])) ? $data['id_vtr'] : null;
         $this->prefixo = (!empty($data['prefixo'])) ? $data['prefixo'] : null;
-        $this->id_area = (!empty($data['id_area'])) ? $data['id_area'] : null;
-        //$this->area      = (!empty($data['descricao'])) ? new Area($data['id_vtr'], $data['descricao'], new Municipio($data['id_vtr'],$data['municipio'])) : null;
+      // $this->id_area = (!empty($data['id_area'])) ? $data['id_area'] : null;
+        $this->area = (!empty($data['id_area'])) ? new Area($data['id_area'], $data['descricao']) : null;
+        //$this->area      = (!empty($data['descricao'])) ? new Area($data['id_area'], $data['descricao'], new Municipio($data['id_vtr'],$data['municipio'])) : null;
     }
 
     //método da interface InputFilterAwareInterface, n será usado e lança apenas uma exceção
@@ -78,13 +81,10 @@ class Viatura implements InputFilterAwareInterface {
             ));
 
             // input filter para campo de telefone principal
-            $inputFilter->add(array(
-                'name' => 'id_area',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'), # transforma string para inteiro
-                ),
-            ));
+           // $inputFilter->add(array(
+              //  'name' => 'area',
+             //   'required' => true,
+            //));
             $this->inputFilter = $inputFilter;
         }
 
@@ -100,7 +100,7 @@ class Viatura implements InputFilterAwareInterface {
     }
 
     public function getArea() {
-        return $this->id_area;
+        return $this->area;
     }
 
     public function setId_vtr($id_vtr) {
@@ -114,5 +114,4 @@ class Viatura implements InputFilterAwareInterface {
     public function setArea($area) {
         $this->area = $area;
     }
-
 }

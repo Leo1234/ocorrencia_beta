@@ -38,16 +38,39 @@ class AreaTable {
      * 
      * @return ResultSet
      */
-    public function fetchAll($currentPage = 0, $countPerPage = 0) {
+    public function fetchAll() {
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT id_area,descricao  FROM area ORDER BY id_area ASC';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id_area']] = $res['descricao'];
+        }
+        return $selectData;
+        
+        /*
         //return $this->tableGateway->select();
         
         $select = new \Zend\Db\Sql\Select;
-        $select->from(array('a' => 'area'));
+        
+        $select->from('area');
         $select->columns(array('id_area','descricao'));
-        $select->join(array('m'=>'municipio'), "a.id_muni = m.id_muni",array('id_muni','municipio'));
+        
+        //$select->join(array('m'=>'municipio'), "area.id_muni = m.id_muni",array('id_muni','municipio'));
+        
         //echo $select->getSqlString();
+        
+        //return $this->tableGateway->select();
+         $resultSet = $this->tableGateway->selectWith($select);
+        
+        return $resultSet;
 
         // create a new pagination adapter object
+        
+        /*
         $paginatorAdapter = new DbSelect(
                 // our configured select object
                 $select,
@@ -62,6 +85,8 @@ class AreaTable {
         
         
         return $paginator;
+        
+        */
     }
 
     /**

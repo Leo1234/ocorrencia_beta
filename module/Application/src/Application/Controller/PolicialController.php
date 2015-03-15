@@ -43,7 +43,7 @@ class PolicialController extends AbstractActionController {
                 
                 $grad = $this->getGraduacaoTable()->find($postData['id_graduacao']);
                 
-                $policial->setGgraduacao($grad);
+                $policial->setGraduacao($grad);
                 $policial->setNumeral($postData['numeral']);
                 $policial->setNome(strtoupper($postData['nome']));
                 $policial->setNome_guerra(strtoupper($postData['nome_guerra']));

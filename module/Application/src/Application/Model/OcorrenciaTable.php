@@ -30,7 +30,6 @@ class OcorrenciaTable {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
         $this->resultSetPrototype->setArrayObjectPrototype(new Ocorrencia());
-
         $this->tableGateway = new TableGateway('ocorrencia', $this->adapter, null, $this->resultSetPrototype);
     }
 
@@ -40,6 +39,7 @@ class OcorrenciaTable {
      * @return ResultSet
      */
     public function fetchAll($currentPage = 0, $countPerPage = 0) {
+        
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('o' => 'ocorrencia'));
         $select->columns(array('*'));
@@ -56,11 +56,10 @@ class OcorrenciaTable {
                 // the result set to hydrate
                 $this->resultSetPrototype
         );
+        
         $paginator = new Paginator($paginatorAdapter);
         $paginator->setItemCountPerPage($countPerPage);
         $paginator->setCurrentPageNumber($currentPage);
-
-
         return $paginator;
     }
 

@@ -7,17 +7,26 @@ use Zend\View\Model\ViewModel;
 use Application\Form\ViaturaForm;
 use Application\Model\Viatura;
 
+use Application\Model\Area;
+use Application\Model\AreaTable;
+
 class ViaturaController extends AbstractActionController {
 
     private function getViaturaTable() {
         return $this->getServiceLocator()->get('ModelViatura');
     }
-
+    
+   private function getAreaTable() {
+        return $this->getServiceLocator()->get('ModelArea');
+    }
+    
+    
     public function indexAction() {
         //return new ViewModel(array('vtr' => $this->getViaturaTable()->fetchAll()));
         //$paginacao = $this->getViaturaTable()->fetchPaginator();
         //return new ViewModel(['vtr' => $paginacao]);
         // colocar parametros da url em um array
+        
         $paramsUrl = [
             'pagina_atual' => $this->params()->fromQuery('pagina', 1),
             'itens_pagina' => $this->params()->fromQuery('itens_pagina', 10),
@@ -34,15 +43,19 @@ class ViaturaController extends AbstractActionController {
                 /* $search */ $paramsUrl['search'],
                 /* $itensPaginacao */ 5
         );
-
+                 
         // retonar paginação mais os params de url para view
-        return new ViewModel(['vtr' => $paginacao] + $paramsUrl);
+        return new ViewModel(['vtr' => $paginacao] + $paramsUrl  );
     }
 
 // GET /contatos/novo
     public function novoAction() {
-        return ['formViatura' => new ViaturaForm()];
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new ViaturaForm($dbAdapter);
+        return ['formViatura' => $form];
     }
+    
+    
 
 // POST /contatos/adicionar
     public function adicionarAction() {
@@ -51,8 +64,10 @@ class ViaturaController extends AbstractActionController {
 
         // verifica se a requisição é do tipo post
         if ($request->isPost()) {
+           
             // instancia formulário
-            $form = new ViaturaForm();
+             $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+            $form = new ViaturaForm($dbAdapter);
             // instancia model contato com regras de filtros e validações
             $modelViatura = new Viatura();
             // passa para o objeto formulário as regras de viltros e validações
@@ -60,7 +75,7 @@ class ViaturaController extends AbstractActionController {
             $form->setInputFilter($modelViatura->getInputFilter());
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());
-
+            //var_dump($form);
             // verifica se o formulário segue a validação proposta
             if ($form->isValid()) {
                 // aqui vai a lógica para adicionar os dados à tabela no banco
@@ -85,48 +100,40 @@ class ViaturaController extends AbstractActionController {
         }
     }
 
+    
+    
+    
 // GET /contatos/editar/id
     public function editarAction() {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
-        
-        
-         // se id = 0 ou não informado redirecione para contatos
-      
-       
+        // se id = 0 ou não informado redirecione para contatos
         if (!$id) {
             // adicionar mensagem de erro
             $this->flashMessenger()->addMessage("Viatura não encotrada");
-
             // redirecionar para action index
             return $this->redirect()->toRoute('viaturas');
         }
-
         try {
-            // variável com objeto contato localizado
-             
-           
+            // variável com objeto viatura localizado em formato de array
             $viatura = (array) $this->getViaturaTable()->find($id);
-              
-            
+            // variável com objeto viatura localizado para ser usado para setar o campo area do select.
+            $viaturaObj =  $this->getViaturaTable()->find($id);
         } catch (Exception $exc) {
             // adicionar mensagem
             $this->flashMessenger()->addErrorMessage($exc->getMessage());
-
             // redirecionar para action index
             return $this->redirect()->toRoute('viaturas');
         }
-
-        // objeto form contato vazio
-        $form = new ViaturaForm();
-        // popula objeto form contato com objeto model contato
-        $form->setData($viatura);  
-        
-         $this->flashMessenger()
-                       ->addSuccessMessage( print_r($viatura) );
-        
+        // objeto form viatura vazio
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new ViaturaForm($dbAdapter);
+        //configura o campo select com valor vindo da view index
+         $form->get('id_area')->setAttributes(array('value'=>$viaturaObj->getArea()->getId_area(),'selected'=>true));
+        // popula objeto form viatura com objeto model viatura
+        $form->setData($viatura);
         // dados eviados para editar.phtml
-        return ['formViatura' => $form];     
+        return ['formViatura' => $form];
     }
 
 // POST /contatos/editar/id
@@ -135,16 +142,13 @@ class ViaturaController extends AbstractActionController {
         // obtém a requisição
         $request = $this->getRequest();
         
-     // $this->flashMessenger()
-                      // ->addSuccessMessage( $request );
-                       
-        // verifica se a requisição é do tipo post
-        
         if ($request->isPost()) {
             
   
             // instancia formulário
-            $form = new ViaturaForm();
+            $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+            $form = new ViaturaForm($dbAdapter);
+           // $form = new ViaturaForm();
             // instancia model contato com regras de filtros e validações
             $modelViatura = new Viatura();
             // passa para o objeto formulário as regras de viltros e validações
@@ -157,9 +161,7 @@ class ViaturaController extends AbstractActionController {
                 // aqui vai a lógica para atualizar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
                 $modelViatura->exchangeArray($form->getData());
-                
-                $this->flashMessenger()
-                        ->addSuccessMessage( $modelViatura->getPrefixo());
+               
                 // 2 - atualizar dados do model para banco de dados
                 
                 $this->getViaturaTable()->update($modelViatura);
@@ -224,7 +226,7 @@ public function deletarAction()
         }
 
         try {
-            // aqui vai a lógica para pegar os dados referente ao contato
+            // aqui vai a lógica para pegar os dados refetchAllrente ao contato
             // 1 - solicitar serviço para pegar o model responsável pelo find
             // 2 - solicitar form com dados desse contato encontrado
             // formulário com dados preenchidos
@@ -240,7 +242,18 @@ public function deletarAction()
         // dados eviados para detalhes.phtml
         return ['viatura' => $viatura];
     }
+    
+    /*
+       private function getAreaTable(){
+        // localizar adapter do banco
+        $adapter = $this->getServiceLocator()->get('AdapterDb');
 
+        // return model PolicialTable
+        return new ModelArea($adapter); // alias para GraduacaoTable
+    }
+*/
+    
+    
     /*
       public function editarAction() {
       // obtém a requisição

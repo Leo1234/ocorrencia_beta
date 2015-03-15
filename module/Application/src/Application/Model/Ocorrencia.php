@@ -93,7 +93,4 @@ class Ocorrencia {
     public function setId_ocorrencia($id_ocorrencia) {
         $this->id_ocorrencia = $id_ocorrencia;
     }
-
-
-
 }

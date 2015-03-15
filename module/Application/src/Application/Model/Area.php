@@ -3,9 +3,9 @@
 namespace Application\Model;
 
 class Area {
-    private $id_area;
-    private $descricao;
-    private $municipio;
+    public $id_area;
+    public $descricao;
+    public $municipio;
 
     function __construct($id_area=0, $descricao="", Municipio $m = null) {
         $this->id_area = $id_area;
