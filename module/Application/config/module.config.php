@@ -1,10 +1,12 @@
 <?php
 
 return array(
-    
     'controllers' => array(
         'invokables' => array(
             'IndexController' => 'Application\Controller\IndexController',
+            'DadosController' => 'Application\Controller\DadosController',
+            //'AreController' => 'Application\Controller\AreaController',
+            'Application\Controller\Area' => 'Application\Controller\AreaController',
             'MunicipioController' => 'Application\Controller\MunicipioController',
             'VitimaController' => 'Application\Controller\VitimaController',
             'PolicialController' => 'Application\Controller\PolicialController',
@@ -12,18 +14,16 @@ return array(
             'ViaturaController' => 'Application\Controller\ViaturaController'
         ),
     ),
-    
-         'home' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route' => '/home',
-                    'defaults' => array(
-                        'controller' => 'IndexController',
-                        'action' => 'index',
-                    ),
-                ),
+    'home' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route' => '/home',
+            'defaults' => array(
+                'controller' => 'IndexController',
+                'action' => 'index',
             ),
-    
+        ),
+    ),
     'router' => array(
         'routes' => array(
             # literal para action index home
@@ -37,7 +37,20 @@ return array(
                     ),
                 ),
             ),
-            
+            'config' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/config[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'DadosController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             # segment para controller vitimas
             'vitimas' => array(
                 'type' => 'Segment',
@@ -53,7 +66,20 @@ return array(
                     ),
                 ),
             ),
-            
+            'area' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/area[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Area',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             # segment para controller policial
             'policiais' => array(
                 'type' => 'Segment',
@@ -69,7 +95,6 @@ return array(
                     ),
                 ),
             ),
-            
             # segment para controller policial
             'ocorrencia' => array(
                 'type' => 'Segment',
@@ -85,7 +110,6 @@ return array(
                     ),
                 ),
             ),
-            
             # segment para controller viaturas
             'viaturas' => array(
                 'type' => 'Segment',
@@ -101,7 +125,6 @@ return array(
                     ),
                 ),
             ),
-            
             # segment para controller municipio
             'Municipio' => array(
                 'type' => 'Segment',
@@ -119,7 +142,6 @@ return array(
             ),
         ),
     ),
-    
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -129,7 +151,6 @@ return array(
             'translator' => 'MvcTranslator',
         ),
     ),
-    
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
@@ -140,7 +161,6 @@ return array(
             ),
         ),
     ),
-    
     'view_helpers' => array(
         'factories' => array(
             'router' => function ($sm) {

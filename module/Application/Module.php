@@ -94,6 +94,7 @@ class Module {
                     return new ViaturaTable($sm->get('ViaturaTableGateway'));
                 },
                 ///----------------area--------------///
+                        
                 'AreaTableGateway' => function ($sm) {
                     // obter adapter db atraves do service manager
                     $adapter = $sm->get('AdapterDb');

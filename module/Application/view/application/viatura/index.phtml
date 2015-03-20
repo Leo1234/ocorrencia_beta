@@ -41,7 +41,7 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <!--pega o cabeçalho da tabela em partial/colunas_sort -->
-            <?php echo $this->partial('partial/colunas_sort'); ?>
+            <?php echo $this->partial('partial/viatura/colunas_sort'); ?>
         </thead>
 
         <tbody>
@@ -74,7 +74,7 @@
             // tipo de style da paginação
             'Sliding',
             // partial que vai conter o html da paginação
-            [/* path */ 'partial/paginator.phtml', /* modulo */ 'Application'],
+            [/* path */ 'partial/viatura/paginator.phtml', /* modulo */ 'Application'],
             // link rotas da paginação
             ['route' => 'viaturas']
     );

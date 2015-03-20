@@ -6,6 +6,7 @@
 
 namespace Application\Form;
 
+use Application\Controller\AreaController;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Form\Form;
 use Zend\Form\Element;
@@ -67,9 +68,11 @@ class ViaturaForm extends Form {
         return $selectData;
     }
 
-    private function getAreaTable() {
+  
+   private function getAreaTable() {
         $dbAdapter = $this->adapter;
         return new ModelArea($dbAdapter);
     }
+
 
 }

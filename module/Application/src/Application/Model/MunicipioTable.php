@@ -6,22 +6,13 @@ use Zend\Db\Adapter\Adapter,
     Zend\Db\ResultSet\ResultSet,
     Zend\Db\TableGateway\TableGateway;
 
-/**
- * Description of MunicipioTable
- *
- * @author leandro
- */
+
 class MunicipioTable {
 
     protected $tableGateway;
     protected $adapter;
     protected $resultSetPrototype;
-    /**
-     * Contrutor com dependencia do Adapter do Banco
-     * 
-     * @param \Zend\Db\Adapter\Adapter $adapter
-     */
-    
+ 
     public function __construct(Adapter $adapter) {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
@@ -30,15 +21,20 @@ class MunicipioTable {
         $this->tableGateway = new TableGateway('municipio', $adapter, null, $this->resultSetPrototype);
     }
 
-    /**
-     * Recuperar todos os elementos da tabela municipio
-     * 
-     * @return ResultSet
-     */
-    public function fetchAll() {
-        return $this->tableGateway->select();
-    }
 
+        public function fetchAll() {
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT id_muni, municipio  FROM municipio ORDER BY id_muni ASC';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id_muni']] = $res['municipio'];
+        }
+        return $selectData;     
+    }
     /**
      * Localizar linha especifico pelo id da tabela municipio
      * 
