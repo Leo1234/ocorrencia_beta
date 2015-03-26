@@ -5,8 +5,8 @@ return array(
         'invokables' => array(
             'IndexController' => 'Application\Controller\IndexController',
             'DadosController' => 'Application\Controller\DadosController',
-            //'AreController' => 'Application\Controller\AreaController',
             'Application\Controller\Area' => 'Application\Controller\AreaController',
+            'Application\Controller\Bairro' => 'Application\Controller\BairroController',
             'MunicipioController' => 'Application\Controller\MunicipioController',
             'VitimaController' => 'Application\Controller\VitimaController',
             'PolicialController' => 'Application\Controller\PolicialController',
@@ -80,6 +80,20 @@ return array(
                     ),
                 ),
             ),
+            'bairro' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/bairro[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Bairro',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             # segment para controller policial
             'policiais' => array(
                 'type' => 'Segment',
@@ -126,7 +140,7 @@ return array(
                 ),
             ),
             # segment para controller municipio
-            'Municipio' => array(
+            'municipio' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/municipio[/:action][/:id]',
@@ -181,6 +195,9 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
 );

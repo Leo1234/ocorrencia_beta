@@ -4,8 +4,10 @@ namespace Application\Model;
 
 use Zend\Db\Adapter\Adapter,
     Zend\Db\ResultSet\ResultSet,
-    Zend\Db\TableGateway\TableGateway;
-
+    Zend\Db\TableGateway\TableGateway,
+    Zend\Db\Sql\Select,
+    Zend\Paginator\Adapter\DbSelect,
+    Zend\Paginator\Paginator;
 
 class MunicipioTable {
 
@@ -17,7 +19,6 @@ class MunicipioTable {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
         $this->resultSetPrototype->setArrayObjectPrototype(new Municipio());
-
         $this->tableGateway = new TableGateway('municipio', $adapter, null, $this->resultSetPrototype);
     }
 
@@ -35,13 +36,50 @@ class MunicipioTable {
         }
         return $selectData;     
     }
-    /**
-     * Localizar linha especifico pelo id da tabela municipio
-     * 
-     * @param type $id
-     * @return \Model\Municipio
-     * @throws \Exception
-     */
+    
+     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'municipio ASC', $like = null, $itensPaginacao = 5)          
+{      
+        $select = new Select;
+        $select->from('municipio');
+        $select->order($ordem);
+
+       
+        if (isset($like)) {
+        $select
+                ->where
+                ->like('id_muni', "%{$like}%")
+                ->or
+                ->like('municipio', "%{$like}%")
+        ;
+    }
+    
+    // criar um objeto com a estrutura desejada para armazenar valores
+   // $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
+    
+     $resultSetPrototype = new ResultSet();
+     $resultSetPrototype->setArrayObjectPrototype( new Municipio());
+    
+    // criar um objeto adapter paginator
+    $paginatorAdapter = new DbSelect(
+        // nosso objeto select
+        $select,
+        // nosso adapter da tabela
+        $this->tableGateway->getAdapter(),
+        // nosso objeto base para ser populado
+        //$resultSet
+        $resultSetPrototype
+    );
+   
+    
+    // resultado da paginação
+    return (new Paginator($paginatorAdapter))
+            // pagina a ser buscada
+            ->setCurrentPageNumber((int) $pagina)
+            // quantidade de itens na página
+            ->setItemCountPerPage((int) $itensPagina)
+            ->setPageRange((int) $itensPaginacao);
+}
+ 
     public function find($id) {
         $id = (int) $id;
         $rowset = $this->tableGateway->select(array('id_muni' => $id));
@@ -50,6 +88,14 @@ class MunicipioTable {
             throw new \Exception("Não foi encontrado municipio de id = {$id}");
 
         return $row;
+    }
+      public function save(Municipio $municipio) {
+        $data = [
+            'municipio' => $municipio->getMunicipio(),
+            'id_muni' => $municipio->getId_muni(),
+        ];
+
+        return $this->tableGateway->insert($data);
     }
 
 }

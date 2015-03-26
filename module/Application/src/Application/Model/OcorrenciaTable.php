@@ -10,22 +10,13 @@ use Zend\Db\Adapter\Adapter,
     Zend\Db\Sql\Sql,
     Zend\Paginator\Paginator;
 
-/**
- * Description of MunicipioTable
- *
- * @author leandro
- */
 class OcorrenciaTable {
 
     protected $tableGateway;
     protected $adapter;
     protected $resultSetPrototype;
 
-    /**
-     * Contrutor com dependencia do Adapter do Banco
-     * 
-     * @param \Zend\Db\Adapter\Adapter $adapter
-     */
+ 
     public function __construct(Adapter $adapter) {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
@@ -33,11 +24,6 @@ class OcorrenciaTable {
         $this->tableGateway = new TableGateway('ocorrencia', $this->adapter, null, $this->resultSetPrototype);
     }
 
-    /**
-     * Recuperar todos os elementos da tabela policial
-     * 
-     * @return ResultSet
-     */
     public function fetchAll($currentPage = 0, $countPerPage = 0) {
         
         $select = new \Zend\Db\Sql\Select;

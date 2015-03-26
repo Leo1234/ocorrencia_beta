@@ -1,5 +1,5 @@
 <?php echo $this->doctype(); ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html lang="pt-BR">
     <head>
         <meta charset="utf-8">
@@ -41,6 +41,7 @@
 
 
     <body>
+         <div class="col-lg-12">
 
         <div id="wrapper" style="overflow: hidden">
 
@@ -162,6 +163,10 @@
                     ->prependFile($this->basePath() . '/lib/js/tablesorter/tables.js')
                     ->prependFile($this->basePath() . '/lib/js/bootstrap.js')
                     ->prependFile($this->basePath() . '/lib/js/jquery-1.10.2.js')
+                    ->prependFile($this->basePath() . '/js/bootstrap-typeahead.min.js')
+                    ->prependFile($this->basePath() . '/js/scripts.js')
+                    ->prependFile($this->basePath() . '/js/jquery.min.js')
+                    ->prependFile($this->basePath() . '/js/bootstrap.min.js')
             ;
 
             echo $this->inlineScript();
@@ -200,6 +205,7 @@
             <script src="<?= $this->basePath() ?>/select2/select2.js"></script>
             <script src="<?= $this->basePath() ?>/select2/select2_locale_pt-BR.js"></script>
             <script src="<?= $this->basePath() ?>/js/util.js"></script>
+        </div>
             
     </body>
 </html>
