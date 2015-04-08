@@ -1,21 +1,21 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-            Detalhes Área ID <?php echo $area->getId_area(); ?>
+            Detalhes Bairro ID <?php echo $bairro->getId_bai(); ?>
         </div>
     </div>
     <div class="panel-body">
         <dl class="dl-horizontal">
-            <dt>ID:</dt>
-            <dd><?php echo $area->getId_area(); ?></dd>
-            <dt>Descricão:</dt>
-            <dd><?php echo $area->getDescricao(); ?></dd>
-            <dt>Id_Municícipio:</dt>
-            <dd><?php echo $area->getMunicipio()->getMunicipio(); ?></dd>
+            <dt>Bairro:</dt>
+            <dd><?php echo $bairro->getBairro(); ?></dd>
+            <dt>Município:</dt>
+            <dd><?php echo $bairro->getMunicipio()->getMunicipio(); ?></dd>
+            <dt>Área:</dt>
+            <dd><?php echo $bairro->getArea()->getDescricao(); ?></dd>
         </dl>
     </div>
     <div class="panel-footer">
-        <a href="<?php echo $this->url('area', array('action' => 'editar','id' => $area->getId_area())); ?>" class="btn btn-warning btn-sm">Editar Área</a>
-        <a href="<?php echo $this->url('area'); ?>" class="btn btn-default btn-sm">Voltar</a>
+        <a href="<?php echo $this->url('bairro', array('action' => 'editar','id' => $bairro->getId_bai())); ?>" class="btn btn-warning btn-sm">Editar Bairro</a>
+        <a href="<?php echo $this->url('bairro'); ?>" class="btn btn-default btn-sm">Voltar</a>
     </div>
 </div>

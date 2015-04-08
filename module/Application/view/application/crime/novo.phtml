@@ -1,0 +1,51 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Novo Crime          
+        </div>
+    </div>
+    <?php
+    // objeto form contato
+    $formCrime = $this->formCrime;
+    // preparar elementos do formulário
+    $formCrime->prepare();
+    // configurar url formulário
+    $formCrime->setAttribute('action', $this->url('crime', array('action' => 'adicionar')));
+    ?>
+    
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formCrime) ?>
+    <div class="panel-body">
+  
+
+        <div class="form-group">
+            <label for="inputCrime" class="col-lg-3 col-md-3 control-label">Crime*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formCrime->get('crime'));
+                
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formCrime->get('crime'));
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <?php
+        // renderiza html input hidden para id
+        echo $this->formHidden($formCrime->get('id_cri'));
+      
+        ?>
+
+        <button type="submit" class="btn btn-primary">Salvar crime</button>
+        <a href="<?php echo $this->url('crime'); ?>" class="btn btn-default">Voltar</a>
+    </div>
+
+    <?php // renderiza html </form> ?>
+    <?php echo $this->form()->closeTag() ?>
+</div>

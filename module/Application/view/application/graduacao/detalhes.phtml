@@ -1,0 +1,21 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Detalhes Gradução ID <?php echo $graduacao->getId_grad(); ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ID:</dt>
+            <dd><?php echo $graduacao->getId_grad(); ?></dd>
+            <dt>Sigla:</dt>
+            <dd><?php echo $graduacao->getSigla(); ?></dd>
+            <dt>Graduação:</dt>
+            <dd><?php echo $graduacao->getGraduacao(); ?></dd>
+        </dl>
+    </div>
+    <div class="panel-footer">
+        <a href="<?php echo $this->url('graduacao', array('action' => 'editar','id' => $graduacao->getId_grad())); ?>" class="btn btn-warning btn-sm">Editar Graduação</a>
+        <a href="<?php echo $this->url('graduacao'); ?>" class="btn btn-default btn-sm">Voltar</a>
+    </div>
+</div>

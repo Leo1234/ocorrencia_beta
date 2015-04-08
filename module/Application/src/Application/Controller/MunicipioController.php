@@ -127,42 +127,38 @@ class MunicipioController extends AbstractActionController {
         $request = $this->getRequest();
         
         if ($request->isPost()) {
-            
-  
             // instancia formulário
-            $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-            $form = new AreaForm($dbAdapter);
-           // $form = new ViaturaForm();
-            // instancia model contato com regras de filtros e validações
-            $modelArea = new Area();
+            
+            $form = new MunicipioForm();
+            // instancia model municipio com regras de filtros e validações
+            $modelMunicipio = new Municipio();
             // passa para o objeto formulário as regras de viltros e validações
-            // contidas na entity contato
-              $form->setInputFilter($modelArea->getInputFilter());
+            // contidas na entity Municipio
+              $form->setInputFilter($modelMunicipio->getInputFilter());
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());     
             // verifica se o formulário segue a validação proposta
             if ($form->isValid()) {
-                // aqui vai a lógica para atualizar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
-                $modelArea->exchangeArray($form->getData());
+                $modelMunicipio->exchangeArray($form->getData());
                
                 // 2 - atualizar dados do model para banco de dados
                 
-                $this->getAreaTable()->update($modelArea);
+                $this->getMunicipioTable()->update($modelMunicipio);
 
                 // adicionar mensagem de sucesso
                 $this->flashMessenger()
-                        ->addSuccessMessage("Área editada com sucesso");
+                        ->addSuccessMessage("Município editado com sucesso");
 
                 // redirecionar para action detalhes
-                return $this->redirect()->toRoute('area', array("action" => "detalhes", "id" => $modelArea->getId_area()));
+                return $this->redirect()->toRoute('municipio', array("action" => "detalhes", "id" => $modelMunicipio->getId_muni()));
             } else { // em caso da validação não seguir o que foi definido
                 // renderiza para action editar com o objeto form populado,
                 // com isso os erros serão tratados pelo helpers view
                    
                 return (new ViewModel())
-                                ->setVariable('formArea', $form)
-                                ->setTemplate('application/area/editar');
+                                ->setVariable('formMunicipio', $form)
+                                ->setTemplate('application/municipio/editar');
             }
         }
       

@@ -9,7 +9,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\Paginator\Adapter\DbSelect,
     Zend\Paginator\Paginator;
 
-class MunicipioTable {
+class CrimeTable {
 
     protected $tableGateway;
     protected $adapter;
@@ -18,38 +18,26 @@ class MunicipioTable {
     public function __construct(Adapter $adapter) {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
-        $this->resultSetPrototype->setArrayObjectPrototype(new Municipio());
-        $this->tableGateway = new TableGateway('municipio', $adapter, null, $this->resultSetPrototype);
+        $this->resultSetPrototype->setArrayObjectPrototype(new Crime());
+        $this->tableGateway = new TableGateway('crime', $adapter, null, $this->resultSetPrototype);
     }
 
 
-        public function fetchAll() {
-        $dbAdapter = $this->adapter;
-        $sql = 'SELECT id_muni, municipio  FROM municipio ORDER BY id_muni ASC';
-        $statement = $dbAdapter->query($sql);
-        $result = $statement->execute();
-
-        $selectData = array();
-
-        foreach ($result as $res) {
-            $selectData[$res['id_muni']] = $res['municipio'];
-        }
-        return $selectData;     
-    }
+   
     
-     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'municipio ASC', $like = null, $itensPaginacao = 5)          
+     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'crime ASC', $like = null, $itensPaginacao = 5)          
 {      
         $select = new Select;
-        $select->from('municipio');
+        $select->from('crime');
         $select->order($ordem);
 
        
         if (isset($like)) {
         $select
                 ->where
-                ->like('id_muni', "%{$like}%")
+                ->like('id_cri', "%{$like}%")
                 ->or
-                ->like('municipio', "%{$like}%")
+                ->like('crime', "%{$like}%")
         ;
     }
     
@@ -57,7 +45,7 @@ class MunicipioTable {
    // $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
     
      $resultSetPrototype = new ResultSet();
-     $resultSetPrototype->setArrayObjectPrototype( new Municipio());
+     $resultSetPrototype->setArrayObjectPrototype( new Crime());
     
     // criar um objeto adapter paginator
     $paginatorAdapter = new DbSelect(
@@ -82,34 +70,34 @@ class MunicipioTable {
  
     public function find($id) {
         $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('id_muni' => $id));
+        $rowset = $this->tableGateway->select(array('id_cri' => $id));
         $row = $rowset->current();
         if (!$row)
-            throw new \Exception("Não foi encontrado municipio de id = {$id}");
+            throw new \Exception("Não foi encontrado crime de id = {$id}");
 
         return $row;
     }
-      public function save(Municipio $municipio) {
+      public function save(Crime $crime) {
         $data = [
-            'municipio' => $municipio->getMunicipio(),
-            'id_muni' => $municipio->getId_muni(),
+            'id_cri' => $crime->getId_cri(),
+            'crime' => $crime->getCrime(),
         ];
 
         return $this->tableGateway->insert($data);
     }
-           public function update(Municipio $municipio) {
+           public function update(Crime $crime) {
         $data = [
-             'municipio' => $municipio->getMunicipio(),
-            'id_muni' => $municipio->getId_muni()
+             'id_cri' => $crime->getId_cri(),
+            'crime' => $crime->getCrime(),
         ];
 
-        $id = (int) $municipio->getId_muni();
+        $id = (int) $crime->getId_cri();
         //$id = 1;
         
         if ($this->find($id)) {
-            $this->tableGateway->update($data, array('id_muni' => $id));
+            $this->tableGateway->update($data, array('id_cri' => $id));
         } else {
-            throw new Exception("Município #{$id} inexistente");
+            throw new Exception("Crime #{$id} inexistente");
         }
     }
 

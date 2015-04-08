@@ -4,15 +4,15 @@
 
     <div class="col-lg-12">
 
-        <h1>Municípios</h1>
+        <h1>Graduação</h1>
         <ol class="breadcrumb">
-            <li class="active"><i class="fa fa-dashboard"></i> Controle dos Municípios</li>
+            <li class="active"><i class="fa fa-dashboard"></i> Controle das Graduações</li>
         </ol>
 
     </div>
 </div>
 
-    <a href="<?php echo $this->url('municipio', array('action' => 'novo')) ?>" class="btn btn-success" title="Novo"><span class="glyphicon glyphicon-plus"></span></a>
+    <a href="<?php echo $this->url('graduacao', array('action' => 'novo')) ?>" class="btn btn-success" title="Novo"><span class="glyphicon glyphicon-plus"></span></a>
 
     <div class="btn-group" title="Quantidades por Página">
         <button type="button" class="btn btn-default"><?php echo $this->itens_pagina; ?></button>
@@ -21,7 +21,7 @@
         </button>
         <ul class="dropdown-menu pull-right" style="min-width: 75px" role="menu">
             <?php foreach (['005', '010', '025', '050', '100'] as $value): ?>
-                <li class="<?php echo ($this->itens_pagina == $value ? 'active' : ''); ?>"><a href="<?php echo $this->url('municipio', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_municipio' => $coluna_municipio, 'coluna_sort' => $this->coluna_sort, 'itens_pagina' => $value, 'search' => $this->search]]) ?>"><?php echo $value; ?></a></li>
+                <li class="<?php echo ($this->itens_pagina == $value ? 'active' : ''); ?>"><a href="<?php echo $this->url('graduacao', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_silga' => $coluna_sigla, 'coluna_sort' => $this->coluna_sort, 'itens_pagina' => $value, 'search' => $this->search]]) ?>"><?php echo $value; ?></a></li>
             <?php endforeach; ?>
         </ul>
     </div>
@@ -41,22 +41,23 @@
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <!--pega o cabeçalho da tabela em partial/colunas_sort -->
-            <?php echo $this->partial('partial/municipio/colunas_sort'); ?>
+            <?php echo $this->partial('partial/graduacao/colunas_sort'); ?>
         </thead>
 
         <tbody>
             
        
             
-            <?php foreach ($this->municipio as $i=>$municipio): ?>
+            <?php foreach ($this->graduacao as $i=>$graduacao): ?>
             <tr>
 
-                    <td class="text-center"><?php echo $municipio->getId_muni(); ?></td>
-                    <td class="text-center"><?php echo $municipio->getMunicipio(); ?></td>
+                    <td class="text-center"><?php echo $graduacao->getId_grad(); ?></td>
+                    <td class="text-center"><?php echo $graduacao->getSigla(); ?></td>
+                    <td class="text-center"><?php echo $graduacao->getGraduacao(); ?></td>
                     <td>
-                        <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('municipio', array("action" => "detalhes", "id" => $municipio->getId_muni(),)); ?>"><span class="glyphicon glyphicon-new-window"></span></a>
-                        <a class="btn btn-xs btn-warning" title="Editar" href="<?php echo $this->url('municipio', array("action" => "editar", "id" => $municipio->getId_muni(),)); ?>"><span class="glyphicon glyphicon-edit"></span></a>
-                        <a class="btn btn-xs btn-danger" title="Deletar" href="<?php echo $this->url('municipio', array("action" => "deletar", "id" => $municipio->getId_muni())); ?>"><span class="glyphicon glyphicon-floppy-remove"></span></a>
+                        <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('graduacao', array("action" => "detalhes", "id" => $graduacao->getId_grad(),)); ?>"><span class="glyphicon glyphicon-new-window"></span></a>
+                        <a class="btn btn-xs btn-warning" title="Editar" href="<?php echo $this->url('graduacao', array("action" => "editar", "id" => $graduacao->getId_grad(),)); ?>"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a class="btn btn-xs btn-danger" title="Deletar" href="<?php echo $this->url('graduacao', array("action" => "deletar", "id" => $graduacao->getId_grad())); ?>"><span class="glyphicon glyphicon-floppy-remove"></span></a>
                     </td>
                 </tr>  
             <?php endforeach; ?>
@@ -68,13 +69,13 @@
 // controle de paginação
     echo $this->paginationControl(
             // objeto contentdo os vtr
-            $this->municipio,
+            $this->graduacao,
             // tipo de style da paginação
             'Sliding',
             // partial que vai conter o html da paginação
-            [/* path */ 'partial/municipio/paginator.phtml', /* modulo */ 'Application'],
+            [/* path */ 'partial/graduacao/paginator.phtml', /* modulo */ 'Application'],
             // link rotas da paginação
-            ['route' => 'municipio']
+            ['route' => 'graduacao']
     );
     ?>
 </div>

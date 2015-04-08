@@ -7,6 +7,9 @@ return array(
             'DadosController' => 'Application\Controller\DadosController',
             'Application\Controller\Area' => 'Application\Controller\AreaController',
             'Application\Controller\Bairro' => 'Application\Controller\BairroController',
+            'Application\Controller\Graduacao' => 'Application\Controller\GraduacaoController',
+            'Application\Controller\Procedimento' => 'Application\Controller\ProcedimentoController',
+            'Application\Controller\Crime' => 'Application\Controller\CrimeController',
             'MunicipioController' => 'Application\Controller\MunicipioController',
             'VitimaController' => 'Application\Controller\VitimaController',
             'PolicialController' => 'Application\Controller\PolicialController',
@@ -80,6 +83,34 @@ return array(
                     ),
                 ),
             ),
+            'procedimento' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/procedimento[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Procedimento',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'crime' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/crime[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Crime',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
             'bairro' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -90,6 +121,20 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Application\Controller\Bairro',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'graduacao' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/graduacao[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Graduacao',
                         'action' => 'index',
                     ),
                 ),

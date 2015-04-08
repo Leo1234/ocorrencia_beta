@@ -9,11 +9,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\Paginator\Adapter\DbSelect,
     Zend\Paginator\Paginator;
 
-/**
- * Description of MunicipioTable
- *
- * @author leandro
- */
+
 class PolicialTable {
 
     protected $tableGateway;

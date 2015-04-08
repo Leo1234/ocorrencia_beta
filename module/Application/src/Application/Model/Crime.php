@@ -6,42 +6,31 @@ use Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilter,
     Zend\InputFilter\InputFilterInterface;
 
-use Application\Model\Municipio;
-use Application\Model\Area;
+class Crime implements InputFilterAwareInterface {
 
-class Bairro implements InputFilterAwareInterface{
-    public $id_bai;
-    public $bairro;
-    public $municipio;
-     public $area;
-    protected $inputFilter;
-    
-    function __construct($id_bai=0, $bairro="", Area  $a = null ,Municipio $m = null) {
-        $this->id_bai = $id_bai;
-        $this->bairro = $bairro;
-        $this->area = $a;
-        $this->municipio = $m;
+   public $id_cri;
+   public $crime;
+   protected $inputFilter;
+
+    function __construct($id_cri=0, $crime="") {
+        $this->id_cri = $id_cri;
+        $this->crime = $crime;
     }
     
     public function exchangeArray($data) {
-        $this->id_bai      = (!empty($data['id_area'])) ? $data['id_bai'] : null;
-        $this->bairro    = (!empty($data['bairro'])) ? $data['bairro'] : null;
-        $this->area    = (!empty($data['id_area'])) ? new Area($data['id_area'], $data['descricao']) : null;
-        $this->municipio    = (!empty($data['id_muni'])) ? new Municipio($data['id_muni'], $data['municipio']) : null;
-       
+        $this->id_cri = (!empty($data['id_cri'])) ? $data['id_cri'] : null;
+        $this->crime = (!empty($data['crime'])) ? $data['crime'] : null;
     }
-    //método da interface InputFilterAwareInterface, n será usado e lança apenas uma exceção
-    public function setInputFilter(InputFilterInterface $inputFilter) {
+     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new Exception('Não utilizado.');
     }
-    
     public function getInputFilter() {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
 
             // input filter para campo de id
             $inputFilter->add(array(
-                'name' => 'id_bai',
+                'name' => 'id_cri',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'Int'), # transforma string para inteiro
@@ -50,7 +39,7 @@ class Bairro implements InputFilterAwareInterface{
 
             // input filter para campo de nome  
             $inputFilter->add(array(
-                'name' => 'bairro',
+                'name' => 'crime',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'), # remove xml e html da string
@@ -86,35 +75,23 @@ class Bairro implements InputFilterAwareInterface{
 
         return $this->inputFilter;
     }
-    public function getId_bai() {
-        return $this->id_bai;
+    
+    
+    public function getId_cri() {
+        return $this->id_cri;
     }
 
-    public function getBairro() {
-        return $this->bairro;
+    public function getCrime() {
+        return $this->crime;
     }
 
-    public function getMunicipio() {
-        return $this->municipio;
+    public function setId_cri($id_cri) {
+        $this->id_cri = $id_cri;
     }
 
-    public function getArea() {
-        return $this->area;
+    public function setCrime($crime) {
+        $this->crime = $crime;
     }
 
-    public function setId_bai($id_bai) {
-        $this->id_bai = $id_bai;
-    }
 
-    public function setBairro($bairro) {
-        $this->bairro = $bairro;
-    }
-
-    public function setMunicipio($municipio) {
-        $this->municipio = $municipio;
-    }
-
-    public function setArea($area) {
-        $this->area = $area;
-    }
 }

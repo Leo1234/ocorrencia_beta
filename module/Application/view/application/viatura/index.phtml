@@ -81,3 +81,13 @@
 </div>
 
     </div>
+<div class="header">
+    <ul class="nav nav-pills pull-left">
+        <?php
+        $voltar = $this->url('config');
+        ?>
+        <li <?php echo $this->menuAtivo($voltar); ?>>
+            <a href="<?php echo $voltar; ?>">voltar</a>
+        </li>
+    </ul>
+</div>

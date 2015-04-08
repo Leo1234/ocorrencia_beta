@@ -1,0 +1,24 @@
+<?php
+$estruturaColuna = function($label, $coluna_crime) {
+    $html = '';
+    $html .= "<a href='{$this->url('crime', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_crime' => $coluna_crime, 'coluna_sort' => ($this->coluna_crime!= $coluna_crime? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+
+    if ($this->coluna_crime== $coluna_crime) {
+        $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';
+        $html .= "<span class='glyphicon glyphicon-sort-by-attributes{$icon}'></span> ";
+    }
+
+    $html .= $label;
+
+    return $html;
+};
+?>
+<tr>
+    <th>
+        <?php echo $estruturaColuna('Nº Registro', 'id_cri'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Crime', 'crime'); ?>
+    </th> 
+    <th>Ação</th>  
+</tr>

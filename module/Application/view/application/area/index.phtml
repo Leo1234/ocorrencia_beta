@@ -24,7 +24,9 @@
                 <li class="<?php echo ($this->itens_pagina == $value ? 'active' : ''); ?>"><a href="<?php echo $this->url('area', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_descricao' => $coluna_descricao, 'coluna_sort' => $this->coluna_sort, 'itens_pagina' => $value, 'search' => $this->search]]) ?>"><?php echo $value; ?></a></li>
             <?php endforeach; ?>
         </ul>
+        
     </div>
+
 
     <form class="form-inline pull-right" role="form">
         <div class="form-group">
@@ -79,4 +81,14 @@
             ['route' => 'area']
     );
     ?>
+</div>
+    <div class="header">
+    <ul class="nav nav-pills pull-left">
+        <?php
+        $voltar = $this->url('config');
+        ?>
+        <li <?php echo $this->menuAtivo($voltar); ?>>
+            <a href="<?php echo $voltar; ?>">voltar</a>
+        </li>
+    </ul>
 </div>

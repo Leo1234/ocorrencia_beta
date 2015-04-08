@@ -1,0 +1,19 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Detalhes Crime ID <?php echo $crime->getId_cri(); ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ID:</dt>
+            <dd><?php echo $crime->getId_cri(); ?></dd>
+            <dt>Município:</dt>
+            <dd><?php echo $crime->getCrime(); ?></dd>
+        </dl>
+    </div>
+    <div class="panel-footer">
+        <a href="<?php echo $this->url('crime', array('action' => 'editar','id' => $crime->getId_cri())); ?>" class="btn btn-warning btn-sm">Editar Crime</a>
+        <a href="<?php echo $this->url('crime'); ?>" class="btn btn-default btn-sm">Voltar</a>
+    </div>
+</div>

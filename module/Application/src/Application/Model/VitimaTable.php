@@ -10,11 +10,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\Db\Sql\Sql,
     Zend\Paginator\Paginator;
 
-/**
- * Description of MunicipioTable
- *
- * @author leandro
- */
+
 class VitimaTable {
 
     protected $tableGateway;

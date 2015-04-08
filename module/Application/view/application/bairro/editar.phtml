@@ -1,30 +1,30 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-            Editar Área ID:  <?php echo $this->id ?>  
+            Editar Bairro ID:  <?php echo $this->id ?>  
         </div>
     </div>
     
     <?php
-    // objeto form contato
-     $formArea = $this->formArea;
+    // objeto form bairro
+     $formBairro = $this->formBairro;
        //var_dump ($formViatura);
     // preparar elementos do formulário
-    $formArea->prepare();
+    $formBairro->prepare();
     // configurar url formulário
-    $formArea->setAttribute('action', $this->url('area', ['action' => 'atualizar']));
+    $formBairro->setAttribute('action', $this->url('bairro', ['action' => 'atualizar']));
     ?>  
     
     <?php // renderiza html <form> com atributos configurados no objeto ?>
-    <?php echo $this->form()->openTag($formArea) ?>
+    <?php echo $this->form()->openTag($formBairro) ?>
     
     <div class="panel-body">
         <div class="form-group">
-            <label for="descricao" class="col-lg-3 col-md-3 control-label">Descrição*:</label>
+            <label for="bairro" class="col-lg-3 col-md-3 control-label">Bairro*:</label>
             <div class="col-lg-9 col-md-9">
                 <?php 
                 // renderiza html input
-                echo $this->formInput($formArea->get('descricao'));
+                echo $this->formInput($formBairro->get('bairro'));
                 
                 
                 // renderiza elemento de erro
@@ -32,24 +32,40 @@
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formArea->get('descricao'));
+                        ->render($formBairro->get('bairro'));
                 ?>
             </div>
         </div>
  
         <div class="form-group">
-            <label for="id_descricao" class="col-lg-3 col-md-3 control-label">Id_Municpio*:</label>
+            <label for="id_municipio" class="col-lg-3 col-md-3 control-label">Municipio*:</label>
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
-                echo $this->formSelect($formArea->get('id_muni'));
+                echo $this->formSelect($formBairro->get('id_muni'));
                 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formArea->get('id_muni'));
+                        ->render($formBairro->get('id_muni'));
+                ?>
+            </div>
+        </div>
+             <div class="form-group">
+            <label for="id_area" class="col-lg-3 col-md-3 control-label">Area*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formSelect($formBairro->get('id_area'));
+                
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formBairro->get('id_area'));
                 ?>
             </div>
         </div>
@@ -58,11 +74,11 @@
     <div class="panel-footer">
         <?php
         // renderiza html input hidden para id
-        echo $this->formHidden($formArea->get('id_area')); 
+        echo $this->formHidden($formBairro->get('id_bai')); 
         ?>
  
-        <button type="submit" class="btn btn-primary">Atualizar Área</button>
-        <a href="<?php echo $this->url('area'); ?>" class="btn btn-default">Voltar</a>
+        <button type="submit" class="btn btn-primary">Atualizar Bairro</button>
+        <a href="<?php echo $this->url('bairro'); ?>" class="btn btn-default">Voltar</a>
     </div>
  
     <?php // renderiza html </form> ?>

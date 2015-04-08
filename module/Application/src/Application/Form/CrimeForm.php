@@ -9,10 +9,10 @@ use Zend\Form\Element;
 use Zend\Form\ElementText;
 
 
-class MunicipioForm extends Form {
+class CrimeForm extends Form {
 
     public function __construct() { 
-        parent::__construct("FormMunicipio");
+        parent::__construct("FormCrime");
 
         // config form atributes
         $this->setAttributes(array(
@@ -23,17 +23,17 @@ class MunicipioForm extends Form {
         // elemento do tipo hidden
         $this->add(array(
             'type' => 'Hidden', # ou 'type' => 'ZendFormElementHidden'
-            'name' => 'id_muni',
+            'name' => 'id_cri',
         ));
 
         // elemento do tipo text
         $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
-            'name' => 'municipio',
+            'name' => 'crime',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputMunicipio',
-                'placeholder' => 'Município',
+                'id' => 'inputCrime',
+                'placeholder' => 'Crime',
             ),
         ));
     }

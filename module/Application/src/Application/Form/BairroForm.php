@@ -76,8 +76,8 @@ class BairroForm extends Form {
             'options' => array(
                 'label' => 'Escolha o ID Área',
                 'empty_option' => 'Por favor, escolha uma área',
-               // 'value_options' => $this->getOptionsForSelectA()),
-       )));
+               'value_options' => $this->getOptionsForSelectA()),
+       ));
     }
 
     public function getOptionsForSelect() {
