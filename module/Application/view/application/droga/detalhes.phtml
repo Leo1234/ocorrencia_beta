@@ -1,0 +1,19 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Detalhes Droga ID <?php echo $droga->getId_droga(); ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ID:</dt>
+            <dd><?php echo $droga->getId_droga(); ?></dd>
+            <dt>Droga:</dt>
+            <dd><?php echo $droga->getDroga(); ?></dd>
+        </dl>
+    </div>
+    <div class="panel-footer">
+        <a href="<?php echo $this->url('droga', array('action' => 'editar','id' => $droga->getId_droga())); ?>" class="btn btn-warning btn-sm">Editar Droga</a>
+        <a href="<?php echo $this->url('droga'); ?>" class="btn btn-default btn-sm">Voltar</a>
+    </div>
+</div>

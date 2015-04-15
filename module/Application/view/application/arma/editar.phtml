@@ -1,0 +1,64 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Editar Arma ID:  <?php echo $this->id ?>  
+        </div>
+    </div>
+    
+    <?php
+    // objeto form contato
+     $formArma = $this->forArma;
+       //var_dump ($formViatura);
+    // preparar elementos do formulário
+    $formArma->prepare();
+    // configurar url formulário
+    $formArma->setAttribute('action', $this->url('arma', ['action' => 'atualizar']));
+    ?>  
+    
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formArma) ?>
+    
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="arma" class="col-lg-3 col-md-3 control-label">Arma*:</label>
+            <div class="col-lg-9 col-md-9">
+                <?php 
+                // renderiza html input
+                echo $this->formInput($formArma->get('arma'));
+       
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formArma->get('arma'));
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <?php
+        // renderiza html input hidden para id
+        echo $this->formHidden($formArma->get('id_arma')); 
+        ?>
+ 
+        <button type="submit" class="btn btn-primary">Atualizar Arma</button>
+        <a href="<?php echo $this->url('arma'); ?>" class="btn btn-default">Voltar</a>
+    </div>
+ 
+    <?php // renderiza html </form> ?>
+    <?php echo $this->form()->closeTag() ?>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,208 +4,241 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Application\Model\PolicialTable as ModelPolicial;
-use Application\Model\Policial;
-use Application\Model\GraduacaoTable as ModelGraduacao;
+use Application\Form\PolicialForm;
 use Application\Model\Graduacao;
 
-class PolicialController extends AbstractActionController {
+use Zend\Db\Adapter\AdapterInterface;
+use Zend\Db\Adapter\Adapter;
 
+use Application\Model\Policial;
+use Application\Model\PolicialTable as ModelPolicial;
+
+class PolicialController extends AbstractActionController {
+    
+    
+   private function getPolicialTable() {
+        $dbAdapter =  $this->getServiceLocator()->get('AdapterDb');
+        return new ModelPolicial($dbAdapter);
+    }
+    
     public function indexAction() {
-         // Numero da página a ser exibida
-        $currentPage = $this->params()->fromQuery('pagina');
-        
-        // Quantidade de itens por págima
-        $countPerPage = "5";
-        $policiais = $this->getPolicialTable()->fetchAll($currentPage,$countPerPage);
-        $grads = $this->getGraduacaoTable()->fetchAll();
-        
-       
-        // enviar para view o array com key policial e value com todos os policias
-        return new ViewModel(array('policiais' => $policiais, 'grads' => $grads));
+      
+        $paramsUrl = [
+            'pagina_atual' => $this->params()->fromQuery('pagina', 1),
+            'itens_pagina' => $this->params()->fromQuery('itens_pagina', 10),
+            'coluna_nome' => $this->params()->fromQuery('coluna_nome', 'nome'),
+            'coluna_sort' => $this->params()->fromQuery('coluna_sort', 'ASC'),
+            'search' => $this->params()->fromQuery('search', null),
+        ];
+
+        // configuar método de paginação
+        $paginacao = $this->getPolicialTable()->fetchPaginator(
+                /* $pagina */ $paramsUrl['pagina_atual'],
+                /* $itensPagina */ $paramsUrl['itens_pagina'],
+                /* $ordem */ "{$paramsUrl['coluna_nome']} {$paramsUrl['coluna_sort']}",
+                /* $search */ $paramsUrl['search'],
+                /* $itensPaginacao */ 5
+        );
+                 
+        // retonar paginação mais os params de url para view
+        return new ViewModel(['policial' => $paginacao] + $paramsUrl  );
     }
 
+    
+    
+// GET /contatos/novo
+    public function novoAction() {
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new PolicialForm($dbAdapter);
+        return ['formPolicial' => $form];
+    }
+    
+    
+
+// POST /contatos/adicionar
     public function adicionarAction() {
         // obtém a requisição
         $request = $this->getRequest();
 
         // verifica se a requisição é do tipo post
         if ($request->isPost()) {
-            // obter e armazenar valores do post
-            $postData = $request->getPost()->toArray();
-            $formularioValido = true;
-
+           
+            // instancia formulário
+             $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+            $form = new PolicialForm($dbAdapter);
+            // instancia model contato com regras de filtros e validações
+            $modelPolicial = new Policial();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity contato
+            $form->setInputFilter($modelPolicial->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $form->setData($request->getPost());
+            //var_dump($form);
             // verifica se o formulário segue a validação proposta
-            if ($formularioValido) {
-                
-                $policial = new Policial();
-                $policial->setId_policial(0);
-                
-                $grad = $this->getGraduacaoTable()->find($postData['id_graduacao']);
-                
-                $policial->setGraduacao($grad);
-                $policial->setNumeral($postData['numeral']);
-                $policial->setNome(strtoupper($postData['nome']));
-                $policial->setNome_guerra(strtoupper($postData['nome_guerra']));
-                $policial->setMatricula($postData['matricula']);
-                $policial->setData_nasc($postData['data_nasc']);
-                $policial->setSexo($postData['sexo']);
-                
-                $this->getPolicialTable()->salvarPolicial($policial);
-               
-                $this->flashMessenger()->addSuccessMessage("Policial cadastrado com sucesso");
+            if ($form->isValid()) {
+                // aqui vai a lógica para adicionar os dados à tabela no banco
+                // 1 - popular model com valores do formulário
+                $modelPolicial->exchangeArray($form->getData());
+                // 2 - persistir dados do model para banco de dados
+                $this->getPolicialTable()->save($modelPolicial);
+
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Área criada com sucesso!");
 
                 // redirecionar para action index no controller contatos
-                return $this->redirect()->toRoute('policiais');
-                
-            } else {
-                // adicionar mensagem de erro
-                $this->flashMessenger()->addErrorMessage("Erro ao cadastrar o policial");
-
-                // redirecionar para action novo no controllers contatos
-                return $this->redirect()->toRoute('policiais', array('action' => 'index'));
+                return $this->redirect()->toRoute('policial');
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action novo com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formPolicial', $form)
+                                ->setTemplate('application/policial/novo');
             }
         }
-        //return new ViewModel();
     }
 
-    public function detalhesAction() {
+    
+    
+// GET /contatos/editar/id
+    public function editarAction() {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
+        // se id = 0 ou não informado redirecione para contatos
+        if (!$id) {
+            // adicionar mensagem de erro
+            $this->flashMessenger()->addMessage("Área não encotrada");
+            // redirecionar para action index
+            return $this->redirect()->toRoute('policial');
+        }
+        try {
+            // variável com objeto viatura localizado em formato de array
+            $policial= (array) $this->getPolicialTable()->find($id);
+            // variável com objeto viatura localizado para ser usado para setar o campo policial do select.
+            $policialObj =  $this->getPolicialTable()->find($id);
+        } catch (Exception $exc) {
+            // adicionar mensagem
+            $this->flashMessenger()->addErrorMessage($exc->getMessage());
+            // redirecionar para action index
+            return $this->redirect()->toRoute('policial');
+        }
+        // objeto form viatura vazio
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new PolicialForm($dbAdapter);
+        //configura o campo select com valor vindo da view index
+         $form->get('id_muni')->setAttributes(array('value'=>$policialObj->getMunicipio()->getId_muni(),'selected'=>true));
+        // popula objeto form viatura com objeto model viatura
+        $form->setData($policial);
+        // dados eviados para editar.phtml
+        return ['formPolicial' => $form];
+    }
+
+// POST /contatos/editar/id
+    public function atualizarAction() {
+         
+        // obtém a requisição
+        $request = $this->getRequest();
         
+        if ($request->isPost()) {
+            
+  
+            // instancia formulário
+            $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+            $form = new PolicialForm($dbAdapter);
+           // $form = new ViaturaForm();
+            // instancia model contato com regras de filtros e validações
+            $modelPolicial = new Policial();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity contato
+              $form->setInputFilter($modelPolicial->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $form->setData($request->getPost());     
+            // verifica se o formulário segue a validação proposta
+            if ($form->isValid()) {
+                // aqui vai a lógica para atualizar os dados à tabela no banco
+                // 1 - popular model com valores do formulário
+                $modelPolicial->exchangeArray($form->getData());
+               
+                // 2 - atualizar dados do model para banco de dados
+                
+                $this->getPolicialTable()->update($modelPolicial);
+
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Área editada com sucesso");
+
+                // redirecionar para action detalhes
+                return $this->redirect()->toRoute('policial', array("action" => "detalhes", "id" => $modelPolicial->getId_policial()));
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action editar com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                   
+                return (new ViewModel())
+                                ->setVariable('formPolicial', $form)
+                                ->setTemplate('application/policial/editar');
+            }
+        }
+      
+    }
+    
+    // DELETE /contatos/deletar/id
+public function deletarAction()
+{
+    // filtra id passsado pela url
+    $id = (int) $this->params()->fromRoute('id', 0);
+ 
+    // se id = 0 ou não informado redirecione para contatos
+    if (!$id) {
+        // adicionar mensagem de erro
+        $this->flashMessenger()->addMessage("Viatura não encotrada");
+    } else {
+        // aqui vai a lógica para deletar o contato no banco
+        // 1 - solicitar serviço para pegar o model responsável pelo delete
+        // 2 - deleta contato
+        $this->getViaturaTable()->delete($id);
+        
+        // adicionar mensagem de sucesso
+        $this->flashMessenger()->addSuccessMessage("Viatura de ID $id deletada com sucesso");
+    }
+ 
+    // redirecionar para action index
+    return $this->redirect()->toRoute('viaturas');
+}
+
+
+
+      // GET /contatos/detalhes/id
+    public function detalhesAction()
+    {
+        // filtra id passsado pela url
+        $id = (int) $this->params()->fromRoute('id', 0);
+
         // se id = 0 ou não informado redirecione para contatos
         if (!$id) {
             // adicionar mensagem
-            $this->flashMessenger()->addMessage("Policial não encotrado");
+            $this->flashMessenger()->addMessage("Área não encotrada");
 
             // redirecionar para action index
-            return $this->redirect()->toRoute('policiais');
+            return $this->redirect()->toRoute('policial');
         }
 
-        // enviar para view o array com key policial e value com todos os policias
-        return new ViewModel(array('policial' => $this->getPolicialTable()->find($id)));
-    }
-
-    public function editarAction() {
-        // obtém a requisição
-        $request = $this->getRequest();
-
-        // verifica se a requisição é do tipo post
-        if ($request->isPost()) {
-            // obter e armazenar valores do post
-            $postData = $request->getPost()->toArray();
-            $formularioValido = true;
-
-            // verifica se o formulário segue a validação proposta
-            if ($formularioValido) {
-                
-                $policial = new Policial();
-                $policial->setId_policial($postData['id']);
-                
-                $grad = $this->getGraduacaoTable()->find($postData['id_graduacao']);
-                
-                $policial->setGraduacao($grad);
-                $policial->setNumeral($postData['numeral']);
-                $policial->setNome(strtoupper($postData['nome']));
-                $policial->setNome_guerra(strtoupper($postData['nome_guerra']));
-                $policial->setMatricula($postData['matricula']);
-                $policial->setData_nasc($postData['data_nasc']);
-                $policial->setSexo($postData['sexo']);
-                
-                
-                $this->getPolicialTable()->salvarPolicial($policial);
-                
-                $this->flashMessenger()->addSuccessMessage("Policial editado com sucesso");
-
-                // redirecionar para action detalhes
-                return $this->redirect()->toRoute('policiais', array("action" => "detalhes", "id" => $postData['id'],));
-            } else {
-                // adicionar mensagem de erro
-                $this->flashMessenger()->addErrorMessage("Erro ao editar o Policial");
-
-                // redirecionar para action editar
-                return $this->redirect()->toRoute('policiais', array('action' => 'editar', "id" => $postData['id'],));
-            }
-        }
-
-        // filtra id passsado pela url
-        $id = (int) $this->params()->fromRoute('id', 0);
-
-        // se id = 0 ou não informado redirecione para policiais
-        if (!$id) {
-            // adicionar mensagem de erro
-            $this->flashMessenger()->addMessage("Policial não encotrado");
+        try {
+            // aqui vai a lógica para pegar os dados refetchAllrente ao contato
+            // 1 - solicitar serviço para pegar o model responsável pelo find
+            // 2 - solicitar form com dados desse contato encontrado
+            // formulário com dados preenchidos
+            $policial = $this->getPolicialTable()->find($id);
+        } catch (Exception $exc) {
+            // adicionar mensagem
+            $this->flashMessenger()->addErrorMessage($exc->getMessage());
 
             // redirecionar para action index
-            return $this->redirect()->toRoute('policiais');
+            return $this->redirect()->toRoute('policial');
         }
 
-        $adapter = $this->getServiceLocator()->get('AdapterDb');
-
-        // model PolicialTable instanciado
-        $modelPolicial = new ModelPolicial($adapter);
-        
-        // enviar para view o array com key policial e value com todos os policias
-        return new ViewModel(array('policial' => $modelPolicial->find($id)));
-
-    }
-
-    public function deletarAction() {
-        // filtra id passsado pela url
-        $id      = (int) $this->params()->fromRoute('id', 0);
-        $confirm = (int) $this->params()->fromRoute('confirm', 0);
-
-        // se id = 0 ou não informado redirecione para contatos
-        if (!$id) {
-            // adicionar mensagem de erro
-            $this->flashMessenger()->addMessage("Policial não encotrada");
-        } else {
-            
-            if($confirm){
-                if($this->getPolicialTable()->deletePolicial($id)){
-                    
-                    $this->flashMessenger()->addSuccessMessage("Policial de ID $id deletado com sucesso");
-                    // redirecionar para action index
-                    return $this->redirect()->toRoute('policiais');
-                 }
-                else{
-                    $this->flashMessenger()->addErrorMessage("Erro na Exclusão do Polcial. O mesmo deve está vinculado a outras entidades.");
-                    // redirecionar para action detalhes
-                    return $this->redirect()->toRoute('policiais', array("action" => "deletar", "id" => $id));
-                }
-                     
-                
-                 
-            }
-            else{
-                // enviar para view o array com key policial e value com todos os policias
-                return new ViewModel(array('policial' => $this->getPolicialTable()->find($id)));
-            }
-            
-
-            
-            
-        }
-
-        
+        // dados eviados para detalhes.phtml
+        return ['policial' => $policial];
     }
     
-    //função que retorna uma instancia da classe PoliciaTable 
-    private function getPolicialTable(){
-        // localizar adapter do banco
-        $adapter = $this->getServiceLocator()->get('AdapterDb');
-
-        // return model PolicialTable
-        return new ModelPolicial($adapter); // alias para PolicialTable
-    }
     
-    //função que retorna uma instancia da classe GraduacaoTable 
-    private function getGraduacaoTable(){
-        // localizar adapter do banco
-        $adapter = $this->getServiceLocator()->get('AdapterDb');
-
-        // return model PolicialTable
-        return new ModelGraduacao($adapter); // alias para GraduacaoTable
-    }
-
 }

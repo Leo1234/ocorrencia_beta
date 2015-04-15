@@ -1,0 +1,24 @@
+<?php
+$estruturaColuna = function($label, $coluna_arma) {
+    $html = '';
+    $html .= "<a href='{$this->url('arma', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_arma' => $coluna_arma, 'coluna_sort' => ($this->coluna_arma!= $coluna_arma? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+
+    if ($this->coluna_arma== $coluna_arma) {
+        $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';
+        $html .= "<span class='glyphicon glyphicon-sort-by-attributes{$icon}'></span> ";
+    }
+
+    $html .= $label;
+
+    return $html;
+};
+?>
+<tr>
+    <th>
+        <?php echo $estruturaColuna('Nº Registro', 'id_arma'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Arma', 'arma'); ?>
+    </th> 
+    <th>Ação</th>  
+</tr>

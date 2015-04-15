@@ -60,6 +60,20 @@ class GraduacaoTable {
                         ->setItemCountPerPage((int) $itensPagina)
                         ->setPageRange((int) $itensPaginacao);
     }
+    
+      public function fetchAll() {
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT id_grad, graduacao  FROM graduacao ORDER BY id_grad ASC';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id_grad']] = $res['graduacao'];
+        }
+        return $selectData;     
+    }
 
     public function find($id) {
         $id = (int) $id;

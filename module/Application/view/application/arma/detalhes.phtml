@@ -1,0 +1,19 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Detalhes Arma ID <?php echo $arma->getId_arma(); ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ID:</dt>
+            <dd><?php echo $arma->getId_arma(); ?></dd>
+            <dt>Arma:</dt>
+            <dd><?php echo $arma->getArma(); ?></dd>
+        </dl>
+    </div>
+    <div class="panel-footer">
+        <a href="<?php echo $this->url('arma', array('action' => 'editar','id' => $arma->getId_arma())); ?>" class="btn btn-warning btn-sm">Editar Arma</a>
+        <a href="<?php echo $this->url('arma'); ?>" class="btn btn-default btn-sm">Voltar</a>
+    </div>
+</div>
