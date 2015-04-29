@@ -1,21 +1,33 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-            Detalhes Área ID <?php echo $area->getId_area(); ?>
+            Detalhes Policial ID <?php echo $policial->getId_policial(); ?>
         </div>
     </div>
     <div class="panel-body">
         <dl class="dl-horizontal">
             <dt>ID:</dt>
-            <dd><?php echo $area->getId_area(); ?></dd>
-            <dt>Descricão:</dt>
-            <dd><?php echo $area->getDescricao(); ?></dd>
-            <dt>Municícipio:</dt>
-            <dd><?php echo $area->getMunicipio()->getMunicipio(); ?></dd>
+            <dd><?php echo $policial->getId_policial(); ?></dd>
+            <dt>Graduação:</dt>
+            <dd><?php echo $policial->getGraduacao()->getGraduacao(); ?></dd>
+            <dt>Numeral:</dt>
+            <dd><?php echo $policial->getNumeral(); ?></dd>
+              <dt>Nome:</dt>
+            <dd><?php echo $policial->getNome(); ?></dd>
+              <dt>Nome de guerra:</dt>
+            <dd><?php echo $policial->getNome_guerra(); ?></dd>
+              <dt>Matrícula:</dt>
+            <dd><?php echo $policial->getMatricula(); ?></dd>
+              <dt>Data de nasciemento:</dt>
+            <dd><?php echo (new \DateTime($policial->getData_nasc()))->format('d/m/Y'); ?></dd>
+              <dt>Data de inclusão:</dt>
+            <dd><?php echo (new \DateTime($policial->getData_inclu()))->format('d/m/Y'); ?></dd>
+              <dt>Sexo:</dt>
+            <dd><?php echo $policial->getSexo(); ?></dd>
         </dl>
     </div>
     <div class="panel-footer">
-        <a href="<?php echo $this->url('area', array('action' => 'editar','id' => $area->getId_area())); ?>" class="btn btn-warning btn-sm">Editar Área</a>
-        <a href="<?php echo $this->url('area'); ?>" class="btn btn-default btn-sm">Voltar</a>
+        <a href="<?php echo $this->url('policiais', array('action' => 'editar','id' => $policial->getId_policial())); ?>" class="btn btn-warning btn-sm">Editar Policial</a>
+        <a href="<?php echo $this->url('policiais'); ?>" class="btn btn-default btn-sm">Voltar</a>
     </div>
 </div>

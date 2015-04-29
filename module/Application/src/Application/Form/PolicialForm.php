@@ -9,6 +9,8 @@ namespace Application\Form;
 use Application\Controller\PolicialController;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Form\Form;
+//use Zend\Form\Number;
+//use Zend\I18n\Validator\Float;
 use Zend\Form\Element;
 use Zend\Form\ElementText;
 use Zend\Db\Adapter\AdapterInterface;
@@ -58,7 +60,7 @@ class PolicialForm extends Form {
 
         // elemento do tipo text
         $this->add(array(
-            'type' => 'Text', # ou 'type' => 'ZendFormElementText'
+            'type' => 'Zend\Form\Element\Number', # ou 'type' => 'ZendFormElementText'
             'name' => 'numeral',
             'attributes' => array(
                 'class' => 'form-control',
@@ -67,7 +69,8 @@ class PolicialForm extends Form {
             ),
         ));
 
-        // elemento do tipo text
+        
+ 
         $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
             'name' => 'nome',
@@ -95,45 +98,50 @@ class PolicialForm extends Form {
                 'placeholder' => 'Matrícula',
             ),
         ));
+
+
+
         $this->add(array(
-            'type' => 'Zend\Form\Element\DateTime',
+            'type' => 'Zend\Form\Element\Date',
             'name' => 'data_nasc',
             'options' => array(
                 'label' => 'Appointment Date/Time',
                 'format' => 'Y-m-d'
             ),
             'attributes' => array(
-               
-                'min' => '1940-01-01T00:00:00Z',
-                'max' => '1997-01-01T00:00:00Z',
-                'step' => '1', // minutes; default step interval is 1 min
+                'class' => 'form-control',
+            // 'min' => '1940-01-01T00:00:00Z',
+            //'max' => '1997-01-01T00:00:00Z',
             )
         ));
-           $this->add(array(
-            'type' => 'Zend\Form\Element\DateTime',
+
+
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Date',
             'name' => 'data_inclu',
             'options' => array(
                 'label' => 'Appointment Date/Time',
                 'format' => 'Y-m-d'
             ),
             'attributes' => array(
-                
-                'min' => '1940-01-01T00:00:00Z',
-                'max' => '1997-01-01T00:00:00Z',
-                'step' => '1', // minutes; default step interval is 1 min
+                'class' => 'form-control',
+            // 'min' => '1940-01-01T00:00:00Z',
+            //'max' => '1997-01-01T00:00:00Z',
             )
         ));
-           $this->add(array(
-        'type' => 'Zend\Form\Element\Radio',
-        'name' => 'sexo',
-        'options' => array(
-            'label' => 'Qual sexo?',
-            'value_options' => array(
-                'F' => '  Feminino   ',
-                'M' => '  Masculino',
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Radio',
+            'name' => 'sexo',
+            'options' => array(
+                'label' => 'Qual sexo?',
+                'value_options' => array(
+                    'F' => '  Feminino   ',
+                    'M' => '  Masculino  ',
+                ),
             ),
-        ),
-    ));
+        ));
     }
 
     public function getOptionsForSelect() {

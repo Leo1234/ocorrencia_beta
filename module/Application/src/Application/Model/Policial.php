@@ -3,9 +3,9 @@
 namespace Application\Model;
 
 use Application\Model\Graduacao;
-use Application\View\Helper\Util;
 use Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilter,
+    Zend\I18n\Validator\Int,
     Zend\InputFilter\InputFilterInterface;
 
 class Policial implements InputFilterAwareInterface {
@@ -22,8 +22,6 @@ class Policial implements InputFilterAwareInterface {
     protected $inputFilter;
 
     public function exchangeArray($data) {
-        //objeto Graduacao
-        //$grad = new Graduacao($data['id_grad'], $data['graduacao']);
 
         $this->id_policial = (!empty($data['id_policial'])) ? $data['id_policial'] : null;
         $this->graduacao = (!empty($data['id_grad'])) ? new Graduacao($data['id_grad'], $data['graduacao']) : null;
@@ -52,14 +50,33 @@ class Policial implements InputFilterAwareInterface {
                     array('name' => 'Int'), # transforma string para inteiro
                 ),
             ));
-            $inputFilter->add(array(
-                'name' => 'id_numeral',
+      $inputFilter->add(array(
+                'name' => 'numeral',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'), # transforma string para inteiro
+              
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 5,
+                            'messages' => array(
+                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de dígitos aceitáveis %min%.',
+                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de dígitos aceitáveis %max%.',
+                            ),
+                        ),
+                    ),
                 ),
             ));
-
             // input filter para campo de nome  
             $inputFilter->add(array(
                 'name' => 'nome',
@@ -154,43 +171,14 @@ class Policial implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-            $inputFilter->add(array(
-                'name' => 'sexo',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'), # remove xml e html da string
-                    array('name' => 'StringTrim'), # remove espacos do início e do final da string
-                    array('name' => 'StringToUpper'), # transofrma string para maiusculo
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
-                            ),
-                        ),
-                    ),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 1,
-                            'messages' => array(
-                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
-                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
-                            ),
-                        ),
-                    ),
-                ),
-            ));
+
 
             $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;
     }
+
     public function getId_policial() {
         return $this->id_policial;
     }
@@ -263,7 +251,4 @@ class Policial implements InputFilterAwareInterface {
         $this->sexo = $sexo;
     }
 
-
-
-    
 }

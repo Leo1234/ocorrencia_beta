@@ -32,8 +32,23 @@
                 ->prependStylesheet($this->basePath() . '/lib/css/sb-admin.css')
                 ->prependStylesheet($this->basePath() . '/lib/css/bootstrap.min.css')
                 ->prependStylesheet($this->basePath() . '/lib/font-awesome/css/font-awesome.min.css')
+                
+                
+                
+                
+              // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.css')
+               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.min.css')
+                //->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css')
+               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.standalone.min.css')
+                //->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.css')
+               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')
+                //->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.css')
+               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css')
+                ->prependStylesheet($this->basePath() . '/css/bootstrap.css')
+                //->prependStylesheet($this->basePath() . '/css/datepicker.css')
 
-        ;
+
+;
         ?> 
         <link href="<?= $this->basePath() ?>/select2/select2-bootstrap.css" rel="stylesheet"/>
         <link href="<?= $this->basePath() ?>/select2/select2.css" rel="stylesheet"/>
@@ -165,32 +180,38 @@
                     ->headScript()
                     ->prependFile($this->basePath() . 'http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js')
                     ->prependFile($this->basePath() . 'http://cdn.oesmith.co.uk/morris-0.4.3.min.js')
-                    //->prependFile($this->basePath() . '/lib/js/morris/chart-data-morris.js')
-                    ->prependFile($this->basePath() . '/lib/js/tablesorter/jquery.tablesorter.js')
+                     ->prependFile($this->basePath() . '/lib/js/tablesorter/jquery.tablesorter.js')
                     ->prependFile($this->basePath() . '/lib/js/tablesorter/tables.js')
                     ->prependFile($this->basePath() . '/lib/js/bootstrap.js')
                     ->prependFile($this->basePath() . '/lib/js/jquery-1.10.2.js')
                     ->prependFile($this->basePath() . '/js/bootstrap-typeahead.min.js')
                     ->prependFile($this->basePath() . '/js/scripts.js')
+                    ->prependFile($this->basePath() . '/js/scripts2.js')
                     ->prependFile($this->basePath() . '/js/jquery.min.js')
                     ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-            ;
-
+                    ->prependFile($this->basePath() . '/js/html5shiv.js')
+                    ->prependFile($this->basePath() . '/js/respond.min.js')
+                     //->prependFile($this->basePath() . '/js/collapse.js')
+                    //->prependFile($this->basePath() . '/js/dropdown.js')
+                     //->prependFile($this->basePath() . '/js/transition.js')
+                    //->prependFile($this->basePath() . '/js/bootstrap-datepicker.js')
+                    
+                    
+                    
+                    
+                    
+                   // ->prependFile($this->basePath() . '/bootstrap-datepicker/js/bootstrap-datepicker.js')
+                    //->prependFile($this->basePath() . '/bootstrap-datepicker/js/bootstrap-datepicker.min.js')
+                   // ->prependFile($this->basePath() . '/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js')
+                  
+                ;
             echo $this->inlineScript();
             ?>
 
             <?php
-            /*
-              echo $this
-              ->headScript()
-              ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-              ->prependFile($this->basePath() . '/js/jquery.min.js')
-              ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-              ->prependFile($this->basePath() . '/js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-              ;
-
-              echo $this->inlineScript(); */
+       
             ?>
+            <!--
             <script src="<?= $this->basePath() ?>/jquery-ui/external/jquery.bgiframe-2.1.2.js"></script>
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.core.js"></script>
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.widget.js"></script>
@@ -204,14 +225,28 @@
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.effect-bounce.js"></script>
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.effect-fade.js"></script>
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.accordion.js"></script>
+           
+            
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.datepicker.js"></script>
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.datepicker.js"></script>
             <script src="<?= $this->basePath() ?>/jquery-ui/ui/i18n/jquery.ui.datepicker-pt-BR.js"></script>
-
+             -->
             
             <script src="<?= $this->basePath() ?>/select2/select2.js"></script>
             <script src="<?= $this->basePath() ?>/select2/select2_locale_pt-BR.js"></script>
             <script src="<?= $this->basePath() ?>/js/util.js"></script>
+            
+            
+            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.eot"></script>
+            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.svg"></script>
+            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.ttf"></script>
+            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff"></script>
+            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff2"></script>
+          
+            <!--
+            <script src="<?= $this->basePath() ?>/less/datepicker.less"></script>
+            <script src="<?= $this->basePath() ?>/less/datepicker3.less"></script>
+            -->
         </div>
             
     </body>
