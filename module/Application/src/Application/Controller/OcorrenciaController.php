@@ -12,16 +12,37 @@ use Application\Model\VitimaTable as ModelVitima;
 use Application\Model\Ocorrencia;
 
 class OcorrenciaController extends AbstractActionController {
+    
+       //função que retorna uma instancia da classe OcorrenciaTable 
+    private function getOcorrenciaTable(){
+        $adapter = $this->getServiceLocator()->get('AdapterDb');
+        return new ModelOcorrencia($adapter); 
+    }
 
     public function indexAction() {
-        // Numero da página a ser exibida
-        $currentPage = $this->params()->fromQuery('pagina');
-        // Quantidade de itens por págima
-        $countPerPage = "5";
-        $ocorrencias = $this->getOcorrenciaTable()->fetchAll($currentPage, $countPerPage);
-        // enviar para view o array com key policial e value com todos os policias
-        return new ViewModel(array('ocorrencias' => $ocorrencias));
+      
+        $paramsUrl = [
+            'pagina_atual' => $this->params()->fromQuery('pagina', 1),
+            'itens_pagina' => $this->params()->fromQuery('itens_pagina', 10),
+            'coluna_id_oco' => $this->params()->fromQuery('coluna_id_oco', 'id_oco'),
+            'coluna_sort' => $this->params()->fromQuery('coluna_sort', 'ASC'),
+            'search' => $this->params()->fromQuery('search', null),
+        ];
+
+        // configuar método de paginação
+        $paginacao = $this->getOcorrenciaTable()->fetchPaginator(
+                /* $pagina */ $paramsUrl['pagina_atual'],
+                /* $itensPagina */ $paramsUrl['itens_pagina'],
+                /* $ordem */ "{$paramsUrl['coluna_id_oco']} {$paramsUrl['coluna_sort']}",
+                /* $search */ $paramsUrl['search'],
+                /* $itensPaginacao */ 5
+        );
+                 
+        // retonar paginação mais os params de url para view
+        return new ViewModel(['ocorrencia' => $paginacao] + $paramsUrl  );
     }
+    
+    
 
     public function adicionarAction() {
         // obtém a requisição
@@ -230,14 +251,7 @@ class OcorrenciaController extends AbstractActionController {
         return new ViewModel(array('vitimas'=>$vitimas, 'id_ocorrencia'=>$id));
     }
 
-    //função que retorna uma instancia da classe PoliciaTable 
-    private function getOcorrenciaTable(){
-        // localizar adapter do banco
-        $adapter = $this->getServiceLocator()->get('AdapterDb');
-
-        // return model PolicialTable
-        return new ModelOcorrencia($adapter); // alias para PolicialTable
-    }
+ 
 
     //função que retorna uma instancia da classe GraduacaoTable 
     private function getPolicialTable() {

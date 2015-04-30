@@ -1,0 +1,36 @@
+
+
+<?php
+$estruturaColuna = function($label, $coluna_id_oco) {
+    $html = '';
+    $html .= "<a href='{$this->url('ocorrencia', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_id_oco' => $coluna_id_oco, 'coluna_sort' => ($this->coluna_id_oco!= $coluna_id_oco? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+
+    if ($this->coluna_id_oco == $coluna_id_oco) {
+        $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';
+        $html .= "<span class='glyphicon glyphicon-sort-by-attributes{$icon}'></span> ";
+    }
+
+    $html .= $label;
+
+    return $html;
+};
+?>
+<tr>
+   
+   <th class="header" style="width: 13%;">
+        <?php echo $estruturaColuna('Nº Registro', 'id_oco'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Viatura', 'vtr'); ?>
+    </th> 
+     <th>
+        <?php echo $estruturaColuna('Área', 'area'); ?>
+    </th>
+    <th>
+        <?php echo $estruturaColuna('Data', 'data'); ?>
+    </th>
+     <th>
+        <?php echo $estruturaColuna('Horário', 'horario'); ?>
+    </th>
+    <th class="header" style="width: 10%;text-align: center">Ação</th>  
+</tr>

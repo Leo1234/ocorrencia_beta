@@ -1,136 +1,92 @@
-<?php
+<div class="row">
 
-namespace Application\Model;
+    <div class="col-lg-12">
 
-use Zend\Db\Adapter\Adapter,
-    Zend\Db\ResultSet\ResultSet,
-    Zend\Db\TableGateway\TableGateway,
-    Zend\Db\Sql\Select,
-    Zend\Paginator\Adapter\DbSelect,
-    Zend\Paginator\Paginator;
+        <h1>Ocorrencias</h1>
+        <ol class="breadcrumb">
+            <li class="active"><i class="fa fa-dashboard"></i>Controle das OcorrÃªncias</li>
+        </ol>
 
-/**
- * Description of MunicipioTable
- *
- * @author leandro
- */
-class PolicialTable {
-
-    protected $tableGateway;
-    protected $adapter;
-    protected $resultSetPrototype;
-
-    /**
-     * Contrutor com dependencia do Adapter do Banco
-     * 
-     * @param \Zend\Db\Adapter\Adapter $adapter
-     */
-    public function __construct(Adapter $adapter) {
-        $this->adapter = $adapter;
-        $this->resultSetPrototype = new ResultSet();
-        $this->resultSetPrototype->setArrayObjectPrototype(new Policial());
-
-        $this->tableGateway = new TableGateway('policial', $this->adapter, null, $this->resultSetPrototype);
-    }
-
-    /**
-     * Recuperar todos os elementos da tabela policial
-     * 
-     * @return ResultSet
-     */
-    
-    public function fetchAll($currentPage = 0, $countPerPage = 0) {
-        $select = new \Zend\Db\Sql\Select;
-        $select->from('policial');
-        $select->columns(array('*'));
-        $select->join('graduacao', "policial.id_grad = graduacao.id_grad");
-        $select->order(array('nome_guerra ASC')); // produces 'name' ASC, 'age' DESC
-        // create a new pagination adapter object
-        $paginatorAdapter = new DbSelect(
-                // our configured select object
-                $select,
-                // the adapter to run it against
-                $this->tableGateway->getAdapter(),
-                // the result set to hydrate
-                $this->resultSetPrototype
-        );
-        $paginator = new Paginator($paginatorAdapter);
-        $paginator->setItemCountPerPage($countPerPage);
-        $paginator->setCurrentPageNumber($currentPage);
+    </div>
+</div>
 
 
-        return $paginator;
-    }
+<div class="row">
+    <div class="col-lg-12">
+        <div class="topo-table">
+            <a href="<?php echo $this->url('ocorrencia', array('action' => 'adicionar')) ?>" class="btn btn-success" title="Novo"><span class="glyphicon glyphicon-plus"></span></a>
 
-    /**
-     * Localizar linha especifico pelo id da tabela policial
-     * 
-     * @param type $id
-     * @return \Model\Policial
-     * @throws \Exception
-     */
-    public function find($id) {
-        $id = (int) $id;
+            <div class="btn-group" title="Quantidades por PÃ¡gina">
+                <button type="button" class="btn btn-default">005</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right" style="min-width: 75px" role="menu">
+                    <li class="active"><a href="#">005</a></li>
+                    <li><a href="#">010</a></li>
+                    <li><a href="#">025</a></li>
+                    <li><a href="#">050</a></li>
+                    <li><a href="#">100</a></li>
+                </ul>
+            </div>
 
+            <form class="form-inline pull-right" role="form">
+                <div class="form-group">
+                    <label class="sr-only" for="localizar">Buscar...</label>
+                    <input type="search" class="form-control" id="localizar" placeholder="Buscar...">
+                </div>
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
 
-        $select = new \Zend\Db\Sql\Select;
-        $select->from('policial');
-        $select->columns(array('*'));
-        $select->join('graduacao', "policial.id_graduacao = graduacao.id_grad");
-        $select->where(array('id_policial' => $id));
+        <br />
 
-        $rowset = $this->tableGateway->selectWith($select);
-        $row = $rowset->current();
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-desktop"></i> OcorrÃªncias</h3>
+            </div>
 
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped tablesorter">
+                        <thead>
+                            <tr>
+                                <th class="header" style="width: 5%;">ID <i class="fa fa-sort"></i></th>
+                                <th class="header">Endereco <i class="fa fa-sort"></i></th>
+                                <th class="header" style="width: 10%;">Viatura <i class="fa fa-sort"></i></th>
+                                <th class="header" style="width: 20%;">Area <i class="fa fa-sort"></i></th>
+                                <th class="header" style="width: 10%;">Data <i class="fa fa-sort"></i></th>
+                                <th class="header" style="width: 10%;">HorÃ¡rio <i class="fa fa-sort"></i></th>
+                                <th class="header" style="width: 10%;text-align: center">AÃ§Ã£o <i class="fa "></i></th>
+                            </tr>
+                        </thead>
 
-        if (!$row)
-            throw new \Exception("NÃ£o foi encontrado policial de id = {$id}");
+                        <tbody>
+                            <?php 
+                                foreach ($this->ocorrencias as $i=>$oc): ?>
+                                
+                                <tr>
+                                    <td><?php echo $oc->getId_ocorrencia(); ?></td>
+                                    <td><?php echo $oc->getId_end(); ?></td>
+                                    <td><?php echo $oc->getVtr()->getPrefixo(); ?></td>
+                                    <td><?php echo $oc->getArea()->getDescricao(); ?></td>
+                                    <td><?php echo $this->util()->toDateDMY($oc->getData()) ; ?></td>
+                                    <td><?php echo $oc->getHorario(); ?></td>
+                                    <td>
+                                        <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('ocorrencia', array('action' => 'detalhes', 'id' => $oc->getId_ocorrencia())); ?>"><span class="glyphicon glyphicon-new-window"></span></a>
+                                        <a class="btn btn-xs btn-warning" title="Editar" href="<?php echo $this->url('ocorrencia', array("action" => "editar", "id" => $oc->getId_ocorrencia())); ?>"><span class="glyphicon glyphicon-edit"></span></a>
+                                        <a class="btn btn-xs btn-danger" title="Deletar" href="<?php echo $this->url('ocorrencia', array("action" => "deletar", "id" => $oc->getId_ocorrencia(), 'confirm' => 0)); ?>"><span class="glyphicon glyphicon-floppy-remove"></span></a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
 
-        return $row;
-    }
+                    
+                    <?php echo $this->paginationControl($this->ocorrencias, 'Sliding', 'application/partials/paginator.phtml', array('route' => 'ocorrencia/paginator'));?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    public function findByOcorrecia($id_ocorrencia) {
-        $id = (int) $id_ocorrencia;
-
-
-        $select = new \Zend\Db\Sql\Select;
-        $select->from('policial');
-        $select->columns(array('*'));
-        $select->join(array('op' => 'ocorrencia_policial'), "policial.id_policial = op.id_policial");
-        $select->where(array('op.id_ocorrencia' => $id));
-
-        return $this->tableGateway->selectWith($select);
-    }
-
-    public function salvarPolicial(Policial $policial) {
-        $data = array(
-            'numeral' => $policial->getNumeral(),
-            'nome' => $policial->getNome(),
-            'nome_guerra' => $policial->getNome_guerra(),
-            'matricula' => $policial->getMatricula(),
-            'id_graduacao' => $policial->getGraduacao()->getId_graduacao(),
-            'data_nasc' => $policial->getData_nasc(),
-            'sexo' => $policial->getSexo()
-        );
-
-        $id = (int) $policial->getId_policial();
-        if ($id == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->find($id)) {
-                $this->tableGateway->update($data, array('id_policial' => $id));
-            } else {
-                throw new \Exception('Policial nÃ£o encontrado');
-            }
-        }
-    }
-
-    public function deletePolicial($id) {
-        try {
-            return $this->tableGateway->delete(array('id_policial' => $id));
-        } catch (\Exception $e) {
-            return false;
-        }
-    }
-
-}

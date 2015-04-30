@@ -7,7 +7,6 @@ use Zend\Db\Adapter\Adapter,
     Zend\Db\TableGateway\TableGateway,
     Zend\Db\Sql\Select,
     Zend\Paginator\Adapter\DbSelect,
-    Zend\Db\Sql\Sql,
     Zend\Paginator\Paginator;
 
 class OcorrenciaTable {
@@ -24,7 +23,58 @@ class OcorrenciaTable {
         $this->tableGateway = new TableGateway('ocorrencia', $this->adapter, null, $this->resultSetPrototype);
     }
 
-    public function fetchAll($currentPage = 0, $countPerPage = 0) {
+    
+        public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'id_oco ASC', $like = null, $itensPaginacao = 5) {
+        $select = new \Zend\Db\Sql\Select;
+        $select->from(array('o' => 'ocorrencia'));
+        $select->columns(array('*'));
+        $select->join(array('e' => 'endereco'), "o.id_end = e.id_ende", array('*'));
+        $select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
+        $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
+
+
+
+        if (isset($like)) {
+            $select
+                    ->where
+                    ->like('id_oco', "%{$like}%")
+                   
+            ;
+        }
+
+        // criar um objeto com a estrutura desejada para armazenar valores
+        // $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
+
+        $resultSetPrototype = new ResultSet();
+        $resultSetPrototype->setArrayObjectPrototype(new Ocorrencia());
+
+        // criar um objeto adapter paginator
+        $paginatorAdapter = new DbSelect(
+                // nosso objeto select
+                $select,
+                // nosso adapter da tabela
+                $this->tableGateway->getAdapter(),
+                // nosso objeto base para ser populado
+                //$resultSet
+                $resultSetPrototype
+        );
+
+
+        // resultado da paginação
+        return (new Paginator($paginatorAdapter))
+                        // pagina a ser buscada
+                        ->setCurrentPageNumber((int) $pagina)
+                        // quantidade de itens na página
+                        ->setItemCountPerPage((int) $itensPagina)
+                        ->setPageRange((int) $itensPaginacao);
+    }
+    
+    
+    
+    
+    
+    
+public function fetchAll($currentPage = 0, $countPerPage = 0) {
         
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('o' => 'ocorrencia'));
@@ -48,14 +98,8 @@ class OcorrenciaTable {
         $paginator->setCurrentPageNumber($currentPage);
         return $paginator;
     }
-
-    /**
-     * Localizar linha especifico pelo id da tabela policial
-     * 
-     * @param type $id
-     * @return \Model\Policial
-     * @throws \Exception
-     */
+    
+ 
     public function find($id) {
 
         $id = (int) $id;
