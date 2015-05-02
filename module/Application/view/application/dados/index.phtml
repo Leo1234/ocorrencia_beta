@@ -1,20 +1,44 @@
-<div class="jumbotron">
+<!--<div class="jumbotron">
     <h1>Manutenção dos dados</h1>
     <p class="lead">
         Clique no link abaixo para preenchimentos dos dados.
     </p>
-   
-    <a href="<?php echo $this->url('area', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Áreas</a><br>
-    <a href="<?php echo $this->url('bairro', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Bairros</a><br>
-    <a href="<?php echo $this->url('municipio', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Municípios</a><br>
-    <a href="<?php echo $this->url('viaturas', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Viaturas</a><br>
-     <a href="<?php echo $this->url('graduacao', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Graduações</a><br>
-     <a href="<?php echo $this->url('crime', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Crimes</a><br>
-     <a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Procedimentos</a><br>
-     <a href="<?php echo $this->url('droga', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Drogas</a><br>
-     <a href="<?php echo $this->url('arma', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Armas</a><br>
-     <a href="<?php echo $this->url('policiais', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Policiais</a><br>
+</div>
+-->
+<br/>
+<br/>
+<br/>
+<div class="col-lg-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="glyphicon glyphicon-cog"></i> Configurações</h3>
+        </div>
+        <div class="panel-body">
 
+            <a href="<?php echo $this->url('area', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-compressed"></i> Áreas</a><br>
+            <a href="<?php echo $this->url('bairro', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-home"></i> Bairros</a><br>
+            <a href="<?php echo $this->url('municipio', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-globe"></i> Municípios</a><br>
+            <a href="<?php echo $this->url('viaturas', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-retweet"></i> Viaturas</a><br>
+            <a href="<?php echo $this->url('graduacao', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-stats"></i> Graduações</a><br>
+            <a href="<?php echo $this->url('crime', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-remove"></i> Crimes</a><br>
+            <a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-random"></i> Procedimentos</a><br>
+            <a href="<?php echo $this->url('droga', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-leaf"></i> Drogas</a><br>
+            <a href="<?php echo $this->url('arma', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-screenshot"></i> Armas</a><br>
+            <a href="<?php echo $this->url('policiais', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-user"></i> Policiais</a><br>
+        </div>
+    </div>
+</div>
+<div class="header">
+    <ul class="nav nav-pills pull-left">
+        <?php
+        $voltar = $this->url('application', array('action' => 'index'));
+        ?>
+        <li <?php echo $this->menuAtivo($voltar); ?>>
+            <a href="<?php echo $voltar; ?>">voltar</a>
+        </li>
+    </ul>
 </div>
 
-<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+
+
+

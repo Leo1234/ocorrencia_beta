@@ -64,16 +64,17 @@
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
+                     <a class="navbar-brand" href="<?php echo $this->url('application'); ?>">
+                        <img src="<?php echo $this->basePath() . '/img/poli.png' ?>" width="40" height="50" style="margin-top: -12px" />
+                        Sistema Gerenciador de Ocorrências :: SGO
+                    </a><br/>
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('application'); ?>">
-                        <img src="<?php echo $this->basePath() . '/img/poli.png' ?>" width="40" height="50" style="margin-top: -12px" />
-                        Sistema Gerenciador de Ocorrências :: SGO
-                    </a>
+                   
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -85,7 +86,7 @@
                         <li><a href="<?php echo $this->url('vitimas', array('action' => 'index')); ?>"><i class="fa fa-user"></i> Vítimas</a></li>
                         <li><a href="<?php echo $this->url('vitimas', array('action' => 'index')); ?>"><i class="fa fa-user"></i> Acusados</a></li>
                        
-                         <li><a href="<?php echo $this->url('config', array('action' => 'index')); ?>"><i class="fa fa-road"></i> Dados</a></li>
+                         <li><a href="<?php echo $this->url('config', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-wrench"></i> Dados</a></li>
                         <li><a href="tables.html"><i class="fa fa-file"></i> Relatórios </a></li>
                         <li><a href="forms.html"><i class="fa fa-clock-o"></i> Gráficos </a></li>
                         <li class="dropdown">

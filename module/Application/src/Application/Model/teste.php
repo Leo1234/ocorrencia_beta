@@ -45,7 +45,6 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><i class="fa fa-desktop"></i> OcorrÃªncias</h3>
             </div>
-
             <div class="panel-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover table-striped tablesorter">
@@ -62,15 +61,14 @@
                         </thead>
 
                         <tbody>
-                            <?php 
-                                foreach ($this->ocorrencias as $i=>$oc): ?>
-                                
+                            <?php foreach ($this->ocorrencias as $i => $oc): ?>
+
                                 <tr>
                                     <td><?php echo $oc->getId_ocorrencia(); ?></td>
                                     <td><?php echo $oc->getId_end(); ?></td>
                                     <td><?php echo $oc->getVtr()->getPrefixo(); ?></td>
                                     <td><?php echo $oc->getArea()->getDescricao(); ?></td>
-                                    <td><?php echo $this->util()->toDateDMY($oc->getData()) ; ?></td>
+                                    <td><?php echo $this->util()->toDateDMY($oc->getData()); ?></td>
                                     <td><?php echo $oc->getHorario(); ?></td>
                                     <td>
                                         <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('ocorrencia', array('action' => 'detalhes', 'id' => $oc->getId_ocorrencia())); ?>"><span class="glyphicon glyphicon-new-window"></span></a>
@@ -82,8 +80,8 @@
                         </tbody>
                     </table>
 
-                    
-                    <?php echo $this->paginationControl($this->ocorrencias, 'Sliding', 'application/partials/paginator.phtml', array('route' => 'ocorrencia/paginator'));?>
+
+                    <?php echo $this->paginationControl($this->ocorrencias, 'Sliding', 'application/partials/paginator.phtml', array('route' => 'ocorrencia/paginator')); ?>
                 </div>
             </div>
         </div>
