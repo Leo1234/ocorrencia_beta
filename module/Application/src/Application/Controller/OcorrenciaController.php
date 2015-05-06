@@ -10,6 +10,7 @@ use Application\Model\ViaturaTable as ModelViatura;
 use Application\Model\AreaTable as ModelArea;
 use Application\Model\VitimaTable as ModelVitima;
 use Application\Model\Ocorrencia;
+use Application\Form\OcorrenciaForm;
 
 class OcorrenciaController extends AbstractActionController {
     
@@ -40,6 +41,12 @@ class OcorrenciaController extends AbstractActionController {
                  
         // retonar paginação mais os params de url para view
         return new ViewModel(['ocorrencia' => $paginacao] + $paramsUrl  );
+    }
+    
+      public function novoAction() {
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new OcorrenciaForm($dbAdapter);
+        return ['formOcorrencia' => $form];
     }
     
     

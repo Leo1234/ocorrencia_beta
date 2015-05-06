@@ -21,6 +21,7 @@
                 ->appendName('viewport', 'width=device-width, initial-scale=1.0')
                 ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ;
+ 
         ?>
 
         <!-- Styles -->
@@ -32,6 +33,13 @@
                 ->prependStylesheet($this->basePath() . '/lib/css/sb-admin.css')
                 ->prependStylesheet($this->basePath() . '/lib/css/bootstrap.min.css')
                 ->prependStylesheet($this->basePath() . '/lib/font-awesome/css/font-awesome.min.css')
+                      ->prependStylesheet($this->basePath() . '/css/bootstrap.css')
+                
+                ->prependStylesheet($this->basePath() . '/choose/docsupport/style.css')
+               ->prependStylesheet($this->basePath() . '/choose/docsupport/prism.css')
+                ->prependStylesheet($this->basePath() . '/choose/chosen.css')
+               // ->prependStylesheet($this->basePath() . '/choose/chosen.min.css')
+                
                 
                 
                 
@@ -44,7 +52,7 @@
                // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')
                 //->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.css')
                // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css')
-                ->prependStylesheet($this->basePath() . '/css/bootstrap.css')
+          
                 //->prependStylesheet($this->basePath() . '/css/datepicker.css')
 
 
@@ -52,6 +60,8 @@
         ?> 
         <link href="<?= $this->basePath() ?>/select2/select2-bootstrap.css" rel="stylesheet"/>
         <link href="<?= $this->basePath() ?>/select2/select2.css" rel="stylesheet"/>
+                 
+     
     </head>   
 
 
@@ -92,17 +102,17 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i> Configurações <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?php echo $this->url('area', array('action' => 'index')); ?>">Áreas</a></li>
-                                <li><a href="<?php echo $this->url('bairro', array('action' => 'index')); ?>">Bairros</a></li>
-                                <li><a href="<?php echo $this->url('municipio', array('action' => 'index')); ?>">Municípios</a></li>
-                                <li><a href="<?php echo $this->url('viaturas', array('action' => 'index')); ?>">Viaturas</a></li>
-                                <li><a href="<?php echo $this->url('graduacao', array('action' => 'index')); ?>">Graduações</a></li>
-                                <li><a href="<?php echo $this->url('crime', array('action' => 'index')); ?>">Crimes</a></li>
-                                <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>">Procedimentos</a></li>
-                                <li><a href="<?php echo $this->url('droga', array('action' => 'index')); ?>">Drogas</a></li>
-                                <li><a href="<?php echo $this->url('arma', array('action' => 'index')); ?>">Armas</a></li>
-                                <li><a href="<?php echo $this->url('policiais', array('action' => 'index')); ?>">Policiais</a></li>
-                                <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>">Procedimentos</a></li>
+                                <li><a href="<?php echo $this->url('area', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-compressed"></i>Áreas</a></li>
+                                <li><a href="<?php echo $this->url('bairro', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-home"></i>Bairros</a></li>
+                                <li><a href="<?php echo $this->url('municipio', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-globe"></i>Municípios</a></li>
+                                <li><a href="<?php echo $this->url('viaturas', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-retweet"></i>Viaturas</a></li>
+                                <li><a href="<?php echo $this->url('graduacao', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-stats"></i>Graduações</a></li>
+                                <li><a href="<?php echo $this->url('crime', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-remove"></i>Crimes</a></li>
+                                <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-random"></i>Procedimentos</a></li>
+                                <li><a href="<?php echo $this->url('droga', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-leaf"></i>Drogas</a></li>
+                                <li><a href="<?php echo $this->url('arma', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-screenshot"></i>Armas</a></li>
+                                <li><a href="<?php echo $this->url('policiais', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-user"></i>Policiais</a></li>
+                                <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-random"></i>Procedimentos</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -179,6 +189,9 @@
             <?php
             echo $this
                     ->headScript()
+                     ->prependFile($this->basePath() . '/choose/chosen.jquery.js')
+                    ->prependFile($this->basePath() . '/choose/docsupport/prism.js')
+                    
                     ->prependFile($this->basePath() . 'http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js')
                     ->prependFile($this->basePath() . 'http://cdn.oesmith.co.uk/morris-0.4.3.min.js')
                      ->prependFile($this->basePath() . '/lib/js/tablesorter/jquery.tablesorter.js')
@@ -192,6 +205,14 @@
                     ->prependFile($this->basePath() . '/js/bootstrap.min.js')
                     ->prependFile($this->basePath() . '/js/html5shiv.js')
                     ->prependFile($this->basePath() . '/js/respond.min.js')
+                    ->prependFile($this->basePath() . '/choose/x.js')
+                    
+                   
+                   
+                    
+                    
+                    
+                    
                      //->prependFile($this->basePath() . '/js/collapse.js')
                     //->prependFile($this->basePath() . '/js/dropdown.js')
                      //->prependFile($this->basePath() . '/js/transition.js')

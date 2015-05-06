@@ -1,3 +1,13 @@
+jq162 = jQuery.noConflict( true );
+
+        
+ //alert( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+ //alert( "2st loaded jQuery version ($): " + jq162.fn.jquery + "<br>" );
+ 
+ 
+ $(function() {
+$("#chosen-select").chosen();
+ });
  
 $(function() {
     $("#id_muni").change(function() {
@@ -21,5 +31,6 @@ $(function() {
     });
 
 });
+ 
 
 

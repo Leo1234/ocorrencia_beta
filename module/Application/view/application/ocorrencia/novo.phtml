@@ -1,0 +1,115 @@
+
+<br/>
+<br/>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Nova Ocorrência         
+        </div>
+    </div>
+    <?php
+    // objeto form ocorrencia
+    $formOcorrencia = $this->formOcorrencia;
+    // preparar elementos do formulário
+    $formOcorrencia->prepare();
+    // configurar url formulário
+    $formOcorrencia->setAttribute('action', $this->url('ocorrencia', array('action' => 'adicionar')));
+    ?>
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formOcorrencia) ?>
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="inputEndereço" class="col-lg-3 col-md-3 control-label">Endereço*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formOcorrencia->get('id_end'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('id_end'));
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group" id="log">
+            <label for="inputViatuta" class="col-lg-3 col-md-3 control-label">Viatura*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formElement($formOcorrencia->get('id_vtr[]'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('id_vtr[]'));
+                ?>
+            </div>
+            
+        </div>
+        <div class="form-group">
+            <label for="inputHora" class="col-lg-3 col-md-3 control-label">Hora*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formOcorrencia->get('hora'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('hora'));
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputData" class="col-lg-3 col-md-3 control-label">Data*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formDate($formOcorrencia->get('data'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('data'));
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputBNarracao" class="col-lg-3 col-md-3 control-label">Narração*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formElement($formOcorrencia->get('narracao'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('narracao'));
+                ?>
+            </div>
+        </div>
+        
+
+    </div>
+
+
+    
+
+    <div class="panel-footer">
+        <?php
+        // renderiza html input hidden para id
+        echo $this->formHidden($formOcorrencia->get('id_oco'));
+        ?>
+        <button type="submit" class="btn btn-primary">Salvar Ocorrencia</button>
+        <a href="<?php echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>
+    </div>
+    <?php // renderiza html </form> ?>
+    <?php echo $this->form()->closeTag() ?>
+</div>

@@ -2,14 +2,12 @@
 
 namespace Application\Model;
 
-use //Zend\Db\Adapter\Adapter,
+use Zend\Db\Adapter\Adapter,
     Zend\Db\ResultSet\ResultSet,
- Zend\Db\ResultSet\HydratingResultSet,
-                             Zend\Db\TableGateway\TableGateway,
-                             Zend\Db\Sql\Select,
-                             Zend\Stdlib\Hydrator\Reflection,
-                             Zend\Paginator\Adapter\DbSelect,
-                             Zend\Paginator\Paginator;
+    Zend\Db\TableGateway\TableGateway,
+    Zend\Db\Sql\Select,
+    Zend\Paginator\Adapter\DbSelect,
+    Zend\Paginator\Paginator;
 
 class ViaturaTable {
 
@@ -17,15 +15,25 @@ class ViaturaTable {
     protected $adapter;
     protected $resultSetPrototype;
 
-public function __construct(TableGateway $tableGateway)
-{
-    $this->tableGateway = $tableGateway;
-}
+  public function __construct(Adapter $adapter) {
+        $this->adapter = $adapter;
+        $this->resultSetPrototype = new ResultSet();
+        $this->resultSetPrototype->setArrayObjectPrototype(new Viatura());
+        $this->tableGateway = new TableGateway('vtr', $this->adapter, null, $this->resultSetPrototype);
+    }
 
-private function getViaturaTable()
-{
-    return $this->getServiceLocator()->get('ModelViatura');
-}
+        public function fetchAll2() {
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT id_vtr,prefixo FROM vtr ORDER BY id_vtr ASC';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id_vtr']] = $res['prefixo'];
+        }
+        return $selectData;
+    }
 
 
  public function fetchAll(){

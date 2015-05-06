@@ -236,8 +236,8 @@ class Ocorrencia implements InputFilterAwareInterface {
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 3,
-                            'max' => 50,
+                            'min' => 1,
+                            'max' => 2000,
                             'messages' => array(
                                 \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
                                 \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',

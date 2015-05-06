@@ -15,7 +15,6 @@ class OcorrenciaTable {
     protected $adapter;
     protected $resultSetPrototype;
 
- 
     public function __construct(Adapter $adapter) {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
@@ -23,8 +22,7 @@ class OcorrenciaTable {
         $this->tableGateway = new TableGateway('ocorrencia', $this->adapter, null, $this->resultSetPrototype);
     }
 
-    
-        public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'id_oco ASC', $like = null, $itensPaginacao = 5) {
+    public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'id_oco ASC', $like = null, $itensPaginacao = 5) {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('o' => 'ocorrencia'));
         $select->columns(array('*'));
@@ -38,7 +36,7 @@ class OcorrenciaTable {
             $select
                     ->where
                     ->like('id_oco', "%{$like}%")
-                   
+
             ;
         }
 
@@ -68,38 +66,35 @@ class OcorrenciaTable {
                         ->setItemCountPerPage((int) $itensPagina)
                         ->setPageRange((int) $itensPaginacao);
     }
-    
-    
-    
-    
-    
-    
-public function fetchAll($currentPage = 0, $countPerPage = 0) {
-        
-        $select = new \Zend\Db\Sql\Select;
-        $select->from(array('o' => 'ocorrencia'));
-        $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "o.id_end = e.id_endereco", array('*'));
-        $select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
-        $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
 
-        // create a new pagination adapter object
-        $paginatorAdapter = new DbSelect(
-                // our configured select object
-                $select,
-                // the adapter to run it against
-                $this->tableGateway->getAdapter(),
-                // the result set to hydrate
-                $this->resultSetPrototype
-        );
-        
-        $paginator = new Paginator($paginatorAdapter);
-        $paginator->setItemCountPerPage($countPerPage);
-        $paginator->setCurrentPageNumber($currentPage);
-        return $paginator;
-    }
-    
- 
+
+    /*
+      public function fetchAll($currentPage = 0, $countPerPage = 0) {
+
+      $select = new \Zend\Db\Sql\Select;
+      $select->from(array('o' => 'ocorrencia'));
+      $select->columns(array('*'));
+      $select->join(array('e' => 'endereco'), "o.id_end = e.id_endereco", array('*'));
+      $select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
+      $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
+
+      // create a new pagination adapter object
+      $paginatorAdapter = new DbSelect(
+      // our configured select object
+      $select,
+      // the adapter to run it against
+      $this->tableGateway->getAdapter(),
+      // the result set to hydrate
+      $this->resultSetPrototype
+      );
+
+      $paginator = new Paginator($paginatorAdapter);
+      $paginator->setItemCountPerPage($countPerPage);
+      $paginator->setCurrentPageNumber($currentPage);
+      return $paginator;
+      }
+     */
+
     public function find($id) {
 
         $id = (int) $id;
@@ -178,7 +173,7 @@ public function fetchAll($currentPage = 0, $countPerPage = 0) {
             return false;
         }
     }
-    
+
     public function totalVitimasOcorrencia($id_ocorrencia) {
         $sql = new Sql($this->adapter);
         $select = $sql->select('ocorrencia_vitima')->where(array('id_ocorrencia' => $id_ocorrencia));
@@ -186,7 +181,7 @@ public function fetchAll($currentPage = 0, $countPerPage = 0) {
         $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
         return $results->count();
     }
-    
+
     public function totalAcusadosOcorrencia($id_ocorrencia) {
         $sql = new Sql($this->adapter);
         $select = $sql->select('ocorrencia_acusado')->where(array('id_ocorrencia' => $id_ocorrencia));
@@ -194,7 +189,7 @@ public function fetchAll($currentPage = 0, $countPerPage = 0) {
         $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
         return $results->count();
     }
-    
+
     public function totalCrimesOcorrencia($id_ocorrencia) {
         $sql = new Sql($this->adapter);
         $select = $sql->select('ocorrencia_crime')->where(array('id_ocorrencia' => $id_ocorrencia));
