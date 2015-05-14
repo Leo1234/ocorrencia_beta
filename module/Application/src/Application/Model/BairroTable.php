@@ -40,6 +40,46 @@ class BairroTable {
 
         return $results;
     }
+  public function searchBairro($id_muni) {
+        // preparar objeto SQL
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        // montagem do select com where, like e limit para tabela contatos
+        $select = (new Select('bairro'))->limit(8);
+        $select
+                ->columns(array('id_bai', 'bairro'))
+                ->where(array('bairro.id_muni' => $id_muni));
+        ;
+
+        // executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+
+        return $results;
+    }
+    
+  public function searchBairroViatura($id_bai) {
+    
+        // preparar objeto SQL
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        // montagem do select com where, like e limit para tabela contatos
+        $select = (new Select('bairro'))->limit(8);
+        $select
+                ->columns(array('id_bai', 'bairro'))
+                ->join(array('v' => 'vtr'), "bairro.id_area = v.id_area", array('id_vtr', 'prefixo'))
+                ->where(array('bairro.id_bai' => $id_bai));
+        
+
+        // executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+
+        return $results;
+     
+    }
 
     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'bairro ASC', $like = null, $itensPaginacao = 5) {
         $select = new Select;
@@ -89,7 +129,19 @@ class BairroTable {
                         ->setItemCountPerPage((int) $itensPagina)
                         ->setPageRange((int) $itensPaginacao);
     }
+   public function fetchAll() {
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT id_bai,bairro FROM bairro ORDER BY id_bai ASC';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
 
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id_bai']] = $res['bairro'];
+        }
+        return $selectData; 
+    }
     public function save(Bairro $bairro) {
         $data = [
             'bairro' => $bairro->getBairro(),

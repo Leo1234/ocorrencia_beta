@@ -52,7 +52,37 @@ public function searchAction()
     
     return new \Zend\View\Model\JsonModel($result);
 }
+    // GET /application/bairro/search?query=[id_nome]
+public function searchBairroAction()
+{
+    //$id_muni = $this->params()->fromQuery('id_muni', null);
+    $id_muni = $_POST['id_muni'];
+   
+    if (isset($id_muni)) {
+        $result = $this->getBairroTable()->searchBairro($id_muni);   
+    } else  {
+        $result = [];  
+    }
     
+    
+    return new \Zend\View\Model\JsonModel($result);
+}
+        // GET /application/bairro/search?query=[id_nome]
+public function searchBairroViaturaAction()
+{
+    //$id_muni = $this->params()->fromQuery('id_muni', null);
+    $id_bai = $_POST['id_bai'];
+   
+    if (isset($id_bai)) {
+        $result = $this->getBairroTable()->searchBairroViatura($id_bai);   
+    } else  {
+        $result = [];  
+    }
+    
+    
+    return new \Zend\View\Model\JsonModel($result);
+}
+   
     
     public function indexAction() {
       

@@ -4,24 +4,24 @@ namespace Application\Form;
 
 use Application\Controller\ViaturaController;
 use Zend\Mvc\Controller\AbstractActionController;
-
 use Zend\Form\Form;
 use Zend\Form\Element;
 use Zend\Form\ElementText;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Adapter;
-
 use Application\Model\Viatura;
 use Application\Model\ViaturaTable as ModelViatura;
 use Application\Model\Municipio;
 use Application\Model\MunicipioTable as ModelMunicipio;
+use Application\Model\Bairro;
+use Application\Model\BairroTable as ModelBairro;
+
 use Application\Model\Policial;
 use Application\Model\PolicialTable as ModelPolicial;
 use Application\Model\Crime;
 use Application\Model\CrimeTable as ModelCrime;
 use Application\Model\Procedimento;
 use Application\Model\ProcedimentoTable as ModelProcedimento;
-
 
 class OcorrenciaForm extends Form {
 
@@ -48,14 +48,48 @@ class OcorrenciaForm extends Form {
         // elemento do tipo text
         $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
-            'name' => 'id_end',
+            'name' => 'rua',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputEnd',
-                'placeholder' => 'endereço',
+                'id' => 'rua',
+                'placeholder' => 'Rua',
             ),
         ));
-     $this->add(array(
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'id_muniO',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'municipio',
+                ' style' => 'width:350px',
+            // 'multiple' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Município',
+                'empty_option' => 'Escolha o município',
+                'value_options' => $this->getOptionsForSelectM()),
+        ));
+
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'id_bai',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'bairro',
+                ' style' => 'width:350px',
+            // 'multiple' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Escolha o bairro',
+                'empty_option' => 'Escolha o bairro',
+                'value_options' => $this->getOptionsForSelectB()),
+        ));
+
+
+
+        $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
             'name' => 'ciops',
             'attributes' => array(
@@ -64,30 +98,28 @@ class OcorrenciaForm extends Form {
                 'placeholder' => 'CIOPS',
             ),
         ));
-     
+
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'id_vtr',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'chosen-select',
-               ' style' => 'width:350px',
-               // 'multiple' => 'true'
-         
-   
+                'id' => 'viatura',
+                ' style' => 'width:350px',
+            // 'multiple' => 'true'
             ),
             'options' => array(
                 'label' => 'Escolha a viatura',
                 'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectV()),
         ));
-    $this->add(array(
+        $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'id_composicao',
             'attributes' => array(
                 'class' => 'form-control',
                 'id' => 'composicao',
-               ' style' => 'width:350px',
+                ' style' => 'width:350px',
                 'multiple' => 'true'
             ),
             'options' => array(
@@ -95,14 +127,14 @@ class OcorrenciaForm extends Form {
                 //'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectP()),
         ));
-    
+
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'id_crime',
             'attributes' => array(
                 'class' => 'form-control',
                 'id' => 'crime',
-               ' style' => 'width:350px',
+                ' style' => 'width:350px',
                 'multiple' => 'true'
             ),
             'options' => array(
@@ -110,14 +142,14 @@ class OcorrenciaForm extends Form {
                 //'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectC()),
         ));
-        
-             $this->add(array(
+
+        $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'procedimento',
             'attributes' => array(
                 'class' => 'form-control',
                 'id' => 'procedimento',
-               ' style' => 'width:350px',
+                ' style' => 'width:350px',
                 'multiple' => 'true'
             ),
             'options' => array(
@@ -125,12 +157,12 @@ class OcorrenciaForm extends Form {
                 //'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectPr()),
         ));
-             
-    
-   
-        
-        
-             $this->add(array(
+
+
+
+
+
+        $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
             'name' => 'datai',
             'attributes' => array(
@@ -139,8 +171,8 @@ class OcorrenciaForm extends Form {
                 'placeholder' => 'Data/hora Início',
             ),
         ));
-             
-                      $this->add(array(
+
+        $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
             'name' => 'dataf',
             'attributes' => array(
@@ -149,25 +181,25 @@ class OcorrenciaForm extends Form {
                 'placeholder' => 'Data/hora Fim',
             ),
         ));
-        
+
         /*
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Date',
-            'name' => 'data',
-            'options' => array(
-                'label' => 'Appointment Date/Time',
-                'format' => 'Y-m-d'
-            ),
-            'attributes' => array(
-                'class' => 'form-control',
-            // 'min' => '1940-01-01T00:00:00Z',
-            //'max' => '1997-01-01T00:00:00Z',
-            )
-        ));
+          $this->add(array(
+          'type' => 'Zend\Form\Element\Date',
+          'name' => 'data',
+          'options' => array(
+          'label' => 'Appointment Date/Time',
+          'format' => 'Y-m-d'
+          ),
+          'attributes' => array(
+          'class' => 'form-control',
+          // 'min' => '1940-01-01T00:00:00Z',
+          //'max' => '1997-01-01T00:00:00Z',
+          )
+          ));
          */
-        
+
         // elemento do tipo text
-      $this->add(array(
+        $this->add(array(
             'name' => 'narracao',
             'type' => 'Zend\Form\Element\Textarea',
             'options' => array(
@@ -177,8 +209,8 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
             )
         ));
-      
-           $this->add(array(
+
+        $this->add(array(
             'type' => 'Zend\Form\Element\Radio',
             'name' => 'local',
             'options' => array(
@@ -189,9 +221,9 @@ class OcorrenciaForm extends Form {
                 ),
             ),
         ));
-           
-                $this->add(array(
-            'type' => 'Text', 
+
+        $this->add(array(
+            'type' => 'Text',
             'name' => 'dt',
             'attributes' => array(
                 'class' => 'form-control',
@@ -200,16 +232,6 @@ class OcorrenciaForm extends Form {
                 'data-format' => 'dd/MM/yyyy hh:mm:ss',
             ),
         ));
-    }
-
-    public function getOptionsForSelect() {
-        $selectData = $this->getMunicipioTable()->fetchAll();
-        return $selectData;
-    }
-
-    private function getMunicipioTable() {
-        $dbAdapter = $this->adapter;
-        return new ModelMunicipio($dbAdapter);
     }
 
     public function getOptionsForSelectV() {
@@ -221,29 +243,55 @@ class OcorrenciaForm extends Form {
         $dbAdapter = $this->adapter;
         return new ModelViatura($dbAdapter);
     }
-     public function getOptionsForSelectP() {
+
+    public function getOptionsForSelectP() {
         $selectData = $this->getPolicialTable()->fetchAll();
         return $selectData;
     }
-      private function getPolicialTable() {
+
+    private function getPolicialTable() {
         $dbAdapter = $this->adapter;
         return new ModelPolicial($dbAdapter);
     }
-      public function getOptionsForSelectC() {
+
+    public function getOptionsForSelectC() {
         $selectData = $this->getCrimeTable()->fetchAll();
         return $selectData;
     }
-   private function getCrimeTable() {
+
+    private function getCrimeTable() {
         $dbAdapter = $this->adapter;
         return new ModelCrime($dbAdapter);
     }
-    
-       public function getOptionsForSelectPr() {
+
+    public function getOptionsForSelectPr() {
         $selectData = $this->getProcedimentoTable()->fetchAll();
         return $selectData;
     }
-      private function getProcedimentoTable() {
+
+    private function getProcedimentoTable() {
         $dbAdapter = $this->adapter;
         return new ModelProcedimento($dbAdapter);
     }
+
+    public function getOptionsForSelectB() {
+        $selectData = $this->getBairroTable()->fetchAll();
+        return $selectData;
+    }
+
+    private function getBairroTable() {
+        $dbAdapter = $this->adapter;
+        return new ModelBairro($dbAdapter);
+    }
+
+    public function getOptionsForSelectM() {
+        $selectData = $this->getMunicipioTable()->fetchAll();
+        return $selectData;
+    }
+
+    private function getMunicipioTable() {
+        $dbAdapter = $this->adapter;
+        return new ModelMunicipio($dbAdapter);
+    }
+
 }

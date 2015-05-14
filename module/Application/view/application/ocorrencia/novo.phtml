@@ -32,21 +32,53 @@
 
 
         <div class="form-group">
-            <label for="inputLocal" class="col-lg-3 col-md-3 control-label">Endereço*:</label>
+            <label for="inputRua" class="col-lg-3 col-md-3 control-label">Rua*:</label>
             <div class="col-lg-9  col-md-9">
-                <div class="checkbox">
-                    <?php
-                    echo $this->formRadio($formOcorrencia->get('local'));
-                    // renderiza elemento de erro
-                    echo $this->formElementErrors()
-                            ->setMessageOpenFormat('<small class="text-danger">')
-                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                            ->setMessageCloseString('</small>')
-                            ->render($formOcorrencia->get('local'));
-                    ?>
-                </div>
+                <?php
+                echo $this->formInput($formOcorrencia->get('rua'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('rua'));
+                ?>
             </div>
         </div>
+                <div class="form-group">
+            <label for="inputMunicipio" class="col-lg-3 col-md-3 control-label">Município*:</label>
+            <div class="col-lg-3  col-md-3">
+                <?php
+                // renderiza html input
+                echo $this->formSelect($formOcorrencia->get('id_muniO'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('id_muniO'));
+                ?>
+            </div>
+
+        </div>
+        
+        <div class="form-group">
+            <label for="inputBairro" class="col-lg-3 col-md-3 control-label">Bairro*:</label>
+            <div class="col-lg-3  col-md-3">
+                <?php
+                // renderiza html input
+                echo $this->formSelect($formOcorrencia->get('id_bai'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('id_bai'));
+                ?>
+            </div>
+
+        </div>
+
         <!--</fieldset>-->
 
 
@@ -56,7 +88,7 @@
 
         <div class="form-group" id="log">
             <label for="inputViatuta" class="col-lg-3 col-md-3 control-label">Viatura*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
                 echo $this->formSelect($formOcorrencia->get('id_vtr'));
@@ -178,7 +210,7 @@
             </div>
         </div>
 
-    
+
 
 
 
