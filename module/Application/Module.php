@@ -76,7 +76,7 @@ class Module {
     {
         return array(
             'factories' => array(
-                
+                /*
                  ///----------------viatura--------------///
                 'ViaturaTableGateway' => function ($sm) {
                     // obter adapter db atraves do service manager
@@ -92,7 +92,7 @@ class Module {
                 'ModelViatura' => function ($sm){
                     // return instacia Model ViaturaTable
                     return new ViaturaTable($sm->get('ViaturaTableGateway'));
-                },
+                },*/
                 ///----------------area--------------///
                         
                 'AreaTableGateway' => function ($sm) {

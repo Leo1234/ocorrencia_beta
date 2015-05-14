@@ -5,19 +5,28 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Form\ViaturaForm;
-use Application\Model\Viatura;
+
+
+use Zend\Db\Adapter\AdapterInterface;
+use Zend\Db\Adapter\Adapter;
 
 use Application\Model\Area;
-use Application\Model\AreaTable;
+use Application\Model\AreaTable as ModelArea;
+
+use Application\Model\Viatura;
+use Application\Model\ViaturaTable as ModelViatura;
+
 
 class ViaturaController extends AbstractActionController {
 
     private function getViaturaTable() {
-        return $this->getServiceLocator()->get('ModelViatura');
+           $dbAdapter =  $this->getServiceLocator()->get('AdapterDb');
+        return new ModelViatura($dbAdapter);
     }
     
    private function getAreaTable() {
-        return $this->getServiceLocator()->get('ModelArea');
+           $dbAdapter =  $this->getServiceLocator()->get('AdapterDb');
+        return new ModelArea($dbAdapter);
     }
     
     

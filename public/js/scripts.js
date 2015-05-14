@@ -1,14 +1,29 @@
-jq162 = jQuery.noConflict( true );
+jq162 = jQuery.noConflict(true);
 
-        
- //alert( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
- //alert( "2st loaded jQuery version ($): " + jq162.fn.jquery + "<br>" );
- 
- 
- $(function() {
-$("#chosen-select").chosen();
- });
- 
+
+//alert( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+//alert( "2st loaded jQuery version ($): " + jq162.fn.jquery + "<br>" );
+
+
+
+$(function() {
+    $("#procedimento").chosen();
+
+});
+
+$(function() {
+    $("#chosen-select").chosen();
+
+});
+
+$(function() {
+    $("#crime").chosen();
+});
+
+$(function() {
+    $("#composicao").chosen();
+});
+
 $(function() {
     $("#id_muni").change(function() {
         $.ajax({
@@ -31,6 +46,15 @@ $(function() {
     });
 
 });
- 
 
+$(function() {
+    $("#datetimepickerI").datetimepicker({
+        locale: "pt-br"
+    });
+});
 
+$(function() {
+    $("#datetimepickerF").datetimepicker({
+        locale: "pt-br"
+    });
+});

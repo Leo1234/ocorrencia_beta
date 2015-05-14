@@ -67,6 +67,18 @@ class CrimeTable {
             ->setItemCountPerPage((int) $itensPagina)
             ->setPageRange((int) $itensPaginacao);
 }
+   public function fetchAll() {
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT id_cri,crime FROM crime ORDER BY id_cri ASC';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+        $selectData = array();
+
+        foreach ($result as $res) {
+            $selectData[$res['id_cri']] = $res['crime'];
+        }
+        return $selectData;
+    }
  
     public function find($id) {
         $id = (int) $id;

@@ -21,7 +21,6 @@
                 ->appendName('viewport', 'width=device-width, initial-scale=1.0')
                 ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ;
- 
         ?>
 
         <!-- Styles -->
@@ -33,243 +32,189 @@
                 ->prependStylesheet($this->basePath() . '/lib/css/sb-admin.css')
                 ->prependStylesheet($this->basePath() . '/lib/css/bootstrap.min.css')
                 ->prependStylesheet($this->basePath() . '/lib/font-awesome/css/font-awesome.min.css')
-                      ->prependStylesheet($this->basePath() . '/css/bootstrap.css')
-                
+
+                // ->prependStylesheet($this->basePath() . '/data/bootstrap-datetimepicker.min.css')
+                ->prependStylesheet($this->basePath() . '/data/bootstrap-datetimepicker.css')
+                ->prependStylesheet($this->basePath() . '/css/bootstrap.css')
+                ->prependStylesheet($this->basePath() . '/css/fildset.css')
                 ->prependStylesheet($this->basePath() . '/choose/docsupport/style.css')
-               ->prependStylesheet($this->basePath() . '/choose/docsupport/prism.css')
+                ->prependStylesheet($this->basePath() . '/choose/docsupport/prism.css')
                 ->prependStylesheet($this->basePath() . '/choose/chosen.css')
-               // ->prependStylesheet($this->basePath() . '/choose/chosen.min.css')
-                
-                
-                
-                
-                
-              // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.css')
-               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.min.css')
-                //->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css')
-               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker.standalone.min.css')
-                //->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.css')
-               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')
-                //->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.css')
-               // ->prependStylesheet($this->basePath() . '/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css')
-          
-                //->prependStylesheet($this->basePath() . '/css/datepicker.css')
 
-
-;
+        ;
         ?> 
         <link href="<?= $this->basePath() ?>/select2/select2-bootstrap.css" rel="stylesheet"/>
         <link href="<?= $this->basePath() ?>/select2/select2.css" rel="stylesheet"/>
-                 
-     
+
+
     </head>   
 
 
     <body>
-         <div class="col-lg-12">
+        <div class="col-lg-12">
 
-        <div id="wrapper" style="overflow: hidden">
+            <div id="wrapper" style="overflow: hidden">
 
-            <!-- Sidebar -->
-            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                     <a class="navbar-brand" href="<?php echo $this->url('application'); ?>">
-                        <img src="<?php echo $this->basePath() . '/img/poli.png' ?>" width="40" height="50" style="margin-top: -12px" />
-                        Sistema Gerenciador de Ocorrências :: SGO
-                    </a><br/>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                   
+                <!-- Sidebar -->
+                <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="<?php echo $this->url('application'); ?>">
+                            <img src="<?php echo $this->basePath() . '/img/poli.png' ?>" width="40" height="50" style="margin-top: -12px" />
+                            Sistema Gerenciador de Ocorrências :: SGO
+                        </a><br/>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse navbar-ex1-collapse" >
+                        <ul class="nav navbar-nav side-nav">
+                            <li class="active"><a href="<?php echo $this->url('application', array('action' => 'index')); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+                            <li><a href="<?php echo $this->url('ocorrencia', array('action' => 'index')); ?>"><i class="fa fa-desktop"></i> Ocorrências</a></li>
+
+                            <li><a href="<?php echo $this->url('vitimas', array('action' => 'index')); ?>"><i class="fa fa-user"></i> Vítimas</a></li>
+                            <li><a href="<?php echo $this->url('vitimas', array('action' => 'index')); ?>"><i class="fa fa-user"></i> Acusados</a></li>
+
+                            <li><a href="<?php echo $this->url('config', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-wrench"></i> Dados</a></li>
+                            <li><a href="tables.html"><i class="fa fa-file"></i> Relatórios </a></li>
+                            <li><a href="forms.html"><i class="fa fa-clock-o"></i> Gráficos </a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i> Configurações <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="<?php echo $this->url('area', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-compressed"></i>Áreas</a></li>
+                                    <li><a href="<?php echo $this->url('bairro', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-home"></i>Bairros</a></li>
+                                    <li><a href="<?php echo $this->url('municipio', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-globe"></i>Municípios</a></li>
+                                    <li><a href="<?php echo $this->url('viaturas', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-retweet"></i>Viaturas</a></li>
+                                    <li><a href="<?php echo $this->url('graduacao', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-stats"></i>Graduações</a></li>
+                                    <li><a href="<?php echo $this->url('crime', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-remove"></i>Crimes</a></li>
+                                    <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-random"></i>Procedimentos</a></li>
+                                    <li><a href="<?php echo $this->url('droga', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-leaf"></i>Drogas</a></li>
+                                    <li><a href="<?php echo $this->url('arma', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-screenshot"></i>Armas</a></li>
+                                    <li><a href="<?php echo $this->url('policiais', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-user"></i>Policiais</a></li>
+                                    <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-random"></i>Procedimentos</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right navbar-user">
+                            <li class="dropdown messages-dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">7</span> <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-header">7 New Messages</li>
+                                    <li class="message-preview">
+                                        <a href="#">
+                                            <span class="avatar"><img src="http://placehold.it/50x50"></span>
+                                            <span class="name">John Smith:</span>
+                                            <span class="message">Hey there, I wanted to ask you something...</span>
+                                            <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li class="message-preview">
+                                        <a href="#">
+                                            <span class="avatar"><img src="http://placehold.it/50x50"></span>
+                                            <span class="name">John Smith:</span>
+                                            <span class="message">Hey there, I wanted to ask you something...</span>
+                                            <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li class="message-preview">
+                                        <a href="#">
+                                            <span class="avatar"><img src="http://placehold.it/50x50"></span>
+                                            <span class="name">John Smith:</span>
+                                            <span class="message">Hey there, I wanted to ask you something...</span>
+                                            <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
+                                        </a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">View Inbox <span class="badge">7</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown alerts-dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> Alerts <span class="badge">3</span> <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Default <span class="label label-default">Default</span></a></li>
+                                    <li><a href="#">Primary <span class="label label-primary">Primary</span></a></li>
+                                    <li><a href="#">Success <span class="label label-success">Success</span></a></li>
+                                    <li><a href="#">Info <span class="label label-info">Info</span></a></li>
+                                    <li><a href="#">Warning <span class="label label-warning">Warning</span></a></li>
+                                    <li><a href="#">Danger <span class="label label-danger">Danger</span></a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">View All</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown user-dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                                    <li><a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge">7</span></a></li>
+                                    <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div id="page-wrapper">
+                    <?php echo $this->message(); ?>
+                    <?php echo $this->content; ?>
+
                 </div>
+                <?php
+                echo $this
+                        ->headScript()
+                        ->prependFile($this->basePath() . '/choose/chosen.jquery.js')
+                        ->prependFile($this->basePath() . '/choose/docsupport/prism.js')
+                        ->prependFile($this->basePath() . 'http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js')
+                        ->prependFile($this->basePath() . 'http://cdn.oesmith.co.uk/morris-0.4.3.min.js')
+                        ->prependFile($this->basePath() . '/lib/js/tablesorter/jquery.tablesorter.js')
+                        ->prependFile($this->basePath() . '/lib/js/tablesorter/tables.js')
+                        ->prependFile($this->basePath() . '/js/transition.js')
+                        ->prependFile($this->basePath() . '/js/collapse.js')
+                        ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+                        ->prependFile($this->basePath() . '/data/bootstrap-datetimepicker.min.js')
+                        ->prependFile($this->basePath() . '/data/moment-with-locales.js')
+                        ->prependFile($this->basePath() . '/data/js/pt-br.js')
+                        ->prependFile($this->basePath() . '/lib/js/jquery-1.10.2.js')
+                        ->prependFile($this->basePath() . '/lib/js/bootstrap.js')
+                        ->prependFile($this->basePath() . '/js/bootstrap-typeahead.min.js')
+                        ->prependFile($this->basePath() . '/js/scripts.js')
+                        ->prependFile($this->basePath() . '/js/scripts2.js')
+                        ->prependFile($this->basePath() . '/js/jquery.min.js')
+                        ->prependFile($this->basePath() . '/js/html5shiv.js')
+                        ->prependFile($this->basePath() . '/js/respond.min.js')
+                        ->prependFile($this->basePath() . '/choose/x.js')
 
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse navbar-ex1-collapse" >
-                    <ul class="nav navbar-nav side-nav">
-                        <li class="active"><a href="<?php echo $this->url('application', array('action' => 'index')); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li><a href="<?php echo $this->url('ocorrencia', array('action' => 'index')); ?>"><i class="fa fa-desktop"></i> Ocorrências</a></li>
-                        
-                        <li><a href="<?php echo $this->url('vitimas', array('action' => 'index')); ?>"><i class="fa fa-user"></i> Vítimas</a></li>
-                        <li><a href="<?php echo $this->url('vitimas', array('action' => 'index')); ?>"><i class="fa fa-user"></i> Acusados</a></li>
-                       
-                         <li><a href="<?php echo $this->url('config', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-wrench"></i> Dados</a></li>
-                        <li><a href="tables.html"><i class="fa fa-file"></i> Relatórios </a></li>
-                        <li><a href="forms.html"><i class="fa fa-clock-o"></i> Gráficos </a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-gear"></i> Configurações <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="<?php echo $this->url('area', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-compressed"></i>Áreas</a></li>
-                                <li><a href="<?php echo $this->url('bairro', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-home"></i>Bairros</a></li>
-                                <li><a href="<?php echo $this->url('municipio', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-globe"></i>Municípios</a></li>
-                                <li><a href="<?php echo $this->url('viaturas', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-retweet"></i>Viaturas</a></li>
-                                <li><a href="<?php echo $this->url('graduacao', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-stats"></i>Graduações</a></li>
-                                <li><a href="<?php echo $this->url('crime', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-remove"></i>Crimes</a></li>
-                                <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-random"></i>Procedimentos</a></li>
-                                <li><a href="<?php echo $this->url('droga', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-leaf"></i>Drogas</a></li>
-                                <li><a href="<?php echo $this->url('arma', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-screenshot"></i>Armas</a></li>
-                                <li><a href="<?php echo $this->url('policiais', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-user"></i>Policiais</a></li>
-                                <li><a href="<?php echo $this->url('procedimento', array('action' => 'index')); ?>"><i class="glyphicon glyphicon-random"></i>Procedimentos</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right navbar-user">
-                        <li class="dropdown messages-dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">7</span> <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li class="dropdown-header">7 New Messages</li>
-                                <li class="message-preview">
-                                    <a href="#">
-                                        <span class="avatar"><img src="http://placehold.it/50x50"></span>
-                                        <span class="name">John Smith:</span>
-                                        <span class="message">Hey there, I wanted to ask you something...</span>
-                                        <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li class="message-preview">
-                                    <a href="#">
-                                        <span class="avatar"><img src="http://placehold.it/50x50"></span>
-                                        <span class="name">John Smith:</span>
-                                        <span class="message">Hey there, I wanted to ask you something...</span>
-                                        <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li class="message-preview">
-                                    <a href="#">
-                                        <span class="avatar"><img src="http://placehold.it/50x50"></span>
-                                        <span class="name">John Smith:</span>
-                                        <span class="message">Hey there, I wanted to ask you something...</span>
-                                        <span class="time"><i class="fa fa-clock-o"></i> 4:34 PM</span>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="#">View Inbox <span class="badge">7</span></a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown alerts-dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> Alerts <span class="badge">3</span> <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Default <span class="label label-default">Default</span></a></li>
-                                <li><a href="#">Primary <span class="label label-primary">Primary</span></a></li>
-                                <li><a href="#">Success <span class="label label-success">Success</span></a></li>
-                                <li><a href="#">Info <span class="label label-info">Info</span></a></li>
-                                <li><a href="#">Warning <span class="label label-warning">Warning</span></a></li>
-                                <li><a href="#">Danger <span class="label label-danger">Danger</span></a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">View All</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown user-dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                                <li><a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge">7</span></a></li>
-                                <li><a href="#"><i class="fa fa-gear"></i> Settings</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#"><i class="fa fa-power-off"></i> Log Out</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div><!-- /.navbar-collapse -->
-            </nav>
-
-            <div id="page-wrapper">
-                <?php echo $this->message(); ?>
-                <?php echo $this->content; ?>
-
-            </div><!-- /#wrapper -->
-
-            <!-- Scripts -->
-            <?php
-            echo $this
-                    ->headScript()
-                     ->prependFile($this->basePath() . '/choose/chosen.jquery.js')
-                    ->prependFile($this->basePath() . '/choose/docsupport/prism.js')
-                    
-                    ->prependFile($this->basePath() . 'http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js')
-                    ->prependFile($this->basePath() . 'http://cdn.oesmith.co.uk/morris-0.4.3.min.js')
-                     ->prependFile($this->basePath() . '/lib/js/tablesorter/jquery.tablesorter.js')
-                    ->prependFile($this->basePath() . '/lib/js/tablesorter/tables.js')
-                    ->prependFile($this->basePath() . '/lib/js/bootstrap.js')
-                    ->prependFile($this->basePath() . '/lib/js/jquery-1.10.2.js')
-                    ->prependFile($this->basePath() . '/js/bootstrap-typeahead.min.js')
-                    ->prependFile($this->basePath() . '/js/scripts.js')
-                    ->prependFile($this->basePath() . '/js/scripts2.js')
-                    ->prependFile($this->basePath() . '/js/jquery.min.js')
-                    ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-                    ->prependFile($this->basePath() . '/js/html5shiv.js')
-                    ->prependFile($this->basePath() . '/js/respond.min.js')
-                    ->prependFile($this->basePath() . '/choose/x.js')
-                    
-                   
-                   
-                    
-                    
-                    
-                    
-                     //->prependFile($this->basePath() . '/js/collapse.js')
-                    //->prependFile($this->basePath() . '/js/dropdown.js')
-                     //->prependFile($this->basePath() . '/js/transition.js')
-                    //->prependFile($this->basePath() . '/js/bootstrap-datepicker.js')
-                    
-                    
-                    
-                    
-                    
-                   // ->prependFile($this->basePath() . '/bootstrap-datepicker/js/bootstrap-datepicker.js')
-                    //->prependFile($this->basePath() . '/bootstrap-datepicker/js/bootstrap-datepicker.min.js')
-                   // ->prependFile($this->basePath() . '/bootstrap-datepicker/locales/bootstrap-datepicker.pt-BR.min.js')
-                  
                 ;
-            echo $this->inlineScript();
-            ?>
+                echo $this->inlineScript();
+                ?>
 
-            <?php
-       
-            ?>
-            <!--
-            <script src="<?= $this->basePath() ?>/jquery-ui/external/jquery.bgiframe-2.1.2.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.core.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.widget.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.mouse.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.button.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.draggable.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.position.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.resizable.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.dialog.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.effect.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.effect-bounce.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.effect-fade.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.accordion.js"></script>
-           
-            
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.datepicker.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/jquery.ui.datepicker.js"></script>
-            <script src="<?= $this->basePath() ?>/jquery-ui/ui/i18n/jquery.ui.datepicker-pt-BR.js"></script>
-             -->
-            
-            <script src="<?= $this->basePath() ?>/select2/select2.js"></script>
-            <script src="<?= $this->basePath() ?>/select2/select2_locale_pt-BR.js"></script>
-            <script src="<?= $this->basePath() ?>/js/util.js"></script>
-            
-            
-            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.eot"></script>
-            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.svg"></script>
-            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.ttf"></script>
-            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff"></script>
-            <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff2"></script>
-          
-            <!--
-            <script src="<?= $this->basePath() ?>/less/datepicker.less"></script>
-            <script src="<?= $this->basePath() ?>/less/datepicker3.less"></script>
-            -->
-        </div>
-            
+                <?php
+                ?>
+
+
+                <script src="<?= $this->basePath() ?>/select2/select2.js"></script>
+                <script src="<?= $this->basePath() ?>/select2/select2_locale_pt-BR.js"></script>
+                <script src="<?= $this->basePath() ?>/js/util.js"></script>
+
+
+                <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.eot"></script>
+                <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.svg"></script>
+                <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.ttf"></script>
+                <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff"></script>
+                <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff2"></script>
+
+
+            </div>
+
     </body>
 </html>

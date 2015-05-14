@@ -34,9 +34,7 @@ class AreaTable {
         foreach ($result as $res) {
             $selectData[$res['id_area']] = $res['descricao'];
         }
-        return $selectData;
-        
-    
+        return $selectData; 
     }
  public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'descricao ASC', $like = null, $itensPaginacao = 5)          
 {      
