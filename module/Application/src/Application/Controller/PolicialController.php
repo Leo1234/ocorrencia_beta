@@ -84,8 +84,7 @@ class PolicialController extends AbstractActionController {
                 // aqui vai a lógica para adicionar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
                 $modelPolicial->exchangeArray($form->getData());
-                
-              
+                 
                 // 2 - persistir dados do model para banco de dados
                 $this->getPolicialTable()->save($modelPolicial);
 
@@ -121,8 +120,15 @@ class PolicialController extends AbstractActionController {
         try {
             // variável com objeto viatura localizado em formato de array
             $policial= (array) $this->getPolicialTable()->find($id);
+            
+            
+             
             // variável com objeto viatura localizado para ser usado para setar o campo policial do select.
             $policialObj =  $this->getPolicialTable()->find($id);
+            $policial['data_nasc'] = $this->getPolicialTable()->toDateDMY($policialObj->getData_nasc());
+             $policial['data_inclu'] = $this->getPolicialTable()->toDateDMY($policialObj->getData_inclu());
+           
+            
         } catch (Exception $exc) {
             // adicionar mensagem
             $this->flashMessenger()->addErrorMessage($exc->getMessage());
@@ -134,6 +140,8 @@ class PolicialController extends AbstractActionController {
         $form = new PolicialForm($dbAdapter);
         //configura o campo select com valor vindo da view index
          $form->get('id_grad')->setAttributes(array('value'=>$policialObj->getGraduacao()->getId_grad(),'selected'=>true));
+         //$form->get('data_nasc')->setAttribute('value',"Leonildo");
+           
         // popula objeto form viatura com objeto model viatura
         $form->setData($policial);
         // dados eviados para editar.phtml
@@ -246,6 +254,6 @@ public function deletarAction()
         // dados eviados para detalhes.phtml
         return ['policial' => $policial];
     }
-    
+
     
 }

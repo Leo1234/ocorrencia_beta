@@ -1,3 +1,4 @@
+</br>
 <div class="topo-table">
     <div class="row">
         <div class="col-lg-12">
@@ -53,8 +54,8 @@
                                 <td class="text-center"><?php echo $policial->getNome(); ?></td>
                                 <td class="text-center"><?php echo $policial->getNome_guerra(); ?></td>
                                 <td class="text-center"><?php echo $policial->getMatricula(); ?></td>
-                                <td class="text-center"><?php echo (new \DateTime($policial->getData_nasc()))->format('d/m/Y'); ?></td>
-                                <td class="text-center"><?php echo (new \DateTime($policial->getData_inclu()))->format('d/m/Y'); ?></td>
+                                <td class="text-center"><?php echo (new \DateTime($policial->getData_nasc()))->format('d/m/Y H:i:s'); ?></td>
+                                <td class="text-center"><?php echo (new \DateTime($policial->getData_inclu()))->format('d/m/Y H:i:s'); ?></td>
                                 <td class="text-center"><?php echo $policial->getSexo(); ?></td>
                                 <td>
                                     <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('policiais', array("action" => "detalhes", "id" => $policial->getId_policial(),)); ?>"><span class="glyphicon glyphicon-new-window"></span></a>

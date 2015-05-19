@@ -61,9 +61,10 @@ class Util extends AbstractHelper {
     static function toDateYMD($date) {
         if ($date != "") {
             list ($d, $m, $y) = explode('/', $date);
+             list ($a1, $h) = explode(' ', $y);
             $dataformatada = "$d-$m-$y";
             if ($dataformatada != "--") {
-                return "$y-$m-$d";
+                return "$y-$m-$d $h";
             }
         }
 

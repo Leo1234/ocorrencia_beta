@@ -108,35 +108,33 @@
 
         <div class="form-group">
             <label for="inputData_inclu" class="col-lg-3 col-md-3 control-label">Data Nascimento*:</label>
-            <div class="col-lg-8 col-md-8">
-                <div class="col-xs-1 date">
-                    <div class="input-group input-append date">
+            <div class="col-lg-3  col-md-3">
+                <div class='input-group date' id='datetimepickerNasc'>
                         <?php
                         // renderiza html input
-                        echo $this->formDate($formPolicial->get('data_nasc'));
+                        echo $this->formInput($formPolicial->get('data_nasc'));
 
                         // renderiza elemento de erro
                         echo $this->formElementErrors()
                                 ->setMessageOpenFormat('<small class="text-danger">')
                                 ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                                 ->setMessageCloseString('</small>')
-                                ->render($formPolicial->get('data_inclu'));
+                                ->render($formPolicial->get('data_nasc'));
                         ?>
 
                         <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                 </div>
             </div>
-        </div>
+     
 
         <div class="form-group">
             <label for="inputData_inclu" class="col-lg-3 col-md-3 control-label">Data Inclusão*:</label>
-            <div class="col-lg-9  col-md-9">
-                <div class="col-xs-1 date">
-                    <div class="input-group input-append date">
+        <div class="col-lg-3  col-md-3">
+                <div class='input-group date' id='datetimepickerInlcu'>
                         <?php
                         // renderiza html input
-                        echo $this->formDate($formPolicial->get('data_inclu'));
+                        echo $this->formInput($formPolicial->get('data_inclu'));
 
                         // renderiza elemento de erro
                         echo $this->formElementErrors()
@@ -149,7 +147,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+    
 
         <div class="form-group">
             <label for="inputSexo" class="col-lg-3 col-md-3 control-label">Sexo*:</label>

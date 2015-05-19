@@ -8,6 +8,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\Db\Sql\Select,
     Zend\Paginator\Adapter\DbSelect,
     Zend\Paginator\Paginator;
+use \DateTime;
 
 class PolicialTable {
 
@@ -95,23 +96,24 @@ class PolicialTable {
     }
 
     public function save(Policial $policial) {
+
         $data = [
             'id_grad' => $policial->getGraduacao()->getId_grad(),
             'numeral' => $policial->getNumeral(),
             'nome' => $policial->getNome(),
             'nome_guerra' => $policial->getNome_guerra(),
             'matricula' => $policial->getMatricula(),
-            'data_nasc' =>$policial->getData_nasc(), //(new \DateTime($policial->getData_nasc()))->format('y/m/d'),
-            'data_inclu' => $policial->getData_inclu(),//(new \DateTime($policial->getData_inclu()))->format('y/m/d'),
+            'data_nasc' => $this->toDateYMD($policial->getData_nasc()),
+            'data_inclu' => $this->toDateYMD($policial->getData_inclu()),
             'numeral' => $policial->getNumeral(),
             'sexo' => $policial->getSexo(),
         ];
-
-
         return $this->tableGateway->insert($data);
     }
 
     public function find($id) {
+        
+  
         $id = (int) $id;
 
         $select = new Select;
@@ -135,8 +137,8 @@ class PolicialTable {
             'nome' => $policial->getNome(),
             'nome_guerra' => $policial->getNome_guerra(),
             'matricula' => $policial->getMatricula(),
-            'data_nasc' =>$policial->getData_nasc(), //(new \DateTime($policial->getData_nasc()))->format('y/m/d'),
-            'data_inclu' => $policial->getData_inclu(),//(new \DateTime($policial->getData_inclu()))->format('y/m/d'),
+            'data_nasc' => $this->toDateYMD($policial->getData_nasc()),
+            'data_inclu' => $this->toDateYMD($policial->getData_inclu()),
             'numeral' => $policial->getNumeral(),
             'sexo' => $policial->getSexo(),
         ];
@@ -166,6 +168,30 @@ class PolicialTable {
         
 
     }
+ public function toDateYMD($date) {
+        if ($date != "") {
+            list ($d, $m, $y) = explode('/', $date);
+             list ($a1, $h) = explode(' ', $y);
+            $dataformatada = "$d-$m-$y";
+            if ($dataformatada != "--") {
+                return "$a1-$m-$d $h";
+            }
+        }
 
+        return "";
+    }
+     public function toDateDMY($date) {
+        
+        if ($date != "") {
+            list ($y, $m, $d) = explode('-', $date);
+             list ($d1, $h) = explode(' ', $d);
+            $dataformatada = "$d/$m/$y";
+            if ($dataformatada != "//") {
+                return "$d1/$m/$y $h";
+            }
+        }
 
+        return "";
+    }
+    
 }

@@ -100,7 +100,7 @@ class PolicialForm extends Form {
         ));
 
 
-
+/*
         $this->add(array(
             'type' => 'Zend\Form\Element\Date',
             'name' => 'data_nasc',
@@ -114,10 +114,8 @@ class PolicialForm extends Form {
             //'max' => '1997-01-01T00:00:00Z',
             )
         ));
-
-
-
-        $this->add(array(
+ * 
+ *     $this->add(array(
             'type' => 'Zend\Form\Element\Date',
             'name' => 'data_inclu',
             'options' => array(
@@ -131,6 +129,29 @@ class PolicialForm extends Form {
             )
         ));
 
+
+*/
+          $this->add(array(
+            'type' => 'Text', # ou 'type' => 'ZendFormElementText'
+            'name' => 'data_nasc',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'inputDataNasc',
+                'placeholder' => 'Data/hora Nascimento',
+            ),
+        ));
+
+            $this->add(array(
+            'type' => 'Text', # ou 'type' => 'ZendFormElementText'
+            'name' => 'data_inclu',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'inputDataInclu',
+                'placeholder' => 'Data/hora Inclusão',
+            ),
+        ));
+
+    
         $this->add(array(
             'type' => 'Zend\Form\Element\Radio',
             'name' => 'sexo',

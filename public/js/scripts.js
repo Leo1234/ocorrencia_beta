@@ -112,3 +112,19 @@ $(function() {
         locale: "pt-br"
     });
 });
+
+$(function() {
+
+    $("#datetimepickerNasc").datetimepicker({
+        locale: "pt-br",
+        showClear: true
+      
+    });
+});
+
+$(function() {
+    $("#datetimepickerInlcu").datetimepicker({
+        locale: "pt-br",
+        showClear: true
+    });
+});

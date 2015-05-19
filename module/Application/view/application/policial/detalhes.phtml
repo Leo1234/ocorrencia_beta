@@ -19,9 +19,9 @@
               <dt>Matrícula:</dt>
             <dd><?php echo $policial->getMatricula(); ?></dd>
               <dt>Data de nasciemento:</dt>
-            <dd><?php echo (new \DateTime($policial->getData_nasc()))->format('d/m/Y'); ?></dd>
+            <dd><?php echo (new \DateTime($policial->getData_nasc()))->format('d/m/Y H:i:s'); ?></dd>
               <dt>Data de inclusão:</dt>
-            <dd><?php echo (new \DateTime($policial->getData_inclu()))->format('d/m/Y'); ?></dd>
+            <dd><?php echo (new \DateTime($policial->getData_inclu()))->format('d/m/Y H:i:s'); ?></dd>
               <dt>Sexo:</dt>
             <dd><?php echo $policial->getSexo(); ?></dd>
         </dl>
