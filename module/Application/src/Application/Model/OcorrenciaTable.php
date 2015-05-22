@@ -26,7 +26,7 @@ class OcorrenciaTable {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('o' => 'ocorrencia'));
         $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "o.id_end = e.id_ende", array('*'));
+        $select->join(array('e' => 'endereco'), "o.id_end = e.id_end", array('rua','numero'));
         $select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
         $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
 
@@ -103,7 +103,7 @@ class OcorrenciaTable {
         $select = new \Zend\Db\Sql\Select;
         $select->from('ocorrencia');
         $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_endereco", array('*'));
+        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_endereco", array('rua','numero'));
         $select->join(array('a' => 'area'), "ocorrencia.id_area = a.id_area", array('descricao'));
         $select->join(array('v' => 'vtr'), "ocorrencia.id_vtr = v.id_vtr", array('prefixo'));
         $select->where(array('ocorrencia.id_ocorrencia' => $id));

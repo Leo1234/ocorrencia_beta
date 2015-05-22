@@ -1,0 +1,33 @@
+<?php
+$estruturaColuna = function($label, $coluna_end) {
+    $html = '';
+    $html .= "<a href='{$this->url('bairro', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_end' => $coluna_end, 'coluna_sort' => ($this->coluna_end!= $coluna_end? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+
+    if ($this->coluna_end == $coluna_end) {
+        $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';
+        $html .= "<span class='glyphicon glyphicon-sort-by-attributes{$icon}'></span> ";
+    }
+
+    $html .= $label;
+
+    return $html;
+};
+?>
+<tr>
+    <th>
+        <?php echo $estruturaColuna('Nº Registro', 'id_end'); ?>
+    </th>
+    <th>
+        <?php echo $estruturaColuna('Rua', 'rua'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Número', 'numero'); ?>
+    </th> 
+     <th>
+        <?php echo $estruturaColuna('Bairro', 'bairro'); ?>
+    </th>
+    <th>
+        <?php echo $estruturaColuna('Município', 'municipio'); ?>
+    </th>
+    
+</tr>

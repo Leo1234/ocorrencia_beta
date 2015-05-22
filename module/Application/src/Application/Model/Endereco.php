@@ -13,14 +13,16 @@ class Endereco implements InputFilterAwareInterface {
     public $id_end;
     public $rua;
     public $numero;
-    public $bairro;
+    public $id_bai;
+    public $municipio;
     protected $inputFilter;
 
     public function exchangeArray($data) {
         $this->id_end = (!empty($data['id_end'])) ? $data['id_end'] : null;
         $this->rua = (!empty($data['rua'])) ? $data['rua'] : null;
         $this->numero = (!empty($data['numero'])) ? $data['numero'] : null;
-        $this->bairro = (!empty($data['id_bai'])) ? new Bairro($data['id_bai'], $data['bairro']) : null;
+        $this->id_bai = (!empty($data['id_bai'])) ? new Bairro($data['id_bai'], $data['bairro']) : null;
+        $this->municipio    = (!empty($data['id_muni'])) ? new Municipio($data['id_muni'], $data['municipio']) : null;
     }
 
     //método da interface InputFilterAwareInterface, n será usado e lança apenas uma exceção
@@ -136,7 +138,7 @@ class Endereco implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-
+            
             $this->inputFilter = $inputFilter;
         }
 
@@ -155,8 +157,12 @@ class Endereco implements InputFilterAwareInterface {
         return $this->numero;
     }
 
-    public function getBairro() {
-        return $this->bairro;
+    public function getId_bai() {
+        return $this->id_bai;
+    }
+
+    public function getMunicipio() {
+        return $this->municipio;
     }
 
     public function setId_end($id_end) {
@@ -171,8 +177,14 @@ class Endereco implements InputFilterAwareInterface {
         $this->numero = $numero;
     }
 
-    public function setBairro($bairro) {
-        $this->bairro = $bairro;
+    public function setId_bai($id_bai) {
+        $this->id_bai = $id_bai;
     }
+
+    public function setMunicipio($municipio) {
+        $this->municipio = $municipio;
+    }
+
+
 
 }

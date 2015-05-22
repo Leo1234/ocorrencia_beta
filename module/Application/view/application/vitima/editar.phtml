@@ -1,44 +1,179 @@
-<div class="row">
-
-    <div class="col-lg-12">
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    Editar Contato ID <?php echo $this->id; ?>        
-                </div>
-            </div>
-            <form class="form-horizontal" role="form" method="POST" action="<?php echo $this->url('vitimas', array('action' => 'editar')); ?>">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label for="inputNome" class="col-lg-3 col-md-3 control-label">Nome:</label>
-                        <div class="col-lg-9 col-md-9">
-                            <input type="text" name="nome" class="form-control" id="inputNome" placeholder="Nome Completo" value="<?php echo $this->form['nome']; ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputTelefone" class="col-lg-3 col-md-3 control-label">Telefone:</label>
-                        <div class="col-lg-9  col-md-9">
-                            <input type="text" name="telefone" class="form-control" id="inputTelefonePrincipal" placeholder="Digite seu telefone" value="<?php echo $this->form['telefone']; ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputDataNascimento" class="col-lg-3 col-md-3 control-label">Data de Nascimento:</label>
-                        <div class="col-lg-9  col-md-9">
-                            <input type="text" name="data_nascimento" class="form-control" id="inputTelefoneSecundario" placeholder="Digite a data de nascimento" value="<?php echo $this->form['data_nascimento']; ?>">
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <input type="hidden" name="id" value="<?php echo $this->id; ?>">
-                    <button type="submit" class="btn btn-primary">Atualizar Contato</button>
-                    <a href="<?php echo $this->url('vitimas'); ?>" class="btn btn-default">Voltar</a>
-                </div>
-            </form>
-        </div>  
-
+</br>
+</br>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Editar Policial ID:  <?php echo $this->id ?>  
+        </div>
     </div>
 
+    <?php
+    // objeto form contato
+    $formPolicial = $this->formPolicial;
+    //var_dump ($formViatura);
+    // preparar elementos do formulário
+    $formPolicial->prepare();
+    // configurar url formulário
+    $formPolicial->setAttribute('action', $this->url('policiais', ['action' => 'atualizar']));
+    ?>  
+
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formPolicial) ?>
+
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="inputIdGrad" class="col-lg-3 col-md-3 control-label">Graduação*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formSelect($formPolicial->get('id_grad'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formPolicial->get('id_grad'));
+                ?>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="inputDecricao" class="col-lg-3 col-md-3 control-label">Numeral*:</label>
+        <div class="col-lg-9  col-md-9">
+            <?php
+            // renderiza html input
+            echo $this->formInput($formPolicial->get('numeral'));
+
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formPolicial->get('numeral'));
+            ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputNome" class="col-lg-3 col-md-3 control-label">Nome*:</label>
+        <div class="col-lg-9  col-md-9">
+            <?php
+            // renderiza html input
+            echo $this->formInput($formPolicial->get('nome'));
+
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formPolicial->get('nome'));
+            ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputNome_guerra" class="col-lg-3 col-md-3 control-label">Nome de Guerra*:</label>
+        <div class="col-lg-9  col-md-9">
+            <?php
+            // renderiza html input
+            echo $this->formInput($formPolicial->get('nome_guerra'));
+
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formPolicial->get('nome_guerra'));
+            ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputMatricula" class="col-lg-3 col-md-3 control-label">Matrícula*:</label>
+        <div class="col-lg-9  col-md-9">
+            <?php
+            // renderiza html input
+            echo $this->formInput($formPolicial->get('matricula'));
+
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formPolicial->get('matricula'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputData_nasci" class="col-lg-3 col-md-3 control-label">Data Nascimento*:</label>
+        <div class="col-lg-3  col-md-3">
+           <div class='input-group date' id='datetimepickerNasc'>
+                <?php
+                // renderiza html input
+                echo $this->formInput($formPolicial->get('data_nasc'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formPolicial->get('data_nasc'));
+                ?>
+                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputData_inclu" class="col-lg-3 col-md-3 control-label">Data Inclusão*:</label>
+        <div class="col-lg-3  col-md-3">
+            <div class='input-group date' id='datetimepickerInlcu'>
+                <?php
+                // renderiza html input
+                echo $this->formInput($formPolicial->get('data_inclu'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formPolicial->get('data_inclu'));
+                ?>
+                <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputSexo" class="col-lg-3 col-md-3 control-label">Sexo*:</label>
+        <div class="col-lg-9  col-md-9">
+            <div class="checkbox">
+                <?php
+                // renderiza html input
+
+                echo $this->formRadio($formPolicial->get('sexo'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formPolicial->get('sexo'));
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="panel-footer">
+    <?php
+    // renderiza html input hidden para id
+    echo $this->formHidden($formPolicial->get('id_policial'));
+    ?>
+
+    <button type="submit" class="btn btn-primary">Atualizar Policial</button>
+    <a href="<?php echo $this->url('policiais'); ?>" class="btn btn-default">Voltar</a>
+</div>
+
+<?php // renderiza html </form> ?>
+<?php echo $this->form()->closeTag() ?>

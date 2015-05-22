@@ -144,7 +144,7 @@ class BairroTable {
     }
     public function save(Bairro $bairro) {
         $data = [
-            'bairro' => $bairro->getBairro(),
+            'bairro' =>  $bairro->getBairro(),
             'id_area' => $bairro->getArea()->getId_area(),
             'id_muni' => $bairro->getMunicipio()->getId_muni(),
         ];

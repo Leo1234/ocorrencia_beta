@@ -12,6 +12,7 @@ return array(
             'Application\Controller\Droga' => 'Application\Controller\DrogaController',
             'Application\Controller\Crime' => 'Application\Controller\CrimeController',
             'Application\Controller\Arma' => 'Application\Controller\ArmaController',
+            'Application\Controller\endereco' => 'Application\Controller\EnderecoController',
             'MunicipioController' => 'Application\Controller\MunicipioController',
             'VitimaController' => 'Application\Controller\VitimaController',
             'PolicialController' => 'Application\Controller\PolicialController',
@@ -95,6 +96,20 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Application\Controller\Arma',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'endereco' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/endereco[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Endereco',
                         'action' => 'index',
                     ),
                 ),

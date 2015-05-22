@@ -103,13 +103,15 @@ $(function() {
 });
 $(function() {
     $("#datetimepickerI").datetimepicker({
-        locale: "pt-br"
+        locale: "pt-br",
+        showClear: true
     });
 });
 
 $(function() {
     $("#datetimepickerF").datetimepicker({
-        locale: "pt-br"
+        locale: "pt-br",
+        showClear: true
     });
 });
 

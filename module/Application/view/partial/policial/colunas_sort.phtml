@@ -1,7 +1,7 @@
 <?php
 $estruturaColuna = function($label, $coluna_nome) {
     $html = '';
-    $html .= "<a href='{$this->url('area', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_nome' => $coluna_nome, 'coluna_sort' => ($this->coluna_nome != $coluna_nome ? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+    $html .= "<a href='{$this->url('policiais', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_nome' => $coluna_nome, 'coluna_sort' => ($this->coluna_nome != $coluna_nome ? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
 
     if ($this->coluna_nome == $coluna_nome) {
         $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';

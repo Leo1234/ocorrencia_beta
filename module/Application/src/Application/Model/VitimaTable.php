@@ -7,9 +7,8 @@ use Zend\Db\Adapter\Adapter,
     Zend\Db\TableGateway\TableGateway,
     Zend\Db\Sql\Select,
     Zend\Paginator\Adapter\DbSelect,
-    Zend\Db\Sql\Sql,
     Zend\Paginator\Paginator;
-
+use \DateTime;
 
 class VitimaTable {
 
@@ -17,180 +16,184 @@ class VitimaTable {
     protected $adapter;
     protected $resultSetPrototype;
 
-    /**
-     * Contrutor com dependencia do Adapter do Banco
-     * 
-     * @param \Zend\Db\Adapter\Adapter $adapter
-     */
     public function __construct(Adapter $adapter) {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
         $this->resultSetPrototype->setArrayObjectPrototype(new Vitima());
-
         $this->tableGateway = new TableGateway('vitima', $this->adapter, null, $this->resultSetPrototype);
     }
 
-    /**
-     * Recuperar todos os elementos da tabela policial
-     * 
-     * @return ResultSet
-     */
-    public function fetchAll($currentPage = 0, $countPerPage = 0) {
-        $select = new \Zend\Db\Sql\Select;
-        $select->from(array('o' => 'ocorrencia'));
-        $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "o.id_end = e.id_endereco", array('*'));
-        $select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
-        $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
+    public function fetchAll() {
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT id_vitima,nome  FROM vitima ORDER BY id_vitima ASC';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
 
-        // create a new pagination adapter object
-        $paginatorAdapter = new DbSelect(
-                // our configured select object
-                $select,
-                // the adapter to run it against
-                $this->tableGateway->getAdapter(),
-                // the result set to hydrate
-                $this->resultSetPrototype
-        );
-        $paginator = new Paginator($paginatorAdapter);
-        $paginator->setItemCountPerPage($countPerPage);
-        $paginator->setCurrentPageNumber($currentPage);
+        $selectData = array();
 
-
-        return $paginator;
-    }
-    
-    public function vitimasOcorrencia($id_ocorrencia) {
-        $select = new \Zend\Db\Sql\Select;
-        $select->from('vitima');
-        $select->columns(array('*'));
-        $select->join(array('ov'=>'ocorrencia_vitima'), "vitima.id_vitima = ov.id_vitima", array());
-        $select->where(array('id_ocorrencia'=>$id_ocorrencia));
-        $select->order(array('nome ASC')); // produces 'name' ASC, 'age' DESC
-
-        // create a new pagination adapter object
-        $paginatorAdapter = new DbSelect(
-                // our configured select object
-                $select,
-                // the adapter to run it against
-                $this->tableGateway->getAdapter(),
-                // the result set to hydrate
-                $this->resultSetPrototype
-        );
-        $paginator = new Paginator($paginatorAdapter);
-
-
-        return $paginator;
+        foreach ($result as $res) {
+            $selectData[$res['id_vitima']] = $res['nome'];
+        }
+        return $selectData;
     }
 
-    /**
-     * Localizar linha especifico pelo id da tabela policial
-     * 
-     * @param type $id
-     * @return \Model\Policial
-     * @throws \Exception
-     */
+    public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'nome ASC', $like = null, $itensPaginacao = 5) {
+        $select = new Select;
+        $select->from(array('v' => 'vitima'));
+        $select->columns(array('*'));
+        $select->join(array('e' => 'endereco'), "v.id_end = e.id_end", array('rua', 'numero'));
+        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai','bairro'));
+        $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
+        $select->order($ordem);
+
+
+        if (isset($like)) {
+            $select
+                    ->where
+                    ->like('id_vitima', "%{$like}%")
+                    ->or
+                    ->like('nome', "%{$like}%")
+                    ->or
+                    ->like('telefone', "%{$like}%")
+                    ->or
+                    ->like('data_nasc', "%{$like}%")
+                    ->or
+                    ->like('sexo', "%{$like}%")
+                    ->or
+                    ->like('rua', "%{$like}%")
+                    ->or
+                    ->like('numero', "%{$like}%")
+                    ->or
+                    ->like('bairro', "%{$like}%")
+                    ->or
+                    ->like('municipio', "%{$like}%")
+            ;
+        }
+
+        // criar um objeto com a estrutura desejada para armazenar valores
+        // $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
+
+        $resultSetPrototype = new ResultSet();
+        $resultSetPrototype->setArrayObjectPrototype(new Vitima());
+
+        // criar um objeto adapter paginator
+        $paginatorAdapter = new DbSelect(
+                // nosso objeto select
+                $select,
+                // nosso adapter da tabela
+                $this->tableGateway->getAdapter(),
+                // nosso objeto base para ser populado
+                //$resultSet
+                $resultSetPrototype
+        );
+
+
+        // resultado da paginação
+        return (new Paginator($paginatorAdapter))
+                        // pagina a ser buscada
+                        ->setCurrentPageNumber((int) $pagina)
+                        // quantidade de itens na página
+                        ->setItemCountPerPage((int) $itensPagina)
+                        ->setPageRange((int) $itensPaginacao);
+    }
+
+    public function save(Vitima $vitima) {
+
+        $data = [
+            'id_grad' => $vitima->getGraduacao()->getId_grad(),
+            'numeral' => $vitima->getNumeral(),
+            'nome' => $vitima->getNome(),
+            'nome_guerra' => $vitima->getNome_guerra(),
+            'matricula' => $vitima->getMatricula(),
+            'data_nasc' => $this->toDateYMD($vitima->getData_nasc()),
+            'data_inclu' => $this->toDateYMD($vitima->getData_inclu()),
+            'numeral' => $vitima->getNumeral(),
+            'sexo' => $vitima->getSexo(),
+        ];
+        return $this->tableGateway->insert($data);
+    }
+
     public function find($id) {
-
+        
+  
         $id = (int) $id;
 
-
-        $select = new \Zend\Db\Sql\Select;
-        $select->from('ocorrencia');
+        $select = new Select;
+        $select->from('vitima');
         $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_endereco", array('*'));
-        $select->join(array('a' => 'area'), "ocorrencia.id_area = a.id_area", array('descricao'));
-        $select->join(array('v' => 'vtr'), "ocorrencia.id_vtr = v.id_vtr", array('prefixo'));
-        $select->where(array('ocorrencia.id_ocorrencia' => $id));
-        $select->order(array('data ASC', 'horario ASC')); // produces 'name' ASC, 'age' DESC
-        //echo $select->getSqlString();exit;
+        $select->join(array('g' => 'graduacao'), "vitima.id_grad = g.id_grad", array('id_grad', 'graduacao'));
+        $select->where(array('vitima.id_vitima' => $id));
+
         $rowset = $this->tableGateway->selectWith($select);
         $row = $rowset->current();
 
-
         if (!$row)
-            throw new \Exception("Não foi encontrado a ocorrencia  de id = {$id}");
-
+            throw new \Exception("Não foi encontrado vitima de id = {$id}");
         return $row;
     }
 
-    public function salvarOcorrencia(Ocorrencia $oc) {
-        $data = array(
-            'id_ocorrencia' => $oc->getId_ocorrencia(),
-            'id_end' => $oc->getId_end(),
-            'id_vtr' => $oc->getVtr()->getId_vtr(),
-            'id_area' => $oc->getArea()->getId_area(),
-            'id_usuario' => $oc->getId_usuario(),
-            'data' => $oc->getData(),
-            'horario' => $oc->getHorario(),
-            'narracao' => strtoupper($oc->getNarracao()),
-        );
+    public function update(Vitima $vitima) {
+        $data = [
+            'id_grad' => $vitima->getGraduacao()->getId_grad(),
+            'numeral' => $vitima->getNumeral(),
+            'nome' => $vitima->getNome(),
+            'nome_guerra' => $vitima->getNome_guerra(),
+            'matricula' => $vitima->getMatricula(),
+            'data_nasc' => $this->toDateYMD($vitima->getData_nasc()),
+            'data_inclu' => $this->toDateYMD($vitima->getData_inclu()),
+            'numeral' => $vitima->getNumeral(),
+            'sexo' => $vitima->getSexo(),
+        ];
 
-        $id = (int) $oc->getId_ocorrencia();
-        if ($id == 0) {
-            $this->tableGateway->insert($data);
-            return $this->tableGateway->lastInsertValue;
+        $id = (int) $vitima->getId_vitima();
+        //$id = 1;
+
+        if ($this->find($id)) {
+            $this->tableGateway->update($data, array('id_vitima' => $id));
         } else {
-            if ($this->find($id)) {
-                $this->tableGateway->update($data, array('id_ocorrencia' => $id));
-            } else {
-                throw new \Exception('Ocorrencia não encontrada');
+            throw new Exception("Vitima #{$id} inexistente");
+        }
+    }
+    
+    
+    public function findByOcorrecia($id_ocorrencia) {
+        $id = (int) $id_ocorrencia;
+        
+        
+        $select = new \Zend\Db\Sql\Select;
+        $select->from('vitima');
+        $select->columns(array('*'));
+        $select->join(array('op'=>'ocorrencia_vitima'), "vitima.id_vitima = op.id_vitima");
+        $select->where(array('op.id_ocorrencia' => $id));
+        
+        return $this->tableGateway->selectWith($select);
+        
+
+    }
+ public function toDateYMD($date) {
+        if ($date != "") {
+            list ($d, $m, $y) = explode('/', $date);
+             list ($a1, $h) = explode(' ', $y);
+            $dataformatada = "$d-$m-$y";
+            if ($dataformatada != "--") {
+                return "$a1-$m-$d $h";
             }
         }
+
+        return "";
     }
-
-    public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
-        $sql = new Sql($this->adapter);
-        $insert = $sql->insert('ocorrencia_policial');
-        $newData = array(
-            'id_ocorrencia' => $id_ocorrencia,
-            'id_policial' => $id_policial,
-        );
-        $insert->values($newData);
-        $selectString = $sql->getSqlStringForSqlObject($insert);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
-
-    public function delPoliciaisOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $delete = $sql->delete('ocorrencia_policial')->where(array('id_ocorrencia' => $id_ocorrencia));
-
-        $selectString = $sql->getSqlStringForSqlObject($delete);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
-
-    public function deleteOcorrencia($id) {
-        try {
-            return $this->tableGateway->delete(array('id_ocorrencia' => $id));
-        } catch (\Exception $e) {
-            return false;
+     public function toDateDMY($date) {
+        
+        if ($date != "") {
+            list ($y, $m, $d) = explode('-', $date);
+             list ($d1, $h) = explode(' ', $d);
+            $dataformatada = "$d/$m/$y";
+            if ($dataformatada != "//") {
+                return "$d1/$m/$y $h";
+            }
         }
-    }
-    
-    public function totalVitimasOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $select = $sql->select('ocorrencia_vitima')->where(array('id_ocorrencia' => $id_ocorrencia));
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
-    
-    public function totalAcusadosOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $select = $sql->select('ocorrencia_acusado')->where(array('id_ocorrencia' => $id_ocorrencia));
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
-    
-    public function totalCrimesOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $select = $sql->select('ocorrencia_crime')->where(array('id_ocorrencia' => $id_ocorrencia));
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
 
+        return "";
+    }
+    
 }

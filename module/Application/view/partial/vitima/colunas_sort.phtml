@@ -1,0 +1,46 @@
+<?php
+$estruturaColuna = function($label, $coluna_nome) {
+    $html = '';
+    $html .= "<a href='{$this->url('vitimas', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_nome' => $coluna_nome, 'coluna_sort' => ($this->coluna_nome != $coluna_nome ? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+
+    if ($this->coluna_nome == $coluna_nome) {
+        $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';
+        $html .= "<span class='glyphicon glyphicon-sort-by-attributes{$icon}'></span> ";
+    }
+
+    $html .= $label;
+
+    return $html;
+};
+?>
+<tr>
+    <th>
+        <?php echo $estruturaColuna('Nº Registro', 'id_vitima'); ?>
+    </th>
+    <th>
+        <?php echo $estruturaColuna('Nome', 'nome'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Telefone', 'telefone'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Data Nasc.', 'data_nasc'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Sexo', 'sexo'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Rua', 'rua'); ?>
+    </th> 
+    <th>
+        <?php echo $estruturaColuna('Nº', 'numero'); ?>
+    </th> 
+
+    <th>
+        <?php echo $estruturaColuna('Bairro', 'bairro'); ?>
+    </th>
+    <th>
+        <?php echo $estruturaColuna('Município', 'municipio'); ?>
+    </th>
+    <th>Ação</th>  
+</tr>

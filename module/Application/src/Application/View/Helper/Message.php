@@ -26,6 +26,7 @@ class Message extends AbstractHelper
     {
         $html = '';
         $message = $this->getMessage();
+        
 
         if ($message) {
             $key   = key($message);
