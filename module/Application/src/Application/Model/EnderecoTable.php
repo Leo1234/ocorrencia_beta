@@ -22,7 +22,6 @@ class EnderecoTable {
         $this->tableGateway = new TableGateway('Endereco', $this->adapter, null, $this->resultSetPrototype);
     }
 
-  
     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'id_end ASC', $like = null, $itensPaginacao = 5) {
         $select = new Select;
         $select->from('endereco');
@@ -31,7 +30,7 @@ class EnderecoTable {
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
         $select->order($ordem);
 
-       
+
         if (isset($like)) {
             $select
                     ->where
@@ -45,7 +44,7 @@ class EnderecoTable {
             ;
         }
 
-    
+
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Endereco());
 
@@ -59,7 +58,7 @@ class EnderecoTable {
                 //$resultSet
                 $resultSetPrototype
         );
- 
+
 
         // resultado da paginação
         return (new Paginator($paginatorAdapter))
@@ -69,17 +68,17 @@ class EnderecoTable {
                         ->setItemCountPerPage((int) $itensPagina)
                         ->setPageRange((int) $itensPaginacao);
     }
-  
-    
+
     public function save(Endereco $endereco) {
         $data = [
             'id_end' => $endereco->getId_end(),
             'rua' => $endereco->getRua(),
             'numero' => $endereco->getNumero(),
-            'id_bai' => $endereco->getBairro()->getId_bai(),
+            'id_bai' => $endereco->getId_bai()->getId_bai(),
         ];
 
-        return $this->tableGateway->insert($data);
+        $this->tableGateway->insert($data);
+        return $this->tableGateway->lastInsertValue;
     }
 
     public function find($id) {
@@ -108,7 +107,7 @@ class EnderecoTable {
         ];
 
         $id = (int) $endereco->getId_end();
-     
+
         if ($this->find($id)) {
             $this->tableGateway->update($data, array('id_end' => $id));
         } else {

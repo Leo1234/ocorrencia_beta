@@ -63,7 +63,7 @@ class Procedimento implements InputFilterAwareInterface{
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 2,
-                            'max' => 10,
+                            'max' => 20,
                             'messages' => array(
                                 \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
                                 \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',

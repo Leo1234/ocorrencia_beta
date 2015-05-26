@@ -42,7 +42,7 @@ class VitimaTable {
         $select->from(array('v' => 'vitima'));
         $select->columns(array('*'));
         $select->join(array('e' => 'endereco'), "v.id_end = e.id_end", array('rua', 'numero'));
-        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai','bairro'));
+        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai','bairro','id_area'));
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
         $select->order($ordem);
 
@@ -100,35 +100,33 @@ class VitimaTable {
     public function save(Vitima $vitima) {
 
         $data = [
-            'id_grad' => $vitima->getGraduacao()->getId_grad(),
-            'numeral' => $vitima->getNumeral(),
+          
             'nome' => $vitima->getNome(),
-            'nome_guerra' => $vitima->getNome_guerra(),
-            'matricula' => $vitima->getMatricula(),
+            'telefone' => $vitima->getTelefone(),
             'data_nasc' => $this->toDateYMD($vitima->getData_nasc()),
-            'data_inclu' => $this->toDateYMD($vitima->getData_inclu()),
-            'numeral' => $vitima->getNumeral(),
             'sexo' => $vitima->getSexo(),
+            'id_end' => $vitima->getEnd(),
         ];
         return $this->tableGateway->insert($data);
     }
+    
 
     public function find($id) {
-        
-  
         $id = (int) $id;
-
         $select = new Select;
         $select->from('vitima');
         $select->columns(array('*'));
-        $select->join(array('g' => 'graduacao'), "vitima.id_grad = g.id_grad", array('id_grad', 'graduacao'));
+        $select->join(array('e' => 'endereco'), "vitima.id_end = e.id_end", array('rua', 'numero'));
+        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro', 'id_area'));
+        $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
+
         $select->where(array('vitima.id_vitima' => $id));
 
         $rowset = $this->tableGateway->selectWith($select);
         $row = $rowset->current();
 
         if (!$row)
-            throw new \Exception("Não foi encontrado vitima de id = {$id}");
+            throw new \Exception("Não foi encontrado vítima de id = {$id}");
         return $row;
     }
 

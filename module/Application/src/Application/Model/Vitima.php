@@ -7,6 +7,9 @@ use Zend\InputFilter\InputFilterAwareInterface,
     Zend\InputFilter\InputFilter,
     Zend\I18n\Validator\Int,
     Zend\InputFilter\InputFilterInterface;
+use Application\Model\Endereco;
+use Application\Model\Bairro;
+use Application\Model\Municipio;
 
 class Vitima implements InputFilterAwareInterface {
 
@@ -15,10 +18,7 @@ class Vitima implements InputFilterAwareInterface {
     public $telefone;
     public $data_nasc;
     public $sexo;
-    public $rua;
-    public $numero;
-    public $bairro;
-    public $municipio;
+    public $end;
     protected $inputFilter;
 
     public function exchangeArray($data) {
@@ -28,10 +28,7 @@ class Vitima implements InputFilterAwareInterface {
         $this->telefone = (!empty($data['telefone'])) ? $data['telefone'] : null;
         $this->data_nasc = (!empty($data['data_nasc'])) ? $data['data_nasc'] : null;
         $this->sexo = (!empty($data['sexo'])) ? $data['sexo'] : null;
-        $this->rua = (!empty($data['rua'])) ? $data['rua'] : null;
-        $this->numero = (!empty($data['numero'])) ? $data['numero'] : null;
-        $this->bairro = (!empty($data['id_bai'])) ? new Bairro($data['id_bai'], $data['bairro']) : null;
-        $this->municipio = (!empty($data['id_muni'])) ? new Municipio($data['id_muni'], $data['municipio']) : null;
+        $this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'], $data['numero'], new Bairro($data['id_bai'], $data['bairro'], new Municipio($data['id_muni'], $data['municipio']))) : null;
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter) {
@@ -51,6 +48,24 @@ class Vitima implements InputFilterAwareInterface {
                 ),
             ));
 
+            $inputFilter->add(array(
+                'name' => 'rua',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'), # remove xml e html da string
+                    array('name' => 'StringTrim'), # remove espacos do início e do final da string           
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
+                ),
+            ));
 
             $inputFilter->add(array(
                 'name' => 'nome',
@@ -105,7 +120,7 @@ class Vitima implements InputFilterAwareInterface {
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 8,
+                            'min' => 9,
                             'max' => 12,
                             'messages' => array(
                                 \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
@@ -116,6 +131,58 @@ class Vitima implements InputFilterAwareInterface {
                 ),
             ));
 
+
+            $inputFilter->add(array(
+                'name' => 'data_nasc',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'), # remove xml e html da string
+                    array('name' => 'StringTrim'), # remove espacos do início e do final da string
+                //array('name' => 'StringToUpper'), # transofrma string para maiusculo
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 8,
+                            'max' => 19,
+                            'messages' => array(
+                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
+                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
+                            ),
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'sexo',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'), # remove xml e html da string
+                    array('name' => 'StringTrim'), # remove espacos do início e do final da string
+                //array('name' => 'StringToUpper'), # transofrma string para maiusculo
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
+                ),
+            ));
 
             $this->inputFilter = $inputFilter;
         }
@@ -143,20 +210,8 @@ class Vitima implements InputFilterAwareInterface {
         return $this->sexo;
     }
 
-    public function getRua() {
-        return $this->rua;
-    }
-
-    public function getNumero() {
-        return $this->numero;
-    }
-
-    public function getBairro() {
-        return $this->bairro;
-    }
-
-    public function getMunicipio() {
-        return $this->municipio;
+    public function getEnd() {
+        return $this->end;
     }
 
     public function setId_vitima($id_vitima) {
@@ -179,20 +234,8 @@ class Vitima implements InputFilterAwareInterface {
         $this->sexo = $sexo;
     }
 
-    public function setRua($rua) {
-        $this->rua = $rua;
-    }
-
-    public function setNumero($numero) {
-        $this->numero = $numero;
-    }
-
-    public function setId_bai($id_bai) {
-        $this->id_bai = $id_bai;
-    }
-
-    public function setMunicipio($municipio) {
-        $this->municipio = $municipio;
+    public function setEnd($end) {
+        $this->end = $end;
     }
 
 }

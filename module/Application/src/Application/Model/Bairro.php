@@ -13,15 +13,18 @@ class Bairro implements InputFilterAwareInterface{
     public $id_bai;
     public $bairro;
     public $municipio;
-     public $area;
+    public $area;
     protected $inputFilter;
     
-    function __construct($id_bai=0, $bairro="", Area  $a = null ,Municipio $m = null) {
+   
+    function __construct($id_bai=0, $bairro="", Municipio $m = null) {
         $this->id_bai = $id_bai;
         $this->bairro = $bairro;
-        $this->area = $a;
+        //$this->area = $a;
         $this->municipio = $m;
     }
+   
+    
     
     public function exchangeArray($data) {
         $this->id_bai      = (!empty($data['id_area'])) ? $data['id_bai'] : null;

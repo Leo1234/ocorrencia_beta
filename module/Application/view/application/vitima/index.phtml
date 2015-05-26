@@ -53,10 +53,10 @@
                                 <td class="text-center"><?php echo $vitima->getTelefone(); ?></td>
                                 <td class="text-center"><?php echo (new \DateTime($vitima->getData_Nasc()))->format('d/m/Y H:i:s'); ?></td>
                                 <td class="text-center"><?php echo $vitima->getSexo(); ?></td>
-                                <td class="text-center"><?php echo $vitima->getRua(); ?></td>
-                                <td class="text-center"><?php echo $vitima->getNumero(); ?></td>
-                                <td class="text-center"><?php echo $vitima->getBairro()->getBairro(); ?></td>
-                               <td class="text-center"><?php echo $vitima->getMunicipio()->getMunicipio(); ?></td>                       
+                                <td class="text-center"><?php echo $vitima->getEnd()->getRua(); ?></td>
+                                <td class="text-center"><?php echo $vitima->getEnd()->getNumero(); ?></td>
+                               <td class="text-center"><?php echo $vitima->getEnd()->getId_bai()->getBairro(); ?></td>
+                               <td class="text-center"><?php echo $vitima->getEnd()->getId_bai()->getMunicipio()->getMunicipio(); ?></td>
                                 <td>
                                     <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('vitimas', array("action" => "detalhes", "id" => $vitima->getId_vitima(),)); ?>"><span class="glyphicon glyphicon-new-window"></span></a>
                                     <a class="btn btn-xs btn-warning" title="Editar" href="<?php echo $this->url('vitimas', array("action" => "editar", "id" => $vitima->getId_vitima(),)); ?>"><span class="glyphicon glyphicon-edit"></span></a>

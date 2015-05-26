@@ -101,6 +101,7 @@ $(function() {
     });
 
 });
+
 $(function() {
     $("#datetimepickerI").datetimepicker({
         locale: "pt-br",
@@ -128,5 +129,14 @@ $(function() {
     $("#datetimepickerInlcu").datetimepicker({
         locale: "pt-br",
         showClear: true
+    });
+});
+
+$(function() {
+
+    $("#datetimepickerNascV").datetimepicker({
+        locale: "pt-br",
+        showClear: true
+      
     });
 });

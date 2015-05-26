@@ -30,7 +30,8 @@ class Ocorrencia implements InputFilterAwareInterface {
     public function exchangeArray($data) {
 
         $this->id_oco = (!empty($data['id_oco'])) ? $data['id_oco'] : null;
-        $this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'], $data['numero'], $data['id_bai']) : null;
+        //$this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'], $data['numero'], $data['id_bai']) : null;
+        $this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'],$data['numero'], new Bairro($data['id_bai'], $data['bairro'], new Municipio($data['id_muni'], $data['municipio'])) ) : null;
         $this->vtr = (!empty($data['id_vtr'])) ? new Viatura($data['id_vtr'], $data['prefixo']) : null;
         $this->area = (!empty($data['id_area'])) ? new Area($data['id_area'], $data['descricao']) : null;
         $this->data = (!empty($data['data'])) ? $data['data'] : null;
