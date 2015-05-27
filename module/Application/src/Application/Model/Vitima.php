@@ -20,7 +20,16 @@ class Vitima implements InputFilterAwareInterface {
     public $sexo;
     public $end;
     protected $inputFilter;
+    
+    public function vitima($data) {
 
+        $this->id_vitima = (!empty($data['id_vitima'])) ? $data['id_vitima'] : null;
+        $this->nome = (!empty($data['nome'])) ? $data['nome'] : null;
+        $this->telefone = (!empty($data['telefone'])) ? $data['telefone'] : null;
+        $this->data_nasc = (!empty($data['data_nasc'])) ? $data['data_nasc'] : null;
+        $this->sexo = (!empty($data['sexo'])) ? $data['sexo'] : null;
+        $this->end = (!empty($data['id_end'])) ? $data['id_end'] : null;
+    }
     public function exchangeArray($data) {
 
         $this->id_vitima = (!empty($data['id_vitima'])) ? $data['id_vitima'] : null;

@@ -44,10 +44,10 @@ class VitimaForm extends Form {
             'type' => 'Hidden', # ou 'type' => 'ZendFormElementHidden'
             'name' => 'id_vitima',
         ));
-
-        $this->add(array(
+        
+           $this->add(array(
             'type' => 'Hidden', # ou 'type' => 'ZendFormElementHidden'
-            'name' => 'end',
+            'name' => 'id_end',
         ));
 
         $this->add(array(

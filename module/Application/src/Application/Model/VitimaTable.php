@@ -132,25 +132,22 @@ class VitimaTable {
 
     public function update(Vitima $vitima) {
         $data = [
-            'id_grad' => $vitima->getGraduacao()->getId_grad(),
-            'numeral' => $vitima->getNumeral(),
             'nome' => $vitima->getNome(),
-            'nome_guerra' => $vitima->getNome_guerra(),
-            'matricula' => $vitima->getMatricula(),
+            'telefone' => $vitima->getTelefone(),
             'data_nasc' => $this->toDateYMD($vitima->getData_nasc()),
-            'data_inclu' => $this->toDateYMD($vitima->getData_inclu()),
-            'numeral' => $vitima->getNumeral(),
             'sexo' => $vitima->getSexo(),
+            'id_end' => $vitima->getEnd(),
         ];
 
         $id = (int) $vitima->getId_vitima();
-        //$id = 1;
+        $this->tableGateway->update($data, array('id_vitima' => $id));
 
+       /*
         if ($this->find($id)) {
             $this->tableGateway->update($data, array('id_vitima' => $id));
         } else {
             throw new Exception("Vitima #{$id} inexistente");
-        }
+        }*/
     }
     
     

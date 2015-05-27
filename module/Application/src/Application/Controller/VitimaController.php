@@ -110,29 +110,31 @@ class VitimaController extends AbstractActionController {
             // adicionar mensagem de erro
             $this->flashMessenger()->addMessage("Vitima não encotrado");
             // redirecionar para action index
-            return $this->redirect()->toRoute('policiais');
+            return $this->redirect()->toRoute('vitimas');
         }
         try {
             // variável com objeto viatura localizado em formato de array
             $vitima = (array) $this->getVitimaTable()->find($id);
-
-
-
+            //var_dump( $vitima );
             // variável com objeto viatura localizado para ser usado para setar o campo vitima do select.
             $vitimaObj = $this->getVitimaTable()->find($id);
             $vitima['data_nasc'] = $this->getVitimaTable()->toDateDMY($vitimaObj->getData_nasc());
-            $vitima['data_inclu'] = $this->getVitimaTable()->toDateDMY($vitimaObj->getData_inclu());
+            $vitima['rua'] = $vitimaObj->getEnd()->getRua();
+            $vitima['numero'] = $vitimaObj->getEnd()->getNumero();
+            $vitima['id_end'] = $vitimaObj->getEnd()->getId_end();
         } catch (Exception $exc) {
             // adicionar mensagem
             $this->flashMessenger()->addErrorMessage($exc->getMessage());
             // redirecionar para action index
-            return $this->redirect()->toRoute('policiais');
+            return $this->redirect()->toRoute('vitimas');
         }
         // objeto form viatura vazio
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
         $form = new VitimaForm($dbAdapter);
         //configura o campo select com valor vindo da view index
-        $form->get('id_grad')->setAttributes(array('value' => $vitimaObj->getGraduacao()->getId_grad(), 'selected' => true));
+
+        $form->get('id_muniO')->setAttributes(array('value' => $vitimaObj->getEnd()->getId_bai()->getMunicipio()->getId_muni(), 'selected' => true));
+        $form->get('id_bai')->setAttributes(array('value' => $vitimaObj->getEnd()->getId_bai()->getId_bai(), 'selected' => true));
         //$form->get('data_nasc')->setAttribute('value',"Leonildo");
         // popula objeto form viatura com objeto model viatura
         $form->setData($vitima);
@@ -145,9 +147,11 @@ class VitimaController extends AbstractActionController {
 
         // obtém a requisição
         $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+
+
 
         if ($request->isPost()) {
-
 
             // instancia formulário
             $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
@@ -162,9 +166,15 @@ class VitimaController extends AbstractActionController {
             $form->setData($request->getPost());
             // verifica se o formulário segue a validação proposta
             if ($form->isValid()) {
+
+                $bairro = $this->getBairroTable()->find($postData['id_bai']);
+                $modelEndereco = new Endereco($postData['id_end'], $postData['rua'], $postData['numero'], $bairro);
+                $this->getEnderecoTable()->update($modelEndereco);
+
                 // aqui vai a lógica para atualizar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
-                $modelVitima->exchangeArray($form->getData());
+                $modelVitima->vitima($form->getData());
+
 
                 // 2 - atualizar dados do model para banco de dados
 
@@ -175,19 +185,19 @@ class VitimaController extends AbstractActionController {
                         ->addSuccessMessage("Vitima editado com sucesso");
 
                 // redirecionar para action detalhes
-                return $this->redirect()->toRoute('policiais', array("action" => "detalhes", "id" => $modelVitima->getId_vitima()));
+                return $this->redirect()->toRoute('vitimas', array("action" => "detalhes", "id" => $modelVitima->getId_vitima()));
             } else { // em caso da validação não seguir o que foi definido
                 // renderiza para action editar com o objeto form populado,
                 // com isso os erros serão tratados pelo helpers view
                 return (new ViewModel())
                                 ->setVariable('formVitima', $form)
-                                ->setTemplate('application/policiais/editar');
+                                ->setTemplate('application/vitimas/editar');
             }
         }
     }
 
     // DELETE /vitimas/deletar/id
-    
+
     public function deletarAction() {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -211,7 +221,7 @@ class VitimaController extends AbstractActionController {
     }
 
     // GET /vitimas/detalhes/id
-    public function detalhesAction(){
+    public function detalhesAction() {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -229,8 +239,8 @@ class VitimaController extends AbstractActionController {
             // 1 - solicitar serviço para pegar o model responsável pelo find
             // 2 - solicitar form com dados desse vitima encontrado
             // formulário com dados preenchidos
-            
-            $vitima= $this->getVitimaTable()->find($id);
+
+            $vitima = $this->getVitimaTable()->find($id);
         } catch (Exception $exc) {
             // adicionar mensagem
             $this->flashMessenger()->addErrorMessage($exc->getMessage());

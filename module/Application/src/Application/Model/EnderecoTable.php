@@ -86,7 +86,7 @@ class EnderecoTable {
         $select = new Select;
         $select->from('endereco');
         $select->columns(array('*'));
-        $select->join(array('b' => 'bairro'), "endereco.id_bai = b.id_bai", array('id_bai', 'bairro'));
+        $select->join(array('b' => 'bairro'), "endereco.id_muni = b.id_muni", array('id_bai', 'bairro'));
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
         $select->where(array('endereco.id_end' => $id));
 
@@ -94,25 +94,28 @@ class EnderecoTable {
         $row = $rowset->current();
 
         if (!$row)
-            throw new \Exception("Não foi encontrado endereco de id = {$id}");
+            throw new \Exception("Não foi encontrado bairro de id = {$id}");
         return $row;
     }
 
+        
     public function update(Endereco $endereco) {
         $data = [
             'id_end' => $endereco->getId_end(),
             'rua' => $endereco->getRua(),
             'numero' => $endereco->getNumero(),
-            'id_bai' => $endereco->getBairro()->getId_bai(),
+            'id_bai' => $endereco->getId_bai()->getId_bai(),
         ];
 
         $id = (int) $endereco->getId_end();
-
+        $this->tableGateway->update($data, array('id_end' => $id));
+        
+        /*
         if ($this->find($id)) {
             $this->tableGateway->update($data, array('id_end' => $id));
         } else {
             throw new Exception("Endereco #{$id} inexistente");
-        }
+        }*/
     }
 
 }
