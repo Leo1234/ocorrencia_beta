@@ -150,6 +150,28 @@ class VitimaTable {
         }*/
     }
     
+    public function vitimasOcorrencia($id_ocorrencia) {
+        
+        $select = new \Zend\Db\Sql\Select;
+        $select->from('vitima');
+        $select->columns(array('*'));
+        $select->join(array('ov'=>'ocorrencia_vitima'), "vitima.id_vitima = ov.id_vitima", array());
+        $select->where(array('id_ocorrencia'=>$id_ocorrencia));
+        $select->order(array('nome ASC')); // produces 'name' ASC, 'age' DESC
+
+        // create a new pagination adapter object
+        $paginatorAdapter = new DbSelect(
+                // our configured select object
+                $select,
+                // the adapter to run it against
+                $this->tableGateway->getAdapter(),
+                // the result set to hydrate
+                $this->resultSetPrototype
+        );
+        $paginator = new Paginator($paginatorAdapter);
+        return $paginator;
+    }
+
     
     public function findByOcorrecia($id_ocorrencia) {
         $id = (int) $id_ocorrencia;

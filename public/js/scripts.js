@@ -4,27 +4,124 @@ jq162 = jQuery.noConflict(true);
 //alert( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
 //alert( "2st loaded jQuery version ($): " + jq162.fn.jquery + "<br>" );
 
+v = 0 // total de vítimas
 
+$(function() {
+
+    $("#bt").click(function() {
+        var nome = $('#nome').val();
+        var telefone = $('#telefone').val();
+        var sexo = $("input[name='sexo']:checked").val();
+        var data_nasc = $('#data_nasc').val();
+        var rua = $('#rua').val();
+        var numero = $('#numero').val();
+        var municipio = $("#municipio option:selected").text();
+        var bairro = $("#bairro option:selected").text();
+
+       // var municipioNumero = $('#municipio').val();
+        //var bairroNumero = $('#bairro').val();
+
+
+
+var status = false;
+      
+       $('#tbVitima tbody tr').each(function(i, linha) {  
+                if(!($(linha).find('td:eq(v)').text()))
+                    status = true;
+        });
+      
+      if(status){
+       v++; //total de vítimas
+        var cols = '<tr>';
+
+        cols += '<td>' + v + '</td>';
+        cols += '<td>' + nome + '</td>';
+        cols += '<td>' + telefone + '</td>';
+        cols += '<td>' + data_nasc + '</td>';
+        cols += '<td>' + sexo + '</td>';
+        cols += '<td>' + rua + '</td>';
+        cols += '<td>' + numero + '</td>';
+        cols += '<td>' + bairro + '</td>';
+        cols += '<td>' + municipio + '</td>';
+        cols += '<td><button onclick="RemoveTableRow(this)" type="button" class="btn btn-xs btn-danger" title="Deletar"><span class="glyphicon glyphicon-floppy-remove"></span></button>\n\
+<button onclick="Editar(this)" type="button" class="btn btn-xs btn-warning" title="Editar"><span class="glyphicon glyphicon-edit"></span></button></td>';
+        cols += '</tr>';
+
+        $("#tbVitima tbody").append(cols);
+
+        $("#FormVitima")[0].reset();
+        $('#bairro').val("");
+        $('#municipio').val("");
+      
+  }else{
+       
+      alert("ops já tem registro");
+  }
+       
+
+    });
+});
+
+
+$(function($) {
+    Editar = function(handler) {
+
+        var tr = $(handler).closest('tr');
+
+        var tdId = tr.children("td:nth-child(1)");
+        var tdNome = tr.children("td:nth-child(2)");
+        var tdTelefone = tr.children("td:nth-child(3)");
+        var tdData_nasc = tr.children("td:nth-child(4)");
+        var tdSexo = tr.children("td:nth-child(5)");
+        var tdRua = tr.children("td:nth-child(6)");
+        var tdNumero = tr.children("td:nth-child(7)");
+        var tdBairro = tr.children("td:nth-child(8)");
+        var tdMunicipio = tr.children("td:nth-child(9)");
+
+        $("#nome").attr("value", tdNome.html());
+        $("#telefone").attr("value", tdTelefone.html());
+        $("#data_nasc").attr("value", tdData_nasc.html());
+        $("#rua").attr("value", tdRua.html());
+        $("input[name=sexo][value=tdSexo.html()]").attr("checked", true);
+        
+        $("#numero").attr("value", tdNumero.html());
+        $("#bairro option:contains(" + tdBairro.html() + ")").attr('selected', 'selected');
+        $("#municipio option:contains(" + tdMunicipio.html() + ")").attr('selected', 'selected');
+        return false;
+    };
+});
+
+
+$(function($) {
+    RemoveTableRow = function(handler) {
+        var tr = $(handler).closest('tr');
+        tr.fadeOut(400, function() {
+            v--;
+            tr.remove();
+        });
+        return false;
+    };
+});
 
 $(function() {
     $("#procedimento").chosen();
 
 });
 /*
-$(function() {
-    $("#municipio").chosen();
-
-});
-$(function() {
-    $("#bairro").chosen();
-
-});
-
-$(function() {
-    $("#viatura").chosen();
-
-});
-*/
+ $(function() {
+ $("#municipio").chosen();
+ 
+ });
+ $(function() {
+ $("#bairro").chosen();
+ 
+ });
+ 
+ $(function() {
+ $("#viatura").chosen();
+ 
+ });
+ */
 $(function() {
     $("#crime").chosen();
 });
@@ -121,7 +218,7 @@ $(function() {
     $("#datetimepickerNasc").datetimepicker({
         locale: "pt-br",
         showClear: true
-      
+
     });
 });
 
@@ -137,6 +234,6 @@ $(function() {
     $("#datetimepickerNascV").datetimepicker({
         locale: "pt-br",
         showClear: true
-      
+
     });
 });

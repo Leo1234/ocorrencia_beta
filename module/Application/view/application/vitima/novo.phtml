@@ -23,7 +23,6 @@
                 <?php
                 // renderiza html input
                 echo $this->formInput($formVitima->get('nome'));
-
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
@@ -41,7 +40,6 @@
                 <?php
                 // renderiza html input
                 echo $this->formInput($formVitima->get('telefone'));
-
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
@@ -59,7 +57,6 @@
                     <?php
                     // renderiza html input
                     echo $this->formInput($formVitima->get('data_nasc'));
-
                     // renderiza elemento de erro
                     echo $this->formElementErrors()
                             ->setMessageOpenFormat('<small class="text-danger">')
@@ -79,9 +76,7 @@
                 <div class="checkbox">
                     <?php
                     // renderiza html input
-
                     echo $this->formRadio($formVitima->get('sexo'));
-
                     // renderiza elemento de erro
                     echo $this->formElementErrors()
                             ->setMessageOpenFormat('<small class="text-danger">')
@@ -99,7 +94,6 @@
                 <?php
                 // renderiza html input
                 echo $this->formInput($formVitima->get('rua'));
-
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
@@ -117,7 +111,6 @@
                 <?php
                 // renderiza html input
                 echo $this->formInput($formVitima->get('numero'));
-
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
@@ -174,7 +167,3 @@
 
 <?php // renderiza html </form>  ?>
 <?php echo $this->form()->closeTag() ?>
-
-
-
-

@@ -59,9 +59,9 @@
                                 <td class="text-center"><?php echo $oc->getId_oco(); ?></td>
                                 <!--<td class="text-center"><?php echo $oc->getEnd()->getRua(); ?></td>-->
                                 <td class="text-center"><?php echo $oc->getVtr()->getPrefixo(); ?></td>
-                                <td class="text-center"><?php echo $oc->getArea()->getDescricao(); ?></td>
-                                <td class="text-center"><?php echo (new \DateTime($oc->getData()))->format('d/m/Y'); ?></td>
-                                <td class="text-center"><?php echo $oc->getHorario(); ?></td>
+                                <td class="text-center"><?php //echo $oc->getArea()->getDescricao(); ?></td>
+                                <td class="text-center"><?php echo (new \DateTime($oc->getDatai()))->format('d/m/Y'); ?></td>
+                                <td class="text-center"><?php //echo $oc->getHorario(); ?></td>
 
                                 <td>
                                     <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('ocorrencia', array("action" => "detalhes", "id" => $oc->getId_oco(),)); ?>"><span class="glyphicon glyphicon-new-window"></span></a>

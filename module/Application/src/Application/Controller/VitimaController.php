@@ -52,7 +52,6 @@ class VitimaController extends AbstractActionController {
         return ['formVitima' => $form];
     }
 
-// POST /vitimas/adicionar
     public function adicionarAction() {
         // obtém a requisição
         $request = $this->getRequest();
@@ -69,26 +68,20 @@ class VitimaController extends AbstractActionController {
             $form->setInputFilter($modelVitima->getInputFilter());
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());
-
             // verifica se o formulário segue a validação proposta
             if ($form->isValid()) {
-
                 $bairro = $this->getBairroTable()->find($postData['id_bai']);
                 $modelEndereco = new Endereco(null, $postData['rua'], $postData['numero'], $bairro);
                 $ultimo_idEnd = $this->getEnderecoTable()->save($modelEndereco);
-
                 // aqui vai a lógica para adicionar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
-
                 $modelVitima->exchangeArray($form->getData());
                 // 2 - persistir dados do model para banco de dados
                 $modelVitima->setEnd($ultimo_idEnd);
                 $this->getVitimaTable()->save($modelVitima);
-
                 // adicionar mensagem de sucesso
                 $this->flashMessenger()
                         ->addSuccessMessage("Vitima criada com sucesso!");
-
                 // redirecionar para action index no controller vitimas
                 return $this->redirect()->toRoute('vitimas');
             } else { // em caso da validação não seguir o que foi definido

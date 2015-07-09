@@ -29,7 +29,7 @@ class OcorrenciaTable {
         $select->join(array('e' => 'endereco'), "o.id_end = e.id_end", array('rua', 'numero'));
         $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai','bairro'));
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
-        $select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
+        //$select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
         $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
 
 
@@ -123,27 +123,18 @@ class OcorrenciaTable {
 
     public function salvarOcorrencia(Ocorrencia $oc) {
         $data = array(
-            'id_ocorrencia' => $oc->getId_ocorrencia(),
             'id_end' => $oc->getId_end(),
             'id_vtr' => $oc->getVtr()->getId_vtr(),
-            'id_area' => $oc->getArea()->getId_area(),
-            'id_usuario' => $oc->getId_usuario(),
-            'data' => $oc->getData(),
-            'horario' => $oc->getHorario(),
-            'narracao' => strtoupper($oc->getNarracao()),
+            'ciops' => $oc->getCiops(),
+            //'id_usuario' => $oc->getId_usuario(),
+            'datai' => $oc->getDatai(),
+            'dataf' => $oc->getDataf(),
+            'narracao' => $oc->getNarracao(),
         );
 
-        $id = (int) $oc->getId_ocorrencia();
-        if ($id == 0) {
             $this->tableGateway->insert($data);
             return $this->tableGateway->lastInsertValue;
-        } else {
-            if ($this->find($id)) {
-                $this->tableGateway->update($data, array('id_ocorrencia' => $id));
-            } else {
-                throw new \Exception('Ocorrencia não encontrada');
-            }
-        }
+   
     }
 
     public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
@@ -158,7 +149,33 @@ class OcorrenciaTable {
         $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
         return $results->count();
     }
+    
+        public function addCrimeOcorrencia($id_ocorrencia, $id_crime) {
+        $sql = new Sql($this->adapter);
+        $insert = $sql->insert('ocorrencia_crime');
+        $newData = array(
+            'id_ocorrencia' => $id_ocorrencia,
+            'id_crime' => $id_crime,
+        );
+        $insert->values($newData);
+        $selectString = $sql->getSqlStringForSqlObject($insert);
+        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+        return $results->count();
+    }
 
+        public function addProcedimentoOcorrencia($id_ocorrencia, $id_pro) {
+        $sql = new Sql($this->adapter);
+        $insert = $sql->insert('ocorrencia_procedimento');
+        $newData = array(
+            'id_oco' => $id_ocorrencia,
+            'id_pro' => $id_pro,
+        );
+        $insert->values($newData);
+        $selectString = $sql->getSqlStringForSqlObject($insert);
+        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+        return $results->count();
+    }
+    
     public function delPoliciaisOcorrencia($id_ocorrencia) {
         $sql = new Sql($this->adapter);
         $delete = $sql->delete('ocorrencia_policial')->where(array('id_ocorrencia' => $id_ocorrencia));

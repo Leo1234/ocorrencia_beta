@@ -15,27 +15,51 @@ use Application\Model\Policial;
 use Application\Model\Vitima;
 use Application\Model\Crime;
 
+
+ 
+use Zend\Validator;
+
 class Ocorrencia implements InputFilterAwareInterface {
 
     public $id_oco;
     public $end;
     public $vtr;
-    public $area;
-    public $data;
-    public $horario;
+    public $composicao = array();
+    public $crimes = array();
+    public $procedimentos = array();
+    public $ciops;
+    public $datai;
+    public $dataf;
     public $narracao;
     //private $id_usuario;
     public $inputFilter;
 
+    public function Ocorrencia($data) {
+
+        $this->id_oco = (!empty($data['id_oco'])) ? $data['id_oco'] : null;
+        $this->end = (!empty($data['id_end'])) ? $data['id_end'] : null;
+        $this->vtr = (!empty($data['id_vtr'])) ? new Viatura($data['id_vtr'], $data['prefixo']) : null;
+        $this->composicao = (!empty($data['id_composicao'])) ? $data['id_composicao'] : null;
+        $this->crimes = (!empty($data['id_crime'])) ? $data['id_crime'] : null;
+        $this->procedimentos = (!empty($data['procedimento'])) ? $data['procedimento'] : null;
+        $this->ciops = (!empty($data['ciops'])) ? $data['ciops'] : null;
+        $this->datai = (!empty($data['datai'])) ? $data['datai'] : null;
+        $this->dataf = (!empty($data['dataf'])) ? $data['dataf'] : null;
+        $this->narracao = (!empty($data['narracao'])) ? $data['narracao'] : null;
+        //$this->id_usuario = (!empty($data['id_usuario'])) ? $data['id_usuario'] : null;
+    }
+
     public function exchangeArray($data) {
 
         $this->id_oco = (!empty($data['id_oco'])) ? $data['id_oco'] : null;
-        //$this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'], $data['numero'], $data['id_bai']) : null;
-        $this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'],$data['numero'], new Bairro($data['id_bai'], $data['bairro'], new Municipio($data['id_muni'], $data['municipio'])) ) : null;
+        $this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'], $data['numero'], new Bairro($data['id_bai'], $data['bairro'], new Municipio($data['id_muni'], $data['municipio']))) : null;
         $this->vtr = (!empty($data['id_vtr'])) ? new Viatura($data['id_vtr'], $data['prefixo']) : null;
-        $this->area = (!empty($data['id_area'])) ? new Area($data['id_area'], $data['descricao']) : null;
-        $this->data = (!empty($data['data'])) ? $data['data'] : null;
-        $this->horario = (!empty($data['horario'])) ? $data['horario'] : null;
+        $this->composicao = (!empty($data['id_composicao'])) ? $data['id_composicao'] : null;
+        $this->crimes = (!empty($data['id_crime'])) ? $data['id_crime'] : null;
+        $this->procedimentos = (!empty($data['procedimento'])) ? $data['procedimento'] : null;
+        $this->ciops = (!empty($data['ciops'])) ? $data['ciops'] : null;
+        $this->datai = (!empty($data['datai'])) ? $data['datai'] : null;
+        $this->dataf = (!empty($data['dataf'])) ? $data['dataf'] : null;
         $this->narracao = (!empty($data['narracao'])) ? $data['narracao'] : null;
         //$this->id_usuario = (!empty($data['id_usuario'])) ? $data['id_usuario'] : null;
     }
@@ -58,38 +82,57 @@ class Ocorrencia implements InputFilterAwareInterface {
                 ),
             ));
 
-            $inputFilter->add(array(
-                'name' => 'end',
+
+
+             $inputFilter->add(array(
+                'name' => 'composicao',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'), # remove xml e html da string
-                    array('name' => 'StringTrim'), # remove espacos do início e do final da string
-                //array('name' => 'StringToUpper'), # transofrma string para maiusculo
-                ),
                 'validators' => array(
                     array(
-                        'name' => 'NotEmpty',
+                        'name' => 'InArray',
+                        'breakChainOnFailure' => true,
                         'options' => array(
+                            'haystack' => array('1', '2'),
                             'messages' => array(
-                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
-                            ),
-                        ),
-                    ),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 3,
-                            'max' => 50,
-                            'messages' => array(
-                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
-                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
-                            ),
-                        ),
-                    ),
-                ),
+                                Validator\InArray::NOT_IN_ARRAY => 'Invalid option supplied for offering.'
+                            )
+                        )
+                    )
+                )
             ));
-
+             
+             $inputFilter->add(array(
+                'name' => 'crimes',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'InArray',
+                        'breakChainOnFailure' => true,
+                        'options' => array(
+                            'haystack' => array('1', '2'),
+                            'messages' => array(
+                                Validator\InArray::NOT_IN_ARRAY => 'Invalid option supplied for offering.'
+                            )
+                        )
+                    )
+                )
+            ));
+             $inputFilter->add(array(
+                'name' => 'procedimentos',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'InArray',
+                        'breakChainOnFailure' => true,
+                        'options' => array(
+                           'haystack' => array('1', '2'),
+                            'messages' => array(
+                                Validator\InArray::NOT_IN_ARRAY => 'Invalid option supplied for offering.'
+                            )
+                        )
+                    )
+                )
+            ));
             $inputFilter->add(array(
                 'name' => 'vtr',
                 'required' => true,
@@ -121,8 +164,43 @@ class Ocorrencia implements InputFilterAwareInterface {
                     ),
                 ),
             ));
+            /*
+              $inputFilter->add(array(
+              'name' => 'area',
+              'required' => true,
+              'filters' => array(
+              array('name' => 'StripTags'), # remove xml e html da string
+              array('name' => 'StringTrim'), # remove espacos do início e do final da string
+              //array('name' => 'StringToUpper'), # transofrma string para maiusculo
+              ),
+              'validators' => array(
+              array(
+              'name' => 'NotEmpty',
+              'options' => array(
+              'messages' => array(
+              \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+              ),
+              ),
+              ),
+              array(
+              'name' => 'StringLength',
+              'options' => array(
+              'encoding' => 'UTF-8',
+              'min' => 3,
+              'max' => 50,
+              'messages' => array(
+              \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
+              \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
+              ),
+              ),
+              ),
+              ),
+              ));
+             */
+
+
             $inputFilter->add(array(
-                'name' => 'area',
+                'name' => 'datai',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'), # remove xml e html da string
@@ -154,7 +232,7 @@ class Ocorrencia implements InputFilterAwareInterface {
             ));
 
             $inputFilter->add(array(
-                'name' => 'data',
+                'name' => 'dataf',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'), # remove xml e html da string
@@ -184,37 +262,40 @@ class Ocorrencia implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-            $inputFilter->add(array(
-                'name' => 'horario',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'), # remove xml e html da string
-                    array('name' => 'StringTrim'), # remove espacos do início e do final da string
-                //array('name' => 'StringToUpper'), # transofrma string para maiusculo
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
-                            ),
-                        ),
-                    ),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 3,
-                            'max' => 50,
-                            'messages' => array(
-                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
-                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
-                            ),
-                        ),
-                    ),
-                ),
-            ));
+            /*
+              $inputFilter->add(array(
+              'name' => 'horario',
+              'required' => true,
+              'filters' => array(
+              array('name' => 'StripTags'), # remove xml e html da string
+              array('name' => 'StringTrim'), # remove espacos do início e do final da string
+              //array('name' => 'StringToUpper'), # transofrma string para maiusculo
+              ),
+              'validators' => array(
+              array(
+              'name' => 'NotEmpty',
+              'options' => array(
+              'messages' => array(
+              \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+              ),
+              ),
+              ),
+              array(
+              'name' => 'StringLength',
+              'options' => array(
+              'encoding' => 'UTF-8',
+              'min' => 3,
+              'max' => 50,
+              'messages' => array(
+              \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
+              \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
+              ),
+              ),
+              ),
+              ),
+              ));
+             */
+
 
             $inputFilter->add(array(
                 'name' => 'narracao',
@@ -266,16 +347,28 @@ class Ocorrencia implements InputFilterAwareInterface {
         return $this->vtr;
     }
 
-    public function getArea() {
-        return $this->area;
+    public function getComposicao() {
+        return $this->composicao;
     }
 
-    public function getData() {
-        return $this->data;
+    public function getCrimes() {
+        return $this->crimes;
     }
 
-    public function getHorario() {
-        return $this->horario;
+    public function getProcedimentos() {
+        return $this->procedimentos;
+    }
+
+    public function getCiops() {
+        return $this->ciops;
+    }
+
+    public function getDatai() {
+        return $this->datai;
+    }
+
+    public function getDataf() {
+        return $this->dataf;
     }
 
     public function getNarracao() {
@@ -294,16 +387,28 @@ class Ocorrencia implements InputFilterAwareInterface {
         $this->vtr = $vtr;
     }
 
-    public function setArea($area) {
-        $this->area = $area;
+    public function setComposicao($composicao) {
+        $this->composicao = $composicao;
     }
 
-    public function setData($data) {
-        $this->data = $data;
+    public function setCrimes($crimes) {
+        $this->crimes = $crimes;
     }
 
-    public function setHorario($horario) {
-        $this->horario = $horario;
+    public function setProcedimentos($procedimentos) {
+        $this->procedimentos = $procedimentos;
+    }
+
+    public function setCiops($ciops) {
+        $this->ciops = $ciops;
+    }
+
+    public function setDatai($datai) {
+        $this->datai = $datai;
+    }
+
+    public function setDataf($dataf) {
+        $this->dataf = $dataf;
     }
 
     public function setNarracao($narracao) {

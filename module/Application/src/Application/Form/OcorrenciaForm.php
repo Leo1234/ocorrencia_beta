@@ -33,6 +33,8 @@ class OcorrenciaForm extends Form {
         //$name = null;
 
         parent::__construct("FormOcorrencia");
+        
+       
 
         // config form atributes
         $this->setAttributes(array(
@@ -54,6 +56,15 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'rua',
                 'placeholder' => 'Rua',
+            ),
+        ));
+             $this->add(array(
+            'type' => 'Zend\Form\Element\Number', # ou 'type' => 'ZendFormElementText'
+            'name' => 'numero',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'numero',
+                'placeholder' => 'Número',
             ),
         ));
 
@@ -124,9 +135,12 @@ class OcorrenciaForm extends Form {
                 'multiple' => 'true'
             ),
             'options' => array(
+                'disable_inarray_validator' => true,
                 'data-placeholder' => 'Escolha a Composição',
                 //'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectP()),
+            
+          
         ));
 
         $this->add(array(
@@ -139,9 +153,12 @@ class OcorrenciaForm extends Form {
                 'multiple' => 'true'
             ),
             'options' => array(
+                 'disable_inarray_validator' => true,
                 'data-placeholder' => 'Escolha os crimes',
                 //'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectC()),
+           
+          
         ));
 
         $this->add(array(
@@ -154,9 +171,12 @@ class OcorrenciaForm extends Form {
                 'multiple' => 'true'
             ),
             'options' => array(
+                'disable_inarray_validator' => true,
                 'data-placeholder' => 'Escolha os procedimentos',
                 //'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectPr()),
+                
+        
         ));
 
 

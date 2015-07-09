@@ -55,7 +55,7 @@ class VitimaForm extends Form {
             'name' => 'nome',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputNome',
+                'id' => 'nome',
                 'placeholder' => 'Nome',
             ),
         ));
@@ -74,7 +74,7 @@ class VitimaForm extends Form {
             'name' => 'data_nasc',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputDataNascV',
+                'id' => 'data_nasc',
                 'placeholder' => 'Data/hora Nascimento',
             ),
         ));
@@ -82,6 +82,9 @@ class VitimaForm extends Form {
         $this->add(array(
             'type' => 'Zend\Form\Element\Radio',
             'name' => 'sexo',
+            'attributes' => array(
+                'id' => 'sexo',
+            ),
             'options' => array(
                 'label' => 'Qual sexo?',
                 'value_options' => array(
@@ -96,7 +99,7 @@ class VitimaForm extends Form {
             'name' => 'rua',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputRua',
+                'id' => 'rua',
                 'placeholder' => 'Rua',
             ),
         ));
@@ -106,7 +109,7 @@ class VitimaForm extends Form {
             'name' => 'numero',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputNumeral',
+                'id' => 'numero',
                 'placeholder' => 'Número',
             ),
         ));

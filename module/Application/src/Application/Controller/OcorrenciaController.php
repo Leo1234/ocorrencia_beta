@@ -9,8 +9,13 @@ use Application\Model\PolicialTable as ModelPolicial;
 use Application\Model\ViaturaTable as ModelViatura;
 use Application\Model\AreaTable as ModelArea;
 use Application\Model\VitimaTable as ModelVitima;
+use \Application\Model\Endereco;
+use Application\Model\EnderecoTable as ModelEndereco;
+use \Application\Model\Bairro;
+use Application\Model\BairroTable as ModelBairro;
 use Application\Model\Ocorrencia;
 use Application\Form\OcorrenciaForm;
+use Application\Form\VitimaForm;
 
 class OcorrenciaController extends AbstractActionController {
     
@@ -49,39 +54,41 @@ class OcorrenciaController extends AbstractActionController {
         return ['formOcorrencia' => $form];
     }
     
-    
 
     public function adicionarAction() {
         // obtém a requisição
-        $request = $this->getRequest();
-
+       $request = $this->getRequest();
+       $postData = $request->getPost()->toArray();
+       
+       print_r($postData);
         // verifica se a requisição é do tipo post
-        if ($request->isPost()) {
-            // obter e armazenar valores do post
-            $postData = $request->getPost()->toArray();
-            $formularioValido = true;
-
+     
+       if ($request->isPost()) {
+            
+            $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+            $form = new OcorrenciaForm($dbAdapter);
+            // instancia model Ocorrência com regras de filtros e validações
+            $modelOcorrencia = new Ocorrencia();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity ocorrência
+            $form->setInputFilter($modelOcorrencia->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $form->setData($request->getPost());
+            
             // verifica se o formulário segue a validação proposta
-            if ($formularioValido) {
-
-                $oc = new Ocorrencia();
-                $oc->setId_ocorrencia(0);
-                $oc->setId_end($postData['id_end']);
-
-                $vtr = $this->getViaturaTable()->find($postData['id_vtr']);
-                $area = $this->getAreaTable()->find($postData['id_area']);
-
-                $oc->setVtr($vtr);
-                $oc->setArea($area);
+            if ($form->isValid()) {
+                $bairro = $this->getBairroTable()->find($postData['id_bai']);
+                $modelEndereco = new Endereco(null, $postData['rua'], $postData['numero'], $bairro);
+                $ultimo_idEnd = $this->getEnderecoTable()->save($modelEndereco);
                 
-                $oc->setId_usuario(1);
-                $oc->setData($postData['data']);
-                $oc->setHorario($postData['horario']);
-                $oc->setNarracao($postData['narracao']);
-
-                $policiais = $postData['id_policial'];
-
-                $ultimo_id = $this->getOcorrenciaTable()->salvarOcorrencia($oc);
+                $modelOcorrencia->exchangeArray($form->getData());
+                $modelOcorrencia->setEnd($ultimo_idEnd);
+                
+                $policiais = $postData['id_composicao'];
+                $crimes = $postData['id_crime'];
+                $procedimentos = $postData['procedimento'];
+               
+                $ultimo_id = $this->getOcorrenciaTable()->salvarOcorrencia($modelOcorrencia );
 
                 if (count($policiais)) {
                     foreach ($policiais as $idp) {
@@ -89,21 +96,38 @@ class OcorrenciaController extends AbstractActionController {
                     }
                 }
 
-
+                if (count($crimes)) {
+                    foreach ($crimes as $idc) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($ultimo_id, $idc);
+                    }
+                }
+                
+                   if (count($procedimentos)) {
+                    foreach ($procedimentos as $idpro) {
+                        $this->getOcorrenciaTable()->addProcedimentoOcorrencia($ultimo_id, $idpro);
+                    }
+                }
+                
                 $this->flashMessenger()->addSuccessMessage("Ocorrencia cadastrada com sucesso");
 
-                // redirecionar para action index no controller contatos
-                return $this->redirect()->toRoute('ocorrencia', array('action' => 'index', 'id' => $ultimo_id));
-            } else {
-                // adicionar mensagem de erro
-                $this->flashMessenger()->addErrorMessage("Erro ao cadastrar o policial");
-
-                // redirecionar para action novo no controllers contatos
-                return $this->redirect()->toRoute('ocorrencia', array('action' => 'index'));
+                // redirecionar para action index no controller 
+                //return $this->redirect()->toRoute('ocorrencia', array('action' => 'index', 'id' => $ultimo_id));
+                return $this->redirect()->toRoute('ocorrencia');
+           }else {
+                
+                 $this->flashMessenger()->addSuccessMessage("Erro!!!!");
+                 
+                // em caso da validação não seguir o que foi definido
+                // renderiza para action novo com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formOcorrencia', $form)
+                                ->setTemplate('application/ocorrencia/novo');
             }
-        }
-        //return new ViewModel();
     }
+    }
+
+    
 
     public function detalhesAction() {
         // filtra id passsado pela url
@@ -246,19 +270,18 @@ class OcorrenciaController extends AbstractActionController {
     }
     
     public function vitimasAction() {
+        
         $id = (int) $this->params()->fromRoute('id', 0);
-
-        // Quantidade de itens por págima
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new VitimaForm($dbAdapter);
+       
+      
         $countPerPage = "5";
         $vitimas = $this->getVitimaTable()->vitimasOcorrencia($id);
-
-
-
-        // enviar para view o array com key policial e value com todos os policias
-        return new ViewModel(array('vitimas'=>$vitimas, 'id_ocorrencia'=>$id));
+    
+        return new ViewModel(array('vitimas' => $vitimas, 'id_ocorrencia' => $id, 'formVitima' => $form));
+        
     }
-
- 
 
     //função que retorna uma instancia da classe GraduacaoTable 
     private function getPolicialTable() {
@@ -291,6 +314,16 @@ class OcorrenciaController extends AbstractActionController {
 
         // return model PolicialTable
         return new ModelVitima($adapter); // alias para GraduacaoTable
+    }
+    
+      private function getEnderecoTable() {
+        $adapter = $this->getServiceLocator()->get('AdapterDb');
+        return new ModelEndereco($adapter);
+    }
+
+    private function getBairroTable() {
+        $adapter = $this->getServiceLocator()->get('AdapterDb');
+        return new ModelBairro($adapter);
     }
 
 }
