@@ -99,8 +99,7 @@ class VitimaTable {
 
     public function save(Vitima $vitima) {
 
-        $data = [
-          
+        $data = [  
             'nome' => $vitima->getNome(),
             'telefone' => $vitima->getTelefone(),
             'data_nasc' => $this->toDateYMD($vitima->getData_nasc()),

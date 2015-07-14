@@ -71,7 +71,6 @@ class PolicialController extends AbstractActionController {
             // passa para o objeto formulário as regras de viltros e validações
             // contidas na entity policial
             $form->setInputFilter($modelPolicial->getInputFilter());
-         
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());
              

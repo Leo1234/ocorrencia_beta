@@ -2,7 +2,7 @@
 
 namespace Application\Form;
 
-use Application\Controller\ViaturaController;
+
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Form\Form;
 use Zend\Form\Element;
@@ -34,8 +34,6 @@ class OcorrenciaForm extends Form {
 
         parent::__construct("FormOcorrencia");
         
-       
-
         // config form atributes
         $this->setAttributes(array(
             'method' => 'POST',
@@ -45,7 +43,7 @@ class OcorrenciaForm extends Form {
         // elemento do tipo hidden
         $this->add(array(
             'type' => 'Hidden', # ou 'type' => 'ZendFormElementHidden'
-            'name' => 'id_oco',
+            'name' => 'id_ocorrencia',
         ));
 
         // elemento do tipo text
@@ -75,7 +73,6 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'municipio',
                 ' style' => 'width:350px',
-            // 'multiple' => 'true'
             ),
             'options' => array(
                 'label' => 'Município',
@@ -99,8 +96,6 @@ class OcorrenciaForm extends Form {
                 'value_options' => $this->getOptionsForSelectB()),
         ));
 
-
-
         $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
             'name' => 'ciops',
@@ -118,13 +113,15 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'viatura',
                 ' style' => 'width:350px',
-            // 'multiple' => 'true'
+            
             ),
             'options' => array(
                 'label' => 'Escolha a viatura',
                 'empty_option' => 'Escolha a viatura',
                 'value_options' => $this->getOptionsForSelectV()),
         ));
+        
+   
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'id_composicao',
@@ -132,7 +129,8 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'composicao',
                 ' style' => 'width:350px',
-                'multiple' => 'true'
+                //'multiple' => 'true'
+                'multiple' => 'multiple'
             ),
             'options' => array(
                 'disable_inarray_validator' => true,
@@ -150,7 +148,8 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'crime',
                 ' style' => 'width:350px',
-                'multiple' => 'true'
+                //'multiple' => 'true'
+                'multiple' => 'multiple'
             ),
             'options' => array(
                  'disable_inarray_validator' => true,
@@ -168,7 +167,8 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'procedimento',
                 ' style' => 'width:350px',
-                'multiple' => 'true'
+               // 'multiple' => 'true'
+                'multiple' => 'multiple'
             ),
             'options' => array(
                 'disable_inarray_validator' => true,
@@ -178,9 +178,6 @@ class OcorrenciaForm extends Form {
                 
         
         ));
-
-
-
 
 
         $this->add(array(
@@ -203,21 +200,6 @@ class OcorrenciaForm extends Form {
             ),
         ));
 
-        /*
-          $this->add(array(
-          'type' => 'Zend\Form\Element\Date',
-          'name' => 'data',
-          'options' => array(
-          'label' => 'Appointment Date/Time',
-          'format' => 'Y-m-d'
-          ),
-          'attributes' => array(
-          'class' => 'form-control',
-          // 'min' => '1940-01-01T00:00:00Z',
-          //'max' => '1997-01-01T00:00:00Z',
-          )
-          ));
-         */
 
         // elemento do tipo text
         $this->add(array(
@@ -230,7 +212,7 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
             )
         ));
-
+/*
         $this->add(array(
             'type' => 'Zend\Form\Element\Radio',
             'name' => 'local',
@@ -253,6 +235,9 @@ class OcorrenciaForm extends Form {
                 'data-format' => 'dd/MM/yyyy hh:mm:ss',
             ),
         ));
+ 
+ */
+
     }
 
     public function getOptionsForSelectV() {

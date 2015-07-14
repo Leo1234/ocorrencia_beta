@@ -8,6 +8,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\Db\Sql\Select,
     Zend\Paginator\Adapter\DbSelect,
     Zend\Paginator\Paginator;
+use Zend\Db\Sql\Sql;
 
 class OcorrenciaTable {
 
@@ -22,22 +23,32 @@ class OcorrenciaTable {
         $this->tableGateway = new TableGateway('ocorrencia', $this->adapter, null, $this->resultSetPrototype);
     }
 
-    public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'id_oco ASC', $like = null, $itensPaginacao = 5) {
+    public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'datai ASC', $like = null, $itensPaginacao = 5) {
         $select = new \Zend\Db\Sql\Select;
-        $select->from(array('o' => 'ocorrencia'));
-        $select->columns(array('*'));
+       $select->from(array('o' => 'ocorrencia'));
+         $select->columns(array('*'));
         $select->join(array('e' => 'endereco'), "o.id_end = e.id_end", array('rua', 'numero'));
-        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai','bairro'));
+        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'));
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
-        //$select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
         $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
-
-
+        $select->order($ordem);
 
         if (isset($like)) {
             $select
                     ->where
-                    ->like('id_oco', "%{$like}%")
+                    ->like('id_ocorrencia', "%{$like}%")
+                    ->or
+                    ->like('rua', "%{$like}%")
+                    ->or
+                    ->like('prefixo', "%{$like}%")
+                    ->or
+                    ->like('ciops', "%{$like}%")
+                    ->or
+                    ->like('datai', "%{$like}%")
+                    ->or
+                    ->like('dataf', "%{$like}%")
+                    ->or
+                    ->like('narracao', "%{$like}%")
 
             ;
         }
@@ -69,152 +80,150 @@ class OcorrenciaTable {
                         ->setPageRange((int) $itensPaginacao);
     }
 
+    public function save(Ocorrencia $oco) {
 
-    /*
-      public function fetchAll($currentPage = 0, $countPerPage = 0) {
+        $data = [
+            'id_ocorrencia' => $oco->getId_oco(),
+            'id_end' => $oco->getEnd(),
+            'id_vtr' => $oco->getVtr()->getId_vtr(),
+            'ciops' => $oco->getCiops(),
+            'id_usuario' => $oco->getUsuario(),
+            'datai' => $this->toDateYMD($oco->getDatai()),
+            'dataf' => $this->toDateYMD($oco->getDataf()),
+            'narracao' => $oco->getNarracao(),
+        ];
+         $this->tableGateway->insert($data);
+        return $this->tableGateway->lastInsertValue;
+    }
 
-      $select = new \Zend\Db\Sql\Select;
-      $select->from(array('o' => 'ocorrencia'));
-      $select->columns(array('*'));
-      $select->join(array('e' => 'endereco'), "o.id_end = e.id_endereco", array('*'));
-      $select->join(array('a' => 'area'), "o.id_area = a.id_area", array('descricao'));
-      $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));
-
-      // create a new pagination adapter object
-      $paginatorAdapter = new DbSelect(
-      // our configured select object
-      $select,
-      // the adapter to run it against
-      $this->tableGateway->getAdapter(),
-      // the result set to hydrate
-      $this->resultSetPrototype
-      );
-
-      $paginator = new Paginator($paginatorAdapter);
-      $paginator->setItemCountPerPage($countPerPage);
-      $paginator->setCurrentPageNumber($currentPage);
-      return $paginator;
-      }
-     */
-
+    
     public function find($id) {
-
-        $id = (int) $id;
-
-
-        $select = new \Zend\Db\Sql\Select;
-        $select->from('ocorrencia');
-        $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_endereco", array('rua','numero'));
-        $select->join(array('a' => 'area'), "ocorrencia.id_area = a.id_area", array('descricao'));
-        $select->join(array('v' => 'vtr'), "ocorrencia.id_vtr = v.id_vtr", array('prefixo'));
-        $select->where(array('ocorrencia.id_ocorrencia' => $id));
-        $select->order(array('data ASC', 'horario ASC')); // produces 'name' ASC, 'age' DESC
-        //echo $select->getSqlString();exit;
-        $rowset = $this->tableGateway->selectWith($select);
-        $row = $rowset->current();
+      $id = (int) $id;
+      $select = new \Zend\Db\Sql\Select;
+      $select->from('ocorrencia');
+      $select->columns(array('*'));
+      $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_endereco", array('rua','numero'));
+     
+      $select->join(array('v' => 'vtr'), "ocorrencia.id_vtr = v.id_vtr", array('prefixo'));
+      $select->where(array('ocorrencia.id_oco' => $id));
+      $select->order(array('data ASC')); 
+      //echo $select->getSqlString();exit;
+      $rowset = $this->tableGateway->selectWith($select);
+      $row = $rowset->current();
 
 
-        if (!$row)
-            throw new \Exception("Não foi encontrado a ocorrencia  de id = {$id}");
+      if (!$row)
+      throw new \Exception("Não foi encontrado a ocorrencia  de id = {$id}");
 
-        return $row;
-    }
+      return $row;
+      }
 
-    public function salvarOcorrencia(Ocorrencia $oc) {
-        $data = array(
-            'id_end' => $oc->getId_end(),
-            'id_vtr' => $oc->getVtr()->getId_vtr(),
-            'ciops' => $oc->getCiops(),
-            //'id_usuario' => $oc->getId_usuario(),
-            'datai' => $oc->getDatai(),
-            'dataf' => $oc->getDataf(),
-            'narracao' => $oc->getNarracao(),
-        );
+      public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
+      $sql = new Sql($this->adapter);
+      $insert = $sql->insert('ocorrencia_policial');
+      $newData = array(
+      'id_ocorrencia' => $id_ocorrencia,
+      'id_policial' => $id_policial,
+      );
+      $insert->values($newData);
+      $selectString = $sql->getSqlStringForSqlObject($insert);
+      $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+      return $results->count();
+      }
 
-            $this->tableGateway->insert($data);
-            return $this->tableGateway->lastInsertValue;
-   
-    }
+      public function addCrimeOcorrencia($id_ocorrencia, $id_crime) {
+      $sql = new Sql($this->adapter);
+      $insert = $sql->insert('ocorrencia_crime');
+      $newData = array(
+      'id_ocorrencia' => $id_ocorrencia,
+      'id_crime' => $id_crime,
+      );
+      $insert->values($newData);
+      $selectString = $sql->getSqlStringForSqlObject($insert);
+      $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+      return $results->count();
+      }
 
-    public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
-        $sql = new Sql($this->adapter);
-        $insert = $sql->insert('ocorrencia_policial');
-        $newData = array(
-            'id_ocorrencia' => $id_ocorrencia,
-            'id_policial' => $id_policial,
-        );
-        $insert->values($newData);
-        $selectString = $sql->getSqlStringForSqlObject($insert);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
+      public function addProcedimentoOcorrencia($id_ocorrencia, $id_pro) {
+      $sql = new Sql($this->adapter);
+      $insert = $sql->insert('ocorrencia_procedimento');
+      $newData = array(
+      'id_oco' => $id_ocorrencia,
+      'id_pro' => $id_pro,
+      );
+      $insert->values($newData);
+      $selectString = $sql->getSqlStringForSqlObject($insert);
+      $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+      return $results->count();
+      }
+
+      public function delPoliciaisOcorrencia($id_ocorrencia) {
+      $sql = new Sql($this->adapter);
+      $delete = $sql->delete('ocorrencia_policial')->where(array('id_ocorrencia' => $id_ocorrencia));
+
+      $selectString = $sql->getSqlStringForSqlObject($delete);
+      $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+      return $results->count();
+      }
+
+      public function deleteOcorrencia($id) {
+      try {
+      return $this->tableGateway->delete(array('id_ocorrencia' => $id));
+      } catch (\Exception $e) {
+      return false;
+      }
+      }
+
+      public function totalVitimasOcorrencia($id_ocorrencia) {
+      $sql = new Sql($this->adapter);
+      $select = $sql->select('ocorrencia_vitima')->where(array('id_ocorrencia' => $id_ocorrencia));
+      $selectString = $sql->getSqlStringForSqlObject($select);
+      $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+      return $results->count();
+      }
+
+      public function totalAcusadosOcorrencia($id_ocorrencia) {
+      $sql = new Sql($this->adapter);
+      $select = $sql->select('ocorrencia_acusado')->where(array('id_ocorrencia' => $id_ocorrencia));
+      $selectString = $sql->getSqlStringForSqlObject($select);
+      $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+      return $results->count();
+      }
+
+      public function totalCrimesOcorrencia($id_ocorrencia) {
+      $sql = new Sql($this->adapter);
+      $select = $sql->select('ocorrencia_crime')->where(array('id_ocorrencia' => $id_ocorrencia));
+      $selectString = $sql->getSqlStringForSqlObject($select);
+      $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+      return $results->count();
+      }
     
-        public function addCrimeOcorrencia($id_ocorrencia, $id_crime) {
-        $sql = new Sql($this->adapter);
-        $insert = $sql->insert('ocorrencia_crime');
-        $newData = array(
-            'id_ocorrencia' => $id_ocorrencia,
-            'id_crime' => $id_crime,
-        );
-        $insert->values($newData);
-        $selectString = $sql->getSqlStringForSqlObject($insert);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
 
-        public function addProcedimentoOcorrencia($id_ocorrencia, $id_pro) {
-        $sql = new Sql($this->adapter);
-        $insert = $sql->insert('ocorrencia_procedimento');
-        $newData = array(
-            'id_oco' => $id_ocorrencia,
-            'id_pro' => $id_pro,
-        );
-        $insert->values($newData);
-        $selectString = $sql->getSqlStringForSqlObject($insert);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
-    
-    public function delPoliciaisOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $delete = $sql->delete('ocorrencia_policial')->where(array('id_ocorrencia' => $id_ocorrencia));
-
-        $selectString = $sql->getSqlStringForSqlObject($delete);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
-
-    public function deleteOcorrencia($id) {
-        try {
-            return $this->tableGateway->delete(array('id_ocorrencia' => $id));
-        } catch (\Exception $e) {
-            return false;
+    public function toDateYMD($date) {
+        if ($date != "") {
+            list ($d, $m, $y) = explode('/', $date);
+            list ($a1, $h) = explode(' ', $y);
+            $dataformatada = "$d-$m-$y";
+            if ($dataformatada != "--") {
+                return "$a1-$m-$d $h";
+            }
         }
+
+        return "";
     }
 
-    public function totalVitimasOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $select = $sql->select('ocorrencia_vitima')->where(array('id_ocorrencia' => $id_ocorrencia));
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
+    public function toDateDMY($date) {
 
-    public function totalAcusadosOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $select = $sql->select('ocorrencia_acusado')->where(array('id_ocorrencia' => $id_ocorrencia));
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
+        if ($date != "") {
+            list ($y, $m, $d) = explode('-', $date);
+            list ($d1, $h) = explode(' ', $d);
+            $dataformatada = "$d/$m/$y";
+            if ($dataformatada != "//") {
+                return "$d1/$m/$y $h";
+            }
+        }
 
-    public function totalCrimesOcorrencia($id_ocorrencia) {
-        $sql = new Sql($this->adapter);
-        $select = $sql->select('ocorrencia_crime')->where(array('id_ocorrencia' => $id_ocorrencia));
-        $selectString = $sql->getSqlStringForSqlObject($select);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
+        return "";
     }
 
 }

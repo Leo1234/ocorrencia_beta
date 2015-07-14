@@ -13,10 +13,11 @@ return array(
             'Application\Controller\Crime' => 'Application\Controller\CrimeController',
             'Application\Controller\Arma' => 'Application\Controller\ArmaController',
             'Application\Controller\endereco' => 'Application\Controller\EnderecoController',
+            'Application\Controller\Ocorrencia' => 'Application\Controller\OcorrenciaController',
             'MunicipioController' => 'Application\Controller\MunicipioController',
             'VitimaController' => 'Application\Controller\VitimaController',
             'PolicialController' => 'Application\Controller\PolicialController',
-            'OcorrenciaController' => 'Application\Controller\OcorrenciaController',
+            //'OcorrenciaController' => 'Application\Controller\OcorrenciaController',
             'ViaturaController' => 'Application\Controller\ViaturaController'
         ),
     ),
@@ -199,17 +200,33 @@ return array(
                     ),
                 ),
             ),
-            # segment para controller policial
+            /*
+              # segment para controller ocorrencia
+              'ocorrencia' => array(
+              'type' => 'Segment',
+              'options' => array(
+              'route' => '/ocorrencia[/:action][/:id][/:confirm]',
+              'constraints' => array(
+              'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+              'id' => '[0-9]+',
+              ),
+              'defaults' => array(
+              'controller' => 'OcorrenciaController',
+              'action' => 'index',
+              ),
+              ),
+              ),
+             */
             'ocorrencia' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/ocorrencia[/:action][/:id][/:confirm]',
+                    'route' => '/ocorrencia[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'OcorrenciaController',
+                        'controller' => 'Application\Controller\Ocorrencia',
                         'action' => 'index',
                     ),
                 ),

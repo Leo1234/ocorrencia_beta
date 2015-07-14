@@ -50,7 +50,37 @@ class Endereco implements InputFilterAwareInterface {
             ));
 
 
-
+  $inputFilter->add(array(
+                'name' => 'rua',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'), # remove xml e html da string
+                    array('name' => 'StringTrim'), # remove espacos do início e do final da string
+                //array('name' => 'StringToUpper'), # transofrma string para maiusculo
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 50,
+                            'messages' => array(
+                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
+                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
+                            ),
+                        ),
+                    ),
+                ),
+            ));
 
             $inputFilter->add(array(
                 'name' => 'numero',

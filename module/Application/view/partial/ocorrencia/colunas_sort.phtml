@@ -1,11 +1,11 @@
 
 
 <?php
-$estruturaColuna = function($label, $coluna_id_oco) {
+$estruturaColuna = function($label, $coluna_datai) {
     $html = '';
-    $html .= "<a href='{$this->url('ocorrencia', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna_id_oco' => $coluna_id_oco, 'coluna_sort' => ($this->coluna_id_oco!= $coluna_id_oco? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
+    $html .= "<a href='{$this->url('ocorrencia', ['action' => 'index'], ['query' => ['pagina' => $this->pagina_atual, 'coluna__datai' => $coluna_datai, 'coluna_sort' => ($this->coluna__datai!= $coluna_datai? 'ASC' : ($this->coluna_sort == 'DESC' ? 'ASC' : 'DESC')), 'itens_pagina' => $this->itens_pagina, 'search' => $this->search]])}'>";
 
-    if ($this->coluna_id_oco == $coluna_id_oco) {
+    if ($this->coluna_datai == $coluna_datai) {
         $icon = $this->coluna_sort == 'ASC' ? '' : '-alt';
         $html .= "<span class='glyphicon glyphicon-sort-by-attributes{$icon}'></span> ";
     }
@@ -18,12 +18,14 @@ $estruturaColuna = function($label, $coluna_id_oco) {
 <tr>
    
    <th class="header" style="width: 13%;">
-        <?php echo $estruturaColuna('Nº Registro', 'id_oco'); ?>
+        <?php echo $estruturaColuna('Nº Registro', 'id_ocorrencia'); ?>
     </th> 
     <th>
-        <?php echo $estruturaColuna('Viatura', 'vtr'); ?>
+        <?php echo $estruturaColuna('Rua', 'rua'); ?>
     </th> 
-   
+    <th>
+        <?php echo $estruturaColuna('Viatura', 'prefixo'); ?>
+    </th> 
     <th>
         <?php echo $estruturaColuna('Data/hora início', 'datai'); ?>
     </th>
@@ -31,7 +33,7 @@ $estruturaColuna = function($label, $coluna_id_oco) {
         <?php echo $estruturaColuna('Data/hora fim', 'dataf'); ?>
     </th>
      <th>
-        <?php echo $estruturaColuna('Narração', 'narracao'); ?>
+        <?php echo $estruturaColuna('CIOPS', 'ciops'); ?>
     </th>
     <th class="header" style="width: 10%;text-align: center">Ação</th>  
 </tr>
