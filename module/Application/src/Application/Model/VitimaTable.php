@@ -118,7 +118,6 @@ class VitimaTable {
         $select->join(array('e' => 'endereco'), "vitima.id_end = e.id_end", array('rua', 'numero'));
         $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro', 'id_area'));
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
-
         $select->where(array('vitima.id_vitima' => $id));
 
         $rowset = $this->tableGateway->selectWith($select);

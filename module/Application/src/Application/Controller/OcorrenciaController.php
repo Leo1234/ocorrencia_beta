@@ -60,7 +60,7 @@ class OcorrenciaController extends AbstractActionController {
         $postData = $request->getPost()->toArray();
         
 
-        print_r($postData);
+        //print_r($postData);
         // verifica se a requisição é do tipo post
 
         if ($request->isPost()) {
@@ -157,6 +157,70 @@ class OcorrenciaController extends AbstractActionController {
     }
 
     public function editarAction() {
+       
+        // filtra id passsado pela url
+        $id = (int) $this->params()->fromRoute('id', 0);
+        // se id = 0 ou não informado redirecione para vitimas
+        if (!$id) {
+            // adicionar mensagem de erro
+            $this->flashMessenger()->addMessage("Ocorrência não encotrada");
+            // redirecionar para action index
+            return $this->redirect()->toRoute('ocorrencia');
+        }
+        try {
+            // variável com objetoo corrência localizado em formato de array
+            $ocorrencia = (array) $this->getOcorrenciaTable()->find($id);
+            $ocorrenciaObj=  $this->getOcorrenciaTable()->find($id);
+      
+            $ocorrenciaObj = $this->getOcorrenciaTable()->find($id);
+            $ocorrencia['datai'] = $this->getOcorrenciaTable()->toDateDMY($ocorrenciaObj->getDatai());
+            $ocorrencia['dataf'] = $this->getOcorrenciaTable()->toDateDMY($ocorrenciaObj->getDataf());
+            $ocorrencia['rua'] = $ocorrenciaObj->getEnd()->getRua();
+            $ocorrencia['numero'] = $ocorrenciaObj->getEnd()->getNumero();
+          
+        $crimes_oco = $this->getOcorrenciaTable()->crimesOcorrencia($id);
+        $policiais_oco = $this->getOcorrenciaTable()->policiaisOcorrencia($id);
+        $procedimentos_oco = $this->getOcorrenciaTable()->procedimentosOcorrencia($id);
+       
+
+      print_r($policiais_oco);
+        
+        } catch (Exception $exc) {
+            // adicionar mensagem
+            $this->flashMessenger()->addErrorMessage($exc->getMessage());
+            // redirecionar para action index
+            return $this->redirect()->toRoute('ocorrencia');
+        }
+        // objeto form viatura vazio
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new OcorrenciaForm($dbAdapter);
+        //configura o campo select com valor vindo da view index
+
+        $form->get('id_muniO')->setAttributes(array('value' => $ocorrenciaObj->getEnd()->getId_bai()->getMunicipio()->getId_muni(), 'selected' => true));
+        $form->get('id_bai')->setAttributes(array('value' => $ocorrenciaObj->getEnd()->getId_bai()->getId_bai(), 'selected' => true));
+        $form->get('id_vtr')->setAttributes(array('value' => $ocorrenciaObj->getVtr()->getId_vtr(), 'selected' => true));
+        $form->get('id_crime')->setAttributes(array('value' => $this->selectedCrimes($crimes_oco)));
+        $form->get('id_composicao')->setAttributes(array('value' => $this->selectedPoliciais($policiais_oco)));
+        $form->get('procedimento')->setAttributes(array('value' => $this->selectedProcedimentos($procedimentos_oco)));
+
+        
+        
+        
+        
+      
+
+        // popula objeto form ocorrencia com objeto model ocorrencia
+        $form->setData($ocorrencia);
+        // dados eviados para editar.phtml
+           return new ViewModel(
+                    array(
+                'formOcorrencia' => $form,
+                'crimes_oco' => $crimes_oco
+                    )
+            );
+       // return ['formOcorrencia' => $form];
+        
+        /*
         // obtém a requisição
         $request = $this->getRequest();
 
@@ -230,6 +294,8 @@ class OcorrenciaController extends AbstractActionController {
         $pols = $this->getPolicialTable()->findByOcorrecia($id);
 
         return new ViewModel(array('ocorrencia' => $oc, 'pols' => $pols));
+         
+         */
     }
 
     public function deletarAction() {
@@ -272,9 +338,9 @@ class OcorrenciaController extends AbstractActionController {
 
 
         $countPerPage = "5";
-        $vitimas = $this->getVitimaTable()->vitimasOcorrencia($id);
+        $ocorrencias = $this->getVitimaTable()->vitimasOcorrencia($id);
 
-        return new ViewModel(array('vitimas' => $vitimas, 'id_ocorrencia' => $id, 'formVitima' => $form));
+        return new ViewModel(array('vitimas' => $ocorrencias, 'id_ocorrencia' => $id, 'formVitima' => $form));
     }
 
     //função que retorna uma instancia da classe GraduacaoTable 
@@ -319,5 +385,27 @@ class OcorrenciaController extends AbstractActionController {
         $adapter = $this->getServiceLocator()->get('AdapterDb');
         return new ModelBairro($adapter);
     }
+    
+      function selectedCrimes($crimes = array()) {
+            $selected = array();
+            foreach ($crimes as $key => $co) {
+                $selected[] = $key;
+            }
+            return $selected;
+        }
 
+           function selectedPoliciais($policiais = array()) {
+            $selected = array();
+            foreach ($policiais as $key => $co) {
+                $selected[] = $key;
+            }
+            return $selected;
+        }
+    function selectedProcedimentos($procedimentos = array()) {
+            $selected = array();
+            foreach ($procedimentos as $key => $co) {
+                $selected[] = $key;
+            }
+            return $selected;
+        }
 }

@@ -45,6 +45,11 @@ class OcorrenciaForm extends Form {
             'type' => 'Hidden', # ou 'type' => 'ZendFormElementHidden'
             'name' => 'id_ocorrencia',
         ));
+             $this->add(array(
+            'type' => 'Hidden', # ou 'type' => 'ZendFormElementHidden'
+            'name' => 'id_end',
+        ));
+
 
         // elemento do tipo text
         $this->add(array(

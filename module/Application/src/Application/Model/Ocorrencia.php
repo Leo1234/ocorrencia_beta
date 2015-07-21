@@ -9,6 +9,7 @@ use Zend\I18n\Validator\Int;
 use Application\Model\Endereco;
 use Application\Model\Bairro;
 use Application\Model\Municipio;
+use Application\Model\Ocorrencia_crime;
 
 class Ocorrencia implements InputFilterAwareInterface {
 
@@ -20,6 +21,9 @@ class Ocorrencia implements InputFilterAwareInterface {
     public $dataf;
     public $narracao;
     public $usuario = 1;
+   // public $policiais = null;
+   //public $crimes = null;
+   // public $procedimentos = null;
     protected $inputFilter;
 
     public function exchangeArray($data) {
@@ -30,6 +34,9 @@ class Ocorrencia implements InputFilterAwareInterface {
         $this->ciops = (!empty($data['ciops'])) ? $data['ciops'] : null;
         $this->datai = (!empty($data['datai'])) ? $data['datai'] : null;
         $this->dataf = (!empty($data['dataf'])) ? $data['dataf'] : null;
+        //$this->$policiais = (!empty($data['id_composicao'])) ? $data['id_composicao'] : null;
+        //$this->$crimes  = (!empty($data['id_ocorrenciaC'])) ? new Ocorrencia_crime($data['id_ocorrenciaC'], $data['id_crime']) : null;
+        //$this->$procedimentos  = (!empty($data['procedimento'])) ? $data['procedimento'] : null;
         $this->narracao = (!empty($data['narracao'])) ? $data['narracao'] : null;
     }
 
@@ -68,8 +75,7 @@ class Ocorrencia implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-
-            
+ 
             $inputFilter->add(array(
                 'name' => 'ciops',
                 'required' => true,
@@ -149,6 +155,7 @@ class Ocorrencia implements InputFilterAwareInterface {
 
         return $this->inputFilter;
     }
+   
     public function getId_oco() {
         return $this->id_ocorrencia;
     }
@@ -181,7 +188,19 @@ class Ocorrencia implements InputFilterAwareInterface {
         return $this->usuario;
     }
 
-    public function setId_oco($id_ocorrencia) {
+    public function getPoliciais() {
+        return $this->policiais;
+    }
+
+    public function getCrimes() {
+        return $this->crimes;
+    }
+
+    public function getProcedimentos() {
+        return $this->procedimentos;
+    }
+
+    public function setId_ocorrencia($id_ocorrencia) {
         $this->id_ocorrencia = $id_ocorrencia;
     }
 
@@ -212,6 +231,19 @@ class Ocorrencia implements InputFilterAwareInterface {
     public function setUsuario($usuario) {
         $this->usuario = $usuario;
     }
+
+    public function setPoliciais($policiais) {
+        $this->policiais = $policiais;
+    }
+
+    public function setCrimes($crimes) {
+        $this->crimes = $crimes;
+    }
+
+    public function setProcedimentos($procedimentos) {
+        $this->procedimentos = $procedimentos;
+    }
+
 
 
 }

@@ -108,9 +108,9 @@ class VitimaController extends AbstractActionController {
         try {
             // variável com objeto viatura localizado em formato de array
             $vitima = (array) $this->getVitimaTable()->find($id);
-            //var_dump( $vitima );
-            // variável com objeto viatura localizado para ser usado para setar o campo vitima do select.
+        
             $vitimaObj = $this->getVitimaTable()->find($id);
+            
             $vitima['data_nasc'] = $this->getVitimaTable()->toDateDMY($vitimaObj->getData_nasc());
             $vitima['rua'] = $vitimaObj->getEnd()->getRua();
             $vitima['numero'] = $vitimaObj->getEnd()->getNumero();
@@ -167,7 +167,6 @@ class VitimaController extends AbstractActionController {
                 // aqui vai a lógica para atualizar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
                 $modelVitima->vitima($form->getData());
-
 
                 // 2 - atualizar dados do model para banco de dados
 
