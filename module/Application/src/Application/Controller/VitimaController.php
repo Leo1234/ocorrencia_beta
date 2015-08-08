@@ -135,7 +135,6 @@ class VitimaController extends AbstractActionController {
         return ['formVitima' => $form];
     }
 
-// POST /policiais/editar/id
     public function atualizarAction() {
 
         // obtém a requisição

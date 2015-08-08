@@ -1,0 +1,64 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Editar Município ID:  <?php echo $this->id ?>  
+        </div>
+    </div>
+    
+    <?php
+    // objeto form contato
+     $formMunicipio = $this->forMunicipio;
+       //var_dump ($formViatura);
+    // preparar elementos do formulário
+    $formMunicipio->prepare();
+    // configurar url formulário
+    $formMunicipio->setAttribute('action', $this->url('municipio', ['action' => 'atualizar']));
+    ?>  
+    
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formMunicipio) ?>
+    
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="municipio" class="col-lg-3 col-md-3 control-label">Município*:</label>
+            <div class="col-lg-9 col-md-9">
+                <?php 
+                // renderiza html input
+                echo $this->formInput($formMunicipio->get('municipio'));
+       
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formMunicipio->get('municipio'));
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <?php
+        // renderiza html input hidden para id
+        echo $this->formHidden($formMunicipio->get('id_muni')); 
+        ?>
+ 
+        <button type="submit" class="btn btn-primary">Atualizar Município</button>
+        <a href="<?php echo $this->url('municipio'); ?>" class="btn btn-default">Voltar</a>
+    </div>
+ 
+    <?php // renderiza html </form> ?>
+    <?php echo $this->form()->closeTag() ?>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -97,12 +97,28 @@ class OcorrenciaTable {
         return $this->tableGateway->lastInsertValue;
     }
 
+    public function update(Ocorrencia $oco) {
+        $data = [
+            'id_ocorrencia' => $oco->getId_oco(),
+            'id_end' => $oco->getEnd(),
+            'id_vtr' => $oco->getVtr()->getId_vtr(),
+            'ciops' => $oco->getCiops(),
+            'id_usuario' => $oco->getUsuario(),
+            'datai' => $this->toDateYMD($oco->getDatai()),
+            'dataf' => $this->toDateYMD($oco->getDataf()),
+            'narracao' => $oco->getNarracao(),
+        ];
+
+        $id = (int) $oco->getId_oco();
+        $this->tableGateway->update($data, array('id_ocorrencia' => $id));
+    }
+
     public function find($id) {
         $id = (int) $id;
         $select = new Select;
         $select->from('ocorrencia');
         $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('rua', 'numero'), 'left');
+        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('id_end','rua', 'numero'), 'left');
         $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'), 'left');
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'), 'left');
         $select->join(array('v' => 'vtr'), "ocorrencia.id_vtr = v.id_vtr", array('id_vtr', 'prefixo'), 'left');
@@ -122,6 +138,21 @@ class OcorrenciaTable {
         return $row;
     }
 
+    public function saveHomicidio(Homicidio $ho, $id_oco) {
+        $sql = new Sql($this->adapter);
+        $insert = $sql->insert('homicidio');
+        $newData = array(
+            'qtde' => $ho->getQtd(),
+            'tipo_homi' => $ho->getTipo(),
+            'id_ocorrencia'=> $id_oco,
+            'id_crime' => 1,
+        );
+        $insert->values($newData);
+        $selectString = $sql->getSqlStringForSqlObject($insert);
+        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
+        return $results->count();
+    }
+    
     public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
         $sql = new Sql($this->adapter);
         $insert = $sql->insert('ocorrencia_policial');
@@ -161,10 +192,55 @@ class OcorrenciaTable {
         return $results->count();
     }
 
+    public function delCrimesOcorrencia($id_ocorrencia) {
+        
+        $dbAdapter = $this->adapter;
+        $sql = 'DELETE FROM ocorrencia_crime WHERE id_ocorrencia='.$id_ocorrencia;
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+    }
+    
+     public function delProcedimentosOcorrencia($id_ocorrencia) {
+         $dbAdapter = $this->adapter;
+        $sql = 'DELETE FROM ocorrencia_procedimento WHERE id_oco='.$id_ocorrencia;
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+  
+    }
+       public function delHomicidioOcorrencia($id_ocorrencia) {
+         $dbAdapter = $this->adapter;
+        $sql = 'DELETE FROM homicidio WHERE id_ocorrencia='.$id_ocorrencia;
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+  
+    }
+      public function findHomicidioOcorrencia($id_ocorrencia) {
+         /*  $select = new Select;
+        $select->from('homicidio');
+        $select->columns(array('*'));
+        $select->where(array('homicidio.id_ocorrencia' =>$id_ocorrencia));
+        //echo $select->getSqlString();exit;
+        $rowset = $this->tableGateway->selectWith($select);
+        $row = $rowset->current();
+
+
+        if (!$row)
+            throw new \Exception("Não foi encontrado os dados da ocorrência de id = {$id}");
+
+        return $row;*/
+          
+          
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT * FROM homicidio WHERE id_ocorrencia=' . $id_ocorrencia;
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+        //print_r ($result->current());
+        return $result->current();
+    }
+
     public function delPoliciaisOcorrencia($id_ocorrencia) {
         $sql = new Sql($this->adapter);
         $delete = $sql->delete('ocorrencia_policial')->where(array('id_ocorrencia' => $id_ocorrencia));
-
         $selectString = $sql->getSqlStringForSqlObject($delete);
         $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
         return $results->count();
@@ -229,7 +305,7 @@ class OcorrenciaTable {
         return $selectData;
     }
 
-    public function procedimentosOcorrencia($id){
+    public function procedimentosOcorrencia($id) {
         $dbAdapter = $this->adapter;
         $sql = 'SELECT op.id_pro,procedimento FROM ocorrencia As o LEFT JOIN ocorrencia_procedimento AS op ON o.id_ocorrencia = op.id_oco  LEFT JOIN procedimento AS p ON op.id_pro = p.id_pro WHERE op.id_oco =' . $id;
         $statement = $dbAdapter->query($sql);

@@ -25,6 +25,20 @@ class Ocorrencia implements InputFilterAwareInterface {
    //public $crimes = null;
    // public $procedimentos = null;
     protected $inputFilter;
+    
+    public function ocorrencia($data) {
+
+        $this->id_ocorrencia = (!empty($data['id_ocorrencia'])) ? $data['id_ocorrencia'] : null;
+        $this->end = (!empty($data['id_end'])) ? $data['id_end'] : null;
+        $this->vtr = (!empty($data['id_vtr'])) ? new Viatura($data['id_vtr'], $data['prefixo']) : null;
+        $this->ciops = (!empty($data['ciops'])) ? $data['ciops'] : null;
+        $this->datai = (!empty($data['datai'])) ? $data['datai'] : null;
+        $this->dataf = (!empty($data['dataf'])) ? $data['dataf'] : null;
+        //$this->$policiais = (!empty($data['id_composicao'])) ? $data['id_composicao'] : null;
+        //$this->$crimes  = (!empty($data['id_ocorrenciaC'])) ? new Ocorrencia_crime($data['id_ocorrenciaC'], $data['id_crime']) : null;
+        //$this->$procedimentos  = (!empty($data['procedimento'])) ? $data['procedimento'] : null;
+        $this->narracao = (!empty($data['narracao'])) ? $data['narracao'] : null;
+    }
 
     public function exchangeArray($data) {
 

@@ -4,7 +4,71 @@ jq162 = jQuery.noConflict(true);
 //alert( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
 //alert( "2st loaded jQuery version ($): " + jq162.fn.jquery + "<br>" );
 
-v = 0 // total de vítimas
+v = 0; // total de vítimas
+//selected = [];
+  
+  
+  
+  
+  $(function(){
+     
+    //Cria uma função para Criar os campos Nome e Telefone
+    function createDivFields(){
+        /*
+         Criamos a variavel, e atribuimos os campos que serão criados;
+         Utilizamos o colchetes nos nomes do campos para informar que os dados 
+         em forma de array;
+         Adiciona uma div, para que nela seja criado novos campos extras;
+         E um link para para chamar o evento de adicionar;
+        */
+        var html  = '<div class="form-group">';
+            html += '<label for="inputCirmes" class="col-lg-3 col-md-3 control-label">XXXX*:</label>';
+            html += '<div class="col-lg-9  col-md-9">';
+            html += '</div>';
+            html += '</div>';
+            return html;
+    }
+    
+     $("#add").click(function(){
+        //Adicionado no final do elemento ( #boxFields) os campos
+        $("#boxFields").append(createDivFields());
+        return false;
+    });
+});
+  
+  
+
+$(function() {
+   
+    var status = true;
+    
+    $("#crime").change(function() {
+        var selected = [];
+        $('#crime :selected').each(function(){
+            //selected[$(this).val()] = $(this).text();
+            //if ($(this).val() == 1 ) {
+                //$("#boxFields").append(createDivFields());
+                 selected[$(this).val()] = $(this).text();
+            //}
+        });
+        alert(selected);
+    });
+    
+});
+
+function in_array(array, e) {
+    for (var i = 0; i < array.length; i++) {
+        if(array[i] == e)
+            return i;
+        else
+            return -1
+        //alert(array[i]); 
+    }
+}
+    
+
+
+
 
 $(function() {
 

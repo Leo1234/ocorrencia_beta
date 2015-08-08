@@ -55,9 +55,9 @@
                             <tr>
                                 <td class="text-center"><?php echo $oc->getId_oco(); ?></td>
                                 <td class="text-center"><?php echo $oc->getEnd()->getRua(); ?></td>
-                                <td class="text-center"><?php echo $oc->getVtr()->getPrefixo() ?></td>        
+                                <td class="text-center"><?php echo $oc->getVtr()->getPrefixo() ?></td> 
+                                  <td class="text-center"><?php echo (new \DateTime($oc->getDatai()))->format('d/m/Y H:i:s'); ?></td>
                                  <td class="text-center"><?php echo (new \DateTime($oc->getDataf()))->format('d/m/Y H:i:s'); ?></td>
-                                <td class="text-center"><?php echo (new \DateTime($oc->getDatai()))->format('d/m/Y H:i:s'); ?></td>
                                 <td class="text-center"><?php echo $oc->getCiops(); ?></td>
                               
 
@@ -97,3 +97,33 @@
         </li>
     </ul>
 </div>
+
+<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-detalhes-contato" data-contato-url="<?php echo $this->url('ocorrencia', array("action" => "detalhes", "id" => $contato->id)); ?>" title="Visualizar" ><span class="glyphicon glyphicon-new-window"></span></button>
+
+<div class="modal fade" id="modal-detalhes-contato">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form name="formHomicidio" id="formVitima"
+          <fieldset>
+            <legend>Dados Homicídio</legend>
+            <table  id="t2" width="70%">
+                <tr>
+                    <td align="right">QTD Mortos</td>
+                    <td><input id="qtdM" type="text" name="qtdM" size="3%"></input></td>
+                    <td align="right">Tipo de Homicídio</td>
+                    <td><input id="tpm" type="textarea" size="30%"></input></td>
+                    <td align="right">Presídio: S </td>
+                    <td><input type="radio" name="presidio"  value="S"></td>
+                    <td>N</td>
+                    <td><input type="radio" name="presidio"  value="N"></td>
+                </tr>
+            </table> </br>
+            </br>
+        </fieldset>
+            </div>
+          </div>
+    </div>
+</div>
+
+
