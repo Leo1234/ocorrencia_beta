@@ -8,15 +8,17 @@ use Zend\InputFilter\InputFilterAwareInterface,
 
 class Homicidio implements InputFilterAwareInterface {
 
-    public $qtd;
-    public $tipo;
+    public $qtde;
+    public $tipo_homi;
     public $presidio;
+    public $id_ocorrencia;
     protected $inputFilter;
 
     public function exchangeArray($data) {
-        $this->qtd = (!empty($data['qtd'])) ? $data['qtd'] : null;
-        $this->tipo = (!empty($data['tipo'])) ? $data['tipo'] : null;
+        $this->qtde = (!empty($data['qtde'])) ? $data['qtde'] : null;
+        $this->tipo_homi = (!empty($data['tipo_homi'])) ? $data['tipo_homi'] : null;
         $this->presidio = (!empty($data['presidio'])) ? $data['presidio'] : null;
+        $this->id_ocorrencia = (!empty($data['id_ocorrencia'])) ? $data['id_ocorrencia'] : null;
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter) {
@@ -28,7 +30,7 @@ class Homicidio implements InputFilterAwareInterface {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'qtd',
+                'name' => 'qtde',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'), # remove xml e html da string
@@ -61,7 +63,7 @@ class Homicidio implements InputFilterAwareInterface {
 
             // input filter para campo de nome  
             $inputFilter->add(array(
-                'name' => 'tipo',
+                'name' => 'tipo_homi',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'), # remove xml e html da string
@@ -118,29 +120,38 @@ class Homicidio implements InputFilterAwareInterface {
 
         return $this->inputFilter;
     }
-
-    public function getQtd() {
-        return $this->qtd;
+    public function getQtde() {
+        return $this->qtde;
     }
 
-    public function getTipo() {
-        return $this->tipo;
+    public function getTipo_homi() {
+        return $this->tipo_homi;
     }
 
     public function getPresidio() {
         return $this->presidio;
     }
 
-    public function setQtd($qtd) {
-        $this->qtd = $qtd;
+    public function getId_ocorrencia() {
+        return $this->id_ocorrencia;
     }
 
-    public function setTipo($tipo) {
-        $this->tipo = $tipo;
+    public function setQtde($qtde) {
+        $this->qtde = $qtde;
+    }
+
+    public function setTipo_homi($tipo_homi) {
+        $this->tipo_homi = $tipo_homi;
     }
 
     public function setPresidio($presidio) {
         $this->presidio = $presidio;
     }
+
+    public function setId_ocorrencia($id_ocorrencia) {
+        $this->id_ocorrencia = $id_ocorrencia;
+    }
+
+
 
 }

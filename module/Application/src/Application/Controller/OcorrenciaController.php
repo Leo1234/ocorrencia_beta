@@ -17,6 +17,7 @@ use Application\Model\BairroTable as ModelBairro;
 use Application\Form\OcorrenciaForm;
 use Application\Form\HomicidioForm;
 use Application\Model\Homicidio;
+use Application\Model\HomicidioTable as ModelHomicidio;
 
 class OcorrenciaController extends AbstractActionController {
 
@@ -54,10 +55,10 @@ class OcorrenciaController extends AbstractActionController {
         $form = new OcorrenciaForm($dbAdapter);
         return ['formOcorrencia' => $form];
     }
-    
-   public function homicidioAction() {
+
+    public function homicidioAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $formHomicidio = new HomicidioForm();    
+        $formHomicidio = new HomicidioForm();
         $formHomicidio->get('id')->setAttributes(array('value' => $id));
 
         return new ViewModel(
@@ -67,16 +68,16 @@ class OcorrenciaController extends AbstractActionController {
                 )
         );
     }
-    
-       public function xxxAction() {
+
+    public function xxxAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         $formHomicidio = new HomicidioForm();
 
-        $Modelho = (array) $this->getOcorrenciaTable()->findHomicidioOcorrencia(40);
+        $Modelho = (array) $this->getHomicidioTable()->findHomicidioOcorrencia($id);
         $formHomicidio->setData($Modelho);
-        
-        print_r($formHomicidio);
-        
+
+        //print_r($formHomicidio);
+
         return new ViewModel(
                 array(
             'form' => $formHomicidio,
@@ -92,7 +93,7 @@ class OcorrenciaController extends AbstractActionController {
 
         // verifica se a requisição é do tipo post
         if ($request->isPost()) {
-            $form = new HomicidioForm(); 
+            $form = new HomicidioForm();
             // instancia model contato com regras de filtros e validações
             $modelHomicidio = new Homicidio();
             // passa para o objeto formulário as regras de viltros e validações
@@ -107,7 +108,7 @@ class OcorrenciaController extends AbstractActionController {
                 // 1 - popular model com valores do formulário
                 $modelHomicidio->exchangeArray($form->getData());
                 // 2 - persistir dados do model para banco de dados
-                $this->getOcorrenciaTable()->saveHomicidio($modelHomicidio, $postData['id']);
+                $this->getOcorrenciaTable()->addHomicidio($modelHomicidio, $postData['id']);
 
                 // adicionar mensagem de sucesso
                 $this->flashMessenger()
@@ -115,7 +116,7 @@ class OcorrenciaController extends AbstractActionController {
 
                 // redirecionar para action index no controller contatos
                 return $this->redirect()->toRoute('ocorrencia');
-            }else { // em caso da validação não seguir o que foi definido
+            } else { // em caso da validação não seguir o que foi definido
                 // renderiza para action novo com o objeto form populado,
                 // com isso os erros serão tratados pelo helpers view
                 return (new ViewModel())
@@ -124,7 +125,6 @@ class OcorrenciaController extends AbstractActionController {
             }
         }
     }
-
 
     public function adicionarAction() {
         // obtém a requisição
@@ -154,7 +154,7 @@ class OcorrenciaController extends AbstractActionController {
                 $policiais = $postData['id_composicao'];
                 $crimes = $postData['id_crime'];
                 $procedimentos = $postData['procedimento'];
-                
+
                 print_r(crimes);
 
                 $ultimo_id = $this->getOcorrenciaTable()->save($modelOcorrencia);
@@ -178,16 +178,16 @@ class OcorrenciaController extends AbstractActionController {
 
                 $this->flashMessenger()->addSuccessMessage("Ocorrência cadastrada com sucesso");
                 // redirecionar para action index no controller 
-                
-                  if (count($crimes)) {
+
+                if (count($crimes)) {
                     foreach ($crimes as $cri) {
                         if ($cri == 1) {
-                            return $this->redirect()->toRoute('ocorrencia', array('action' => 'homicidio', 'id' => $ultimo_id)); 
+                            return $this->redirect()->toRoute('ocorrencia', array('action' => 'homicidio', 'id' => $ultimo_id));
                             break;
                         }
                     }
                 }
-                
+
                 return $this->redirect()->toRoute('ocorrencia', array('action' => 'index', 'id' => $ultimo_id));
                 //return $this->redirect()->toRoute('ocorrencia');
             } else {
@@ -224,8 +224,8 @@ class OcorrenciaController extends AbstractActionController {
                 $modelOcorrencia->ocorrencia($form->getData());
                 $bairro = $this->getBairroTable()->find($postData['id_bai']);
                 $modelEndereco = new Endereco($postData['id_end'], $postData['rua'], $postData['numero'], $bairro);
-           
-               $this->getEnderecoTable()->update($modelEndereco);
+
+                $this->getEnderecoTable()->update($modelEndereco);
 
                 $policiais = $postData['id_composicao'];
                 $crimes = $postData['id_crime'];
@@ -243,9 +243,26 @@ class OcorrenciaController extends AbstractActionController {
                     }
                 }
                 if (count($crimes)) {
+                     
+                    foreach ($crimes as $cri) {
+                       
+                        if ($cri == 1) {
+                            $modelHomicidio = new Homicidio();
+                            $Modelho = (array)$this->getHomicidioTable()->findHomicidioOcorrencia($modelOcorrencia->getId_oco());
+                            $modelHomicidio->exchangeArray($Modelho);
+                            print_r($modelHomicidio);
+                            $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
+                        }
+                    }
                     $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
-                    foreach ($crimes as $idc) {
-                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $idc);
+
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    foreach ($crimes as $cri) {
+                        if ($cri == 1) {
+                            $this->getHomicidioTable()->addHomicidio($modelHomicidio, $modelOcorrencia->getId_oco());
+                        }
                     }
                 }
 
@@ -265,7 +282,7 @@ class OcorrenciaController extends AbstractActionController {
                         }
                     }
                 }
-                
+
                 // adicionar mensagem de sucesso
                 $this->flashMessenger()
                         ->addSuccessMessage("Ocorrencia editada com sucesso");
@@ -449,6 +466,10 @@ class OcorrenciaController extends AbstractActionController {
     private function getBairroTable() {
         $adapter = $this->getServiceLocator()->get('AdapterDb');
         return new ModelBairro($adapter);
+    }
+      private function getHomicidioTable() {
+        $adapter = $this->getServiceLocator()->get('AdapterDb');
+        return new ModelHomicidio($adapter);
     }
 
     function selectedCrimes($crimes = array()) {

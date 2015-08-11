@@ -26,10 +26,10 @@ class HomicidioForm extends Form {
 
          $this->add(array(
             'type' => 'Zend\Form\Element\Number', # ou 'type' => 'ZendFormElementText'
-            'name' => 'qtd',
+            'name' => 'qtde',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'qtd',
+                'id' => 'qtde',
                 'placeholder' => 'Quantidade de assassinatos',
             ),
         ));
@@ -37,7 +37,7 @@ class HomicidioForm extends Form {
         // elemento do tipo text
         $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
-            'name' => 'tipo',
+            'name' => 'tipo_homi',
             'attributes' => array(
                 'class' => 'form-control',
                 'id' => 'tipoHomicidio',

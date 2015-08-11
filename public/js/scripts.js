@@ -51,7 +51,7 @@ $(function() {
                  selected[$(this).val()] = $(this).text();
             //}
         });
-        alert(selected);
+      
     });
     
 });

@@ -138,12 +138,12 @@ class OcorrenciaTable {
         return $row;
     }
 
-    public function saveHomicidio(Homicidio $ho, $id_oco) {
+    public function addHomicidio(Homicidio $ho, $id_oco) {
         $sql = new Sql($this->adapter);
         $insert = $sql->insert('homicidio');
         $newData = array(
-            'qtde' => $ho->getQtd(),
-            'tipo_homi' => $ho->getTipo(),
+            'qtde' => $ho->getQtde(),
+            'tipo_homi' => $ho->getTipo_homi(),
             'id_ocorrencia'=> $id_oco,
             'id_crime' => 1,
         );
@@ -195,7 +195,7 @@ class OcorrenciaTable {
     public function delCrimesOcorrencia($id_ocorrencia) {
         
         $dbAdapter = $this->adapter;
-        $sql = 'DELETE FROM ocorrencia_crime WHERE id_ocorrencia='.$id_ocorrencia;
+        $sql = 'DELETE FROM ocorrencia_crime WHERE id_ocorrencia='.$id_ocorrencia ;
         $statement = $dbAdapter->query($sql);
         $result = $statement->execute();
     }
@@ -214,29 +214,7 @@ class OcorrenciaTable {
         $result = $statement->execute();
   
     }
-      public function findHomicidioOcorrencia($id_ocorrencia) {
-         /*  $select = new Select;
-        $select->from('homicidio');
-        $select->columns(array('*'));
-        $select->where(array('homicidio.id_ocorrencia' =>$id_ocorrencia));
-        //echo $select->getSqlString();exit;
-        $rowset = $this->tableGateway->selectWith($select);
-        $row = $rowset->current();
-
-
-        if (!$row)
-            throw new \Exception("Não foi encontrado os dados da ocorrência de id = {$id}");
-
-        return $row;*/
-          
-          
-        $dbAdapter = $this->adapter;
-        $sql = 'SELECT * FROM homicidio WHERE id_ocorrencia=' . $id_ocorrencia;
-        $statement = $dbAdapter->query($sql);
-        $result = $statement->execute();
-        //print_r ($result->current());
-        return $result->current();
-    }
+    
 
     public function delPoliciaisOcorrencia($id_ocorrencia) {
         $sql = new Sql($this->adapter);

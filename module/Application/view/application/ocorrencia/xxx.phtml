@@ -25,14 +25,14 @@
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
-                echo $this->formInput($form->get('qtd'));
+                echo $this->formInput($form->get('qtde'));
                 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($form->get('qtd'));
+                        ->render($form->get('qtde'));
                 ?>
             </div>
         </div>
@@ -42,14 +42,14 @@
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
-                echo $this->formInput($form->get('tipo'));
+                echo $this->formInput($form->get('tipo_homi'));
                 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($form->get('tipo'));
+                        ->render($form->get('tipo_homi'));
                 ?>
             </div>
         </div>
