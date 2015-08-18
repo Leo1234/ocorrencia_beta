@@ -138,20 +138,7 @@ class OcorrenciaTable {
         return $row;
     }
 
-    public function addHomicidio(Homicidio $ho, $id_oco) {
-        $sql = new Sql($this->adapter);
-        $insert = $sql->insert('homicidio');
-        $newData = array(
-            'qtde' => $ho->getQtde(),
-            'tipo_homi' => $ho->getTipo_homi(),
-            'id_ocorrencia'=> $id_oco,
-            'id_crime' => 1,
-        );
-        $insert->values($newData);
-        $selectString = $sql->getSqlStringForSqlObject($insert);
-        $results = $this->adapter->query($selectString, Adapter::QUERY_MODE_EXECUTE);
-        return $results->count();
-    }
+
     
     public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
         $sql = new Sql($this->adapter);
@@ -192,10 +179,16 @@ class OcorrenciaTable {
         return $results->count();
     }
 
-    public function delCrimesOcorrencia($id_ocorrencia) {
-        
+    public function delCrimesOcorrencia($id_ocorrencia) {   
         $dbAdapter = $this->adapter;
         $sql = 'DELETE FROM ocorrencia_crime WHERE id_ocorrencia='.$id_ocorrencia ;
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+    }
+      public function delCrimeHomicidioOcorrencia($id_ocorrencia,$id_crime) {
+        
+        $dbAdapter = $this->adapter;
+        $sql = 'DELETE FROM ocorrencia_crime WHERE id_ocorrencia='.$id_ocorrencia.' && id_crime ='.$id_crime;
         $statement = $dbAdapter->query($sql);
         $result = $statement->execute();
     }

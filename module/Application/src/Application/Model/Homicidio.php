@@ -11,14 +11,14 @@ class Homicidio implements InputFilterAwareInterface {
     public $qtde;
     public $tipo_homi;
     public $presidio;
-    public $id_ocorrencia;
+    public $id;
     protected $inputFilter;
 
     public function exchangeArray($data) {
         $this->qtde = (!empty($data['qtde'])) ? $data['qtde'] : null;
         $this->tipo_homi = (!empty($data['tipo_homi'])) ? $data['tipo_homi'] : null;
         $this->presidio = (!empty($data['presidio'])) ? $data['presidio'] : null;
-        $this->id_ocorrencia = (!empty($data['id_ocorrencia'])) ? $data['id_ocorrencia'] : null;
+        $this->id = (!empty($data['id'])) ? $data['id'] : null;
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter) {
@@ -132,8 +132,8 @@ class Homicidio implements InputFilterAwareInterface {
         return $this->presidio;
     }
 
-    public function getId_ocorrencia() {
-        return $this->id_ocorrencia;
+    public function getId() {
+        return $this->id;
     }
 
     public function setQtde($qtde) {
@@ -148,9 +148,10 @@ class Homicidio implements InputFilterAwareInterface {
         $this->presidio = $presidio;
     }
 
-    public function setId_ocorrencia($id_ocorrencia) {
-        $this->id_ocorrencia = $id_ocorrencia;
+    public function setId($id) {
+        $this->id = $id;
     }
+
 
 
 

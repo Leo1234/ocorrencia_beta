@@ -14,7 +14,7 @@ class MunicipioTable {
     protected $tableGateway;
     protected $adapter;
     protected $resultSetPrototype;
- 
+
     public function __construct(Adapter $adapter) {
         $this->adapter = $adapter;
         $this->resultSetPrototype = new ResultSet();
@@ -22,8 +22,7 @@ class MunicipioTable {
         $this->tableGateway = new TableGateway('municipio', $adapter, null, $this->resultSetPrototype);
     }
 
-
-        public function fetchAll() {
+    public function fetchAll() {
         $dbAdapter = $this->adapter;
         $sql = 'SELECT id_muni, municipio  FROM municipio ORDER BY id_muni ASC';
         $statement = $dbAdapter->query($sql);
@@ -34,52 +33,51 @@ class MunicipioTable {
         foreach ($result as $res) {
             $selectData[$res['id_muni']] = $res['municipio'];
         }
-        return $selectData;     
+        return $selectData;
     }
-    
-     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'municipio ASC', $like = null, $itensPaginacao = 5)          
-{      
+
+    public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'municipio ASC', $like = null, $itensPaginacao = 5) {
         $select = new Select;
         $select->from('municipio');
         $select->order($ordem);
 
-       
+
         if (isset($like)) {
-        $select
-                ->where
-                ->like('id_muni', "%{$like}%")
-                ->or
-                ->like('municipio', "%{$like}%")
-        ;
+            $select
+                    ->where
+                    ->like('id_muni', "%{$like}%")
+                    ->or
+                    ->like('municipio', "%{$like}%")
+            ;
+        }
+
+        // criar um objeto com a estrutura desejada para armazenar valores
+        // $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
+
+        $resultSetPrototype = new ResultSet();
+        $resultSetPrototype->setArrayObjectPrototype(new Municipio());
+
+        // criar um objeto adapter paginator
+        $paginatorAdapter = new DbSelect(
+                // nosso objeto select
+                $select,
+                // nosso adapter da tabela
+                $this->tableGateway->getAdapter(),
+                // nosso objeto base para ser populado
+                //$resultSet
+                $resultSetPrototype
+        );
+
+
+        // resultado da paginação
+        return (new Paginator($paginatorAdapter))
+                        // pagina a ser buscada
+                        ->setCurrentPageNumber((int) $pagina)
+                        // quantidade de itens na página
+                        ->setItemCountPerPage((int) $itensPagina)
+                        ->setPageRange((int) $itensPaginacao);
     }
-    
-    // criar um objeto com a estrutura desejada para armazenar valores
-   // $resultSet = new HydratingResultSet(new Reflection(), new Viatura());
-    
-     $resultSetPrototype = new ResultSet();
-     $resultSetPrototype->setArrayObjectPrototype( new Municipio());
-    
-    // criar um objeto adapter paginator
-    $paginatorAdapter = new DbSelect(
-        // nosso objeto select
-        $select,
-        // nosso adapter da tabela
-        $this->tableGateway->getAdapter(),
-        // nosso objeto base para ser populado
-        //$resultSet
-        $resultSetPrototype
-    );
-   
-    
-    // resultado da paginação
-    return (new Paginator($paginatorAdapter))
-            // pagina a ser buscada
-            ->setCurrentPageNumber((int) $pagina)
-            // quantidade de itens na página
-            ->setItemCountPerPage((int) $itensPagina)
-            ->setPageRange((int) $itensPaginacao);
-}
- 
+
     public function find($id) {
         $id = (int) $id;
         $rowset = $this->tableGateway->select(array('id_muni' => $id));
@@ -89,7 +87,8 @@ class MunicipioTable {
 
         return $row;
     }
-      public function save(Municipio $municipio) {
+
+    public function save(Municipio $municipio) {
         $data = [
             'municipio' => $municipio->getMunicipio(),
             'id_muni' => $municipio->getId_muni(),
@@ -97,15 +96,16 @@ class MunicipioTable {
 
         return $this->tableGateway->insert($data);
     }
-           public function update(Municipio $municipio) {
+
+    public function update(Municipio $municipio) {
         $data = [
-             'municipio' => $municipio->getMunicipio(),
+            'municipio' => $municipio->getMunicipio(),
             'id_muni' => $municipio->getId_muni()
         ];
 
         $id = (int) $municipio->getId_muni();
         //$id = 1;
-        
+
         if ($this->find($id)) {
             $this->tableGateway->update($data, array('id_muni' => $id));
         } else {

@@ -119,8 +119,6 @@ class PolicialController extends AbstractActionController {
         try {
             // variável com objeto viatura localizado em formato de array
             $policial= (array) $this->getPolicialTable()->find($id);
-            
-            
              
             // variável com objeto viatura localizado para ser usado para setar o campo policial do select.
             $policialObj =  $this->getPolicialTable()->find($id);
@@ -139,9 +137,7 @@ class PolicialController extends AbstractActionController {
         $form = new PolicialForm($dbAdapter);
         //configura o campo select com valor vindo da view index
          $form->get('id_grad')->setAttributes(array('value'=>$policialObj->getGraduacao()->getId_grad(),'selected'=>true));
-         //$form->get('data_nasc')->setAttribute('value',"Leonildo");
-           
-        // popula objeto form viatura com objeto model viatura
+     
         $form->setData($policial);
         // dados eviados para editar.phtml
         return ['formPolicial' => $form];

@@ -3,7 +3,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-              Editar dados do homicídio ID:  <?php //echo $this->id ?>       
+              Editar dados do homicídio ID:  <?php echo $this->id ?>       
         </div>
     </div>
     <?php
@@ -12,7 +12,7 @@
    
     $form->prepare();
     // configurar url formulário
-    $form->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHomicidio')));
+    $form->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHomicidio', 'id' => $this->id )));
     ?>
     
     <?php // renderiza html <form> com atributos configurados no objeto ?>
@@ -79,7 +79,7 @@
         ?>
 
         <button type="submit" class="btn btn-primary">Atualizar Dados</button>
-        <a href="<?php echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>
+        <!--<a href="<?php //echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>-->
     </div>
 
     <?php // renderiza html </form> ?>

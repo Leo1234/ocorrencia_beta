@@ -55,8 +55,8 @@ class HomicidioForm extends Form {
             'options' => array(
                 'label' => 'Foi no presídio?',
                 'value_options' => array(
-                    'F' => '  sim   ',
-                    'M' => '  não ',
+                    'S' => '  sim   ',
+                    'N' => '  não ',
                 ),
             ),
         ));
