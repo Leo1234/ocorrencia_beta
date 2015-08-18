@@ -297,33 +297,47 @@ class OcorrenciaController extends AbstractActionController {
                 
                 
                 ///////////////////////crimes, mas sem homicidios//////////////////
-                if (!$this->isPostHomicidio($crimes)){
+                if (!$this->isPostHomicidio($crimes)) {
+                    if ($isHomicidio){
+                        $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
+                        $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                        foreach ($crimes as $cri) {
+                            $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                        }
+                    }
+
                     $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
-                    foreach ($crimes as $cri){
+                    foreach ($crimes as $cri) {
                         $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
                     }
-                } else if ($isHomicidio){
-                     $Modelho = $this->getHomicidioTable()->findHomicidioOcorrencia($modelOcorrencia->getId_oco());
-                     $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
-                     $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
-                     foreach ($crimes as $cri) {
+                } else if ($this->isPostHomicidio($crimes) && $isHomicidio) {
+                    $Modelho = $this->getHomicidioTable()->findHomicidioOcorrencia($modelOcorrencia->getId_oco());
+                    $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    foreach ($crimes as $cri) {
                         $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
                     }
-                    foreach ($crimes as $cri){
-                        if ($cri == 1){
+                    foreach ($crimes as $cri) {
+                        if ($cri == 1) {
                             $this->getHomicidioTable()->addHomicidio($Modelho, $modelOcorrencia->getId_oco());
                             break;
                         }
                     }
-                    
                     if ($isHomicidio) {
                         $x = $modelOcorrencia->getId_oco();
                         return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarhomicidio', 'id' => $x));
                     }
+                } else {
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    $x = $modelOcorrencia->getId_oco();
+                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'novohomicidio', 'id' => $x));
                 }
-            
 
-            /*
+
+                /*
                 if (count($crimes)) {
                     foreach ($crimes as $cri) {
                         if ($cri == 1 && $isHomicidio) {
