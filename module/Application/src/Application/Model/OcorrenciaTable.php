@@ -207,6 +207,13 @@ class OcorrenciaTable {
         $result = $statement->execute();
   
     }
+        public function delLesaoOcorrencia($id_ocorrencia) {
+         $dbAdapter = $this->adapter;
+        $sql = 'DELETE FROM lesao WHERE id_ocorrencia='.$id_ocorrencia;
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+  
+    }
     
 
     public function delPoliciaisOcorrencia($id_ocorrencia) {

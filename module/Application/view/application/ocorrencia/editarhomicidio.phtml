@@ -3,13 +3,88 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-              Editar dados do homicídio ID:  <?php echo $this->id ?>       
+              Editar dados extra da ocorrência de ID:  <?php echo $this->id ?>       
         </div>
     </div>
+    
+    <br>
+    
+        <div class="alert alert-info" role="alert">Dados do homicídio</div>
     <?php
     // objeto form contato
-    $form = $this->form;
-   
+    $formH = $this->formH;  
+    $formH->prepare();
+    // configurar url formulário
+    $formH->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHomicidio', 'id' => $this->id )));
+    ?>
+    
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formH) ?>
+    <div class="panel-body">
+  
+
+        <div class="form-group">
+            <label for="inputQuantidade" class="col-lg-3 col-md-3 control-label">Quantidade*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formH->get('qtde'));
+                
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formH->get('qtde'));
+                ?>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Tipo*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formH->get('tipo_homi'));
+                
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formH->get('tipo_homi'));
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPresidio" class="col-lg-3 col-md-3 control-label">Presídio?*:</label>
+            <div class="col-lg-9  col-md-9">
+                <div class="checkbox">
+                    <?php
+                    // renderiza html input
+                    echo $this->formRadio($formH->get('presidio'));
+                    // renderiza elemento de erro
+                    echo $this->formElementErrors()
+                            ->setMessageOpenFormat('<small class="text-danger">')
+                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                            ->setMessageCloseString('</small>')
+                            ->render($formH->get('presidio'));
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    <div class="alert alert-info" role="alert">Dados da lesão</div>
+    
+    
+    
+     <?php
+    
+     $form = $this->formL;  
     $form->prepare();
     // configurar url formulário
     $form->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHomicidio', 'id' => $this->id )));
@@ -25,14 +100,14 @@
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
-                echo $this->formInput($form->get('qtde'));
+                echo $this->formInput($form->get('qtdeL'));
                 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($form->get('qtde'));
+                        ->render($form->get('qtdeL'));
                 ?>
             </div>
         </div>
@@ -42,39 +117,28 @@
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
-                echo $this->formInput($form->get('tipo_homi'));
+                echo $this->formInput($form->get('tipo_les'));
                 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($form->get('tipo_homi'));
+                        ->render($form->get('tipo_les'));
                 ?>
             </div>
         </div>
-        <div class="form-group">
-            <label for="inputPresidio" class="col-lg-3 col-md-3 control-label">Presídio?*:</label>
-            <div class="col-lg-9  col-md-9">
-                <div class="checkbox">
-                    <?php
-                    // renderiza html input
-                    echo $this->formRadio($form->get('presidio'));
-                    // renderiza elemento de erro
-                    echo $this->formElementErrors()
-                            ->setMessageOpenFormat('<small class="text-danger">')
-                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                            ->setMessageCloseString('</small>')
-                            ->render($form->get('presidio'));
-                    ?>
-                </div>
-            </div>
-        </div>
+ 
     </div>
+    
+    
+  
+    
+    
     <div class="panel-footer">
         <?php
         // renderiza html input hidden para id
-        echo $this->formHidden($form->get('id'));
+        echo $this->formHidden($formH->get('id'));
       
         ?>
 

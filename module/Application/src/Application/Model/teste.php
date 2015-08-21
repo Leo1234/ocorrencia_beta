@@ -1,128 +1,53 @@
-<div class="row">
 
-    <div class="col-lg-12">
+<?php
 
-        <h1>VÃ­timas</h1>
-        <ol class="breadcrumb">
-            <li class="active"><i class="fa fa-dashboard"></i> VÃ­timas da OcorrÃªncia ID <?=$this->id_ocorrencia?></li>
-            <div style="float: right;margin-top: -6px">
-                <a href="<?php echo $this->url('ocorrencia', array('action' => 'detalhes', 'id' => $this->id_ocorrencia)); ?>" class="btn btn-success" ><i class="fa fa-desktop"></i> Exibir OcorrÃªncia</a>
-            </div>
-        </ol>
+class teste {
 
-    </div>
-</div>
+    public function atualizaDadosCrimesExtra($crimes,$id) {
+
+        $isHomicidio = $this->getHomicidioTable()->isHomicidio($id);
 
 
-<div class="row">
+        ///////////////////////crimes, mas sem homicidios//////////////////
+        if (!$this->isPostHomicidio($crimes)) {
+            if ($isHomicidio) {
+                $this->getOcorrenciaTable()->delHomicidioOcorrencia($id);
+                $this->getOcorrenciaTable()->delCrimesOcorrencia($id);
+                foreach ($crimes as $cri) {
+                    $this->getOcorrenciaTable()->addCrimeOcorrencia($id, $cri);
+                }
+            }
 
-    <div class="col-lg-12">
+            $this->getOcorrenciaTable()->delCrimesOcorrencia($id);
+            foreach ($crimes as $cri) {
+                $this->getOcorrenciaTable()->addCrimeOcorrencia($id, $cri);
+            }
+            ///////////////////////crimes com homicídios já existentes//////////////////
+        } else if ($this->isPostHomicidio($crimes) && $isHomicidio) {
+            $Modelho = $this->getHomicidioTable()->findHomicidioOcorrencia($id);
+            $this->getOcorrenciaTable()->delHomicidioOcorrencia($id);
+            $this->getOcorrenciaTable()->delCrimesOcorrencia($id);
+            foreach ($crimes as $cri) {
+                $this->getOcorrenciaTable()->addCrimeOcorrencia($id, $cri);
+            }
+            foreach ($crimes as $cri) {
+                if ($cri == 1) {
+                    $this->getHomicidioTable()->addHomicidio($Modelho, $id);
+                    break;
+                }
+            }
+            if ($isHomicidio) {
+                $x = $id;
+                return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarhomicidio', 'id' => $x));
+            }
+        } else {///////////////////////crimes com homicídios pela primeira vez//////////////////
+            $this->getOcorrenciaTable()->delCrimesOcorrencia($id);
+            foreach ($crimes as $cri) {
+                $this->getOcorrenciaTable()->addCrimeOcorrencia($id, $cri);
+            }
+            $x = $id;
+            return $this->redirect()->toRoute('ocorrencia', array('action' => 'novohomicidio', 'id' => $x));
+        }
+    }
 
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <i class="fa fa-user"></i> Cadastrar VÃ­tima           
-                </div>
-                <a style="float: right;margin-top: -20px"  data-toggle="collapse" data-parent="#accordion" href="#chat"><i id="toggle" class="fa fa-chevron-up"></i></a>
-            </div>
-            <div class="panel-collapse collapse" id="chat">
-                <form class="form-horizontal" role="form" method="POST" action="<?php echo $this->url('policiais', array('action' => 'adicionar')); ?>">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label for="inputNome" class="col-lg-3 col-md-3 control-label">Nome:</label>
-                            <div class="col-lg-6 col-md-6">
-                                <input type="text" name="nome" class="form-control" id="inputNome" placeholder="Nome Completo" required autofocus>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputFone" class="col-lg-3 col-md-3 control-label">Telefone:</label>
-                            <div class="col-lg-4 col-md-4">
-                                <input type="tel" name="fone" class="form-control" id="inputFone" maxlength="10" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDataNasc" class="col-lg-3 col-md-3 control-label">Data Nasc.:</label>
-                            <div class="col-lg-4 col-md-4">
-                                <input type="text" name="data_nasc" class="form-control" id="inputDataNasc" maxlength="10" required >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="radioSexo" class="col-lg-3 col-md-3 control-label">Sexo:</label>
-                            <div class="col-lg-9  col-md-9">
-                                <label class="radio-inline">
-                                    <input type="radio" name="sexo" id="radioSexo1" value="F" > Feminino
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="sexo" id="radioSexo2" value="M"> Masculino
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group ">
-                        <label for="inputEndereco" class="col-lg-3 col-md-3 control-label">EndereÃ§o:</label>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="id_end" id="id_end">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-success" type="button"><i class="fa fa-plus"></i></button>
-                                </span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    </div>
-                    <div class="panel-footer">
-                        <button type="button" class="btn btn-primary">Adicionar</button>
-                        <a href="<?php echo $this->url('policiais'); ?>" class="btn btn-default">Cancelar</a>
-                    </div>
-                </form>
-            </div>
-
-            <br />
-
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-user"></i> VÃ­timas <span class="badge"><?=count($this->vitimas)?></span></h3>
-                </div>
-
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped tablesorter">
-                            <thead>
-                                <tr>
-                                    <th class="header">Nome <i class="fa fa-sort"></i></th>
-                                    <th class="header" style="width: 10%;">Telefone <i class="fa fa-sort"></i></th>
-                                    <th class="header" style="width: 10%;">Data Nasc. <i class="fa fa-sort"></i></th>
-                                    <th class="header" style="width: 7%;">Sexo <i class="fa fa-sort"></i></th>
-                                    <th class="header">EndereÃ§o <i class="fa fa-sort"></i></th>
-                                    <th class="header" style="width: 8%;text-align: center">AÃ§Ã£o </th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <?php foreach ($this->vitimas as $i=>$v): ?>
-
-                                    <tr>
-                                        <td><?php echo $v->getNome(); ?></td>
-                                        <td class="text-center"><?php echo $v->getTelefone(); ?></td>
-                                        <td class="text-center"><?php echo $this->util()->toDateDMY($v->getData_nasc()); ?></td>
-                                        <td class="text-center"><?php echo $v->getSexo(); ?></td>
-                                        <td ><?php echo $v->getId_end(); ?></td>
-                                        <td>
-                                            <a id="btnEdit" class="btn btn-xs btn-warning" title="Editar" data-toggle="collapse" data-parent="#accordion" href="#chat"><span class="fa fa-edit"></span></a>
-                                            <a class="btn btn-xs btn-danger" title="Deletar" href=""><span class="fa fa-trash-o"></span></a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-</div>     
+}

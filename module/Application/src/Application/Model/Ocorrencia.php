@@ -30,7 +30,7 @@ class Ocorrencia implements InputFilterAwareInterface {
 
         $this->id_ocorrencia = (!empty($data['id_ocorrencia'])) ? $data['id_ocorrencia'] : null;
         $this->end = (!empty($data['id_end'])) ? $data['id_end'] : null;
-        $this->vtr = (!empty($data['id_vtr'])) ? new Viatura($data['id_vtr'], $data['prefixo']) : null;
+        $this->vtr = (!empty($data['id_vtr'])) ? new Viatura($data['id_vtr'], "0") : null;
         $this->ciops = (!empty($data['ciops'])) ? $data['ciops'] : null;
         $this->datai = (!empty($data['datai'])) ? $data['datai'] : null;
         $this->dataf = (!empty($data['dataf'])) ? $data['dataf'] : null;
