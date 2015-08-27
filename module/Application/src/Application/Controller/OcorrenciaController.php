@@ -352,8 +352,8 @@ class OcorrenciaController extends AbstractActionController {
 
 
                 ///////////////////////crimes, mas sem homicidios//////////////////
-                if (!$this->isPostHomicidio($crimes)) {
-                    if ($isHomicidio) {
+                if (!in_array(1, $crimes) and !in_array(2, $crimes) and !in_array(10, $crimes) and !in_array(12, $crimes)) {
+                    if ($isHomicidio){
                         $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
                         $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
                         foreach ($crimes as $cri) {
