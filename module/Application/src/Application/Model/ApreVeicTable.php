@@ -9,7 +9,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\Paginator\Adapter\DbSelect,
     Zend\Paginator\Paginator;
 
-class ApreVeiTable {
+class ApreVeicTable {
 
     protected $tableGateway;
     protected $adapter;
