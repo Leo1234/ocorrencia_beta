@@ -46,15 +46,14 @@
             <div class="col-lg-9  col-md-9">
                 <?php if($this->formH){
                 // renderiza html input
-                echo $this->formInput($formH->get('tipo_homi'));
-                
+                echo $this->formInput($formH->get('tipo_homi'));               
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
                         ->render($formH->get('tipo_homi'));
-                } ?>
+                }?>
             </div>
         </div>
         <div class="form-group">
@@ -137,11 +136,12 @@
     
     
     <div class="panel-footer">
-        <?php
+        
+        <?php if($this->formH){
         // renderiza html input hidden para id
         echo $this->formHidden($formH->get('id'));
       
-        ?>
+        }?>
 
         <button type="submit" class="btn btn-primary">Atualizar Dados</button>
         <!--<a href="<?php //echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>-->

@@ -43,7 +43,7 @@ class ApreArmaTable {
             'qtdeA' => $arma->getQtdeA(),
             'descricaoA' => $arma->getDescricaoA(),
             'id_ocorrencia' => $id_oco,
-            'id_crime' => 13,
+            'id_crime' => 12,
         );
         $this->tableGateway->insert($data);
         return $this->tableGateway->lastInsertValue;

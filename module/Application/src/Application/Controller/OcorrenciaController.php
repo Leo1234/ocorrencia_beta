@@ -17,6 +17,8 @@ use Application\Model\BairroTable as ModelBairro;
 use Application\Form\OcorrenciaForm;
 use Application\Form\HomicidioForm;
 use Application\Form\LesaoForm;
+use Application\Form\ApreArmaForm;
+
 use Application\Model\OcorrenciaCrime;
 use Application\Model\OcorrenciaCrimeTable as ModelOcorrenciaCrime;
 use Application\Model\Homicidio;
@@ -77,6 +79,20 @@ class OcorrenciaController extends AbstractActionController {
                 )
         );
     }
+    
+    
+    public function novalesaoAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $formLesao = new LesaoForm();
+         $formLesao->get('id')->setAttributes(array('value' => $id));
+
+        return new ViewModel(
+                array(
+            'id' => $id,
+            'form' => $formLesao,
+                )
+        );
+    }
 
     public function editarhomicidioAction() {
 
@@ -131,6 +147,20 @@ class OcorrenciaController extends AbstractActionController {
                     )
             );
         }
+    }
+     public function editararmaAction(){
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $formArma = new ApreArmaForm();
+        $ModelArma = (array) $this->getArmaTable()->findArmaOcorrencia($id);
+        $formArma->setData($ModelArma);
+        return new ViewModel(
+                array(
+            'formA' => $formArma,
+            'id' => $id,
+                )
+        );
     }
 
     public function adicionarhomicidioAction() {
@@ -356,8 +386,9 @@ class OcorrenciaController extends AbstractActionController {
                 $isVeiculo = $this->getVeiculoTable()->isVeiculo($modelOcorrencia->getId_oco());
 
 
-                ///////////////////////crimes, mas sem homicidios//////////////////
+                ///////////////////////crimes, mas sem homicidio, sem lesão, armas e sem drogas//////////////////
                 if (!in_array(1, $crimes) and !in_array(2, $crimes) and !in_array(12, $crimes) and !in_array(13, $crimes)) {
+                    ///deleta os relacionamentos com os dados extras
                     if ($isHomicidio) {
                         $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
                     }
@@ -370,31 +401,30 @@ class OcorrenciaController extends AbstractActionController {
                     if ($isVeiculo) {
                         $this->getOcorrenciaTable()->delVeiculoOcorrencia($modelOcorrencia->getId_oco());
                     }
-                    
-                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
 
+                    ///deleta os crimes
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    
+                     //adiciona os novos crimes
                     foreach ($crimes as $cri) {
                         $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
                     }
 
-                    ///////////////////////crimes com homicídios já existentes//////////////////
-                } else if($isHomicidio && in_array(1, $crimes) && !in_array(2, $crimes) && !in_array(12, $crimes) && !in_array(13, $crimes) && !$isLesao && !$isArma && !$isVeiculo ) {
+                    ///////////////////////crimes com homicídio já existente//////////////////
+                } else if ($isHomicidio && in_array(1, $crimes) && !in_array(2, $crimes) && !in_array(12, $crimes) && !in_array(13, $crimes) && !$isLesao && !$isArma && !$isVeiculo) {
                     //recupera os dados extras
                     $Modelho = $this->getHomicidioTable()->findHomicidioOcorrencia($modelOcorrencia->getId_oco());
                     //$ModelLesao = $this->getLesaoTable()->findLesaoOcorrencia($modelOcorrencia->getId_oco());
                     //$ModelLArma = $this->getArmaTable()->findArmaOcorrencia($modelOcorrencia->getId_oco());
                     //$ModelVeic = $this->getVeiculoTable()->findVeiculoOcorrencia($modelOcorrencia->getId_oco());
-                    
-                     //deletar os dados extras
+                    //deletar os dados extras
                     //$this->getOcorrenciaTable()->delLesaoOcorrencia($modelOcorrencia->getId_oco());
                     $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
-                   // $this->getOcorrenciaTable()->delArmaOcorrencia($modelOcorrencia->getId_oco());
-                   // $this->getOcorrenciaTable()->delVeiculoOcorrencia($modelOcorrencia->getId_oco());
-                    
-                    
+                    // $this->getOcorrenciaTable()->delArmaOcorrencia($modelOcorrencia->getId_oco());
+                    // $this->getOcorrenciaTable()->delVeiculoOcorrencia($modelOcorrencia->getId_oco());
                     //deletar os crimes
                     $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
-                    
+
                     //adiciona os crimes os novos crimes
                     foreach ($crimes as $cri) {
                         $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
@@ -403,18 +433,19 @@ class OcorrenciaController extends AbstractActionController {
                     if (in_array(1, $crimes)) {
                         $this->getHomicidioTable()->addHomicidio($Modelho, $modelOcorrencia->getId_oco());
                     }//adicionada os dados extra de lesões removido
-                    if (in_array(2, $crimes)) {
-                        $this->getLesaoTable()->addLesao($ModelLesao, $modelOcorrencia->getId_oco());
-                    }//adicionada os dados extra de armas removido
-                    if (in_array(12, $crimes)) {
-                        $this->getArmaTable()->addArma($ModelLArma, $modelOcorrencia->getId_oco());
-                    }//adicionada os dados extra de veículos removido
-                    if (in_array(13, $crimes)) {
-                        $this->getVeiculoTable()->addVeiculo($ModelVeic, $modelOcorrencia->getId_oco());
-                    }
+                    /*
+                      if (in_array(2, $crimes)) {
+                      $this->getLesaoTable()->addLesao($ModelLesao, $modelOcorrencia->getId_oco());
+                      }//adicionada os dados extra de armas removido
+                      if (in_array(12, $crimes)) {
+                      $this->getArmaTable()->addArma($ModelLArma, $modelOcorrencia->getId_oco());
+                      }//adicionada os dados extra de veículos removido
+                      if (in_array(13, $crimes)) {
+                      $this->getVeiculoTable()->addVeiculo($ModelVeic, $modelOcorrencia->getId_oco());
+                      } */
 
-                     //redireciona para action editar homicídio pegar dados extras
-                    if($isHomicidio){
+                    //redireciona para action editar homicídio pegar dados extras
+                    if ($isHomicidio) {
                         $x = $modelOcorrencia->getId_oco();
                         return $this->forward()->dispatch('Application\Controller\ocorrencia', [
                                     'action' => 'editarhomicidio',
@@ -424,15 +455,102 @@ class OcorrenciaController extends AbstractActionController {
                         //$x = $modelOcorrencia->getId_oco();
                         //return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarhomicidio', 'id' => $x));
                     }
-                  ///////////////////////crimes com homicídios pela primeira vez//////////////////
-                }else if(!$isHomicidio && in_array(1, $crimes) && !in_array(2, $crimes) && !in_array(12, $crimes) && !in_array(13, $crimes) && !$isLesao && !$isArma && !$isVeiculo) {
+                    ///////////////////////crimes com homicídios pela primeira vez//////////////////
+                } else if (!$isHomicidio && in_array(1, $crimes) && !in_array(2, $crimes) && !in_array(12, $crimes) && !in_array(13, $crimes) && !$isLesao && !$isArma && !$isVeiculo) {
                     $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
                     foreach ($crimes as $cri) {
                         $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
                     }
                     $x = $modelOcorrencia->getId_oco();
                     return $this->redirect()->toRoute('ocorrencia', array('action' => 'novohomicidio', 'id' => $x));
+                    ///////////////////////crimes com lesão já existente//////////////////
+                } else if ($isLesao && !in_array(1, $crimes) && in_array(2, $crimes) && !in_array(12, $crimes) && !in_array(13, $crimes) && !$isHomicidio && !$isArma && !$isVeiculo) {
+                    //recupera os dados da lesão                    
+                    $ModelLesao = $this->getLesaoTable()->findLesaoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta lesão
+                    $this->getOcorrenciaTable()->delLesaoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deletar os crimes
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+
+                    //adiciona os crimes os novos crimes
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    //adicionada os dados extra da lesão removido
+                    if (in_array(2, $crimes)) {
+                        $this->getLesaoTable()->addLesao($ModelLesao, $modelOcorrencia->getId_oco());
+                    }
+
+                    //redireciona para action editar lesão e pegar dados extras
+                    if ($isLesao) {
+                        $x = $modelOcorrencia->getId_oco();
+                        return $this->forward()->dispatch('Application\Controller\ocorrencia', [
+                                    'action' => 'editarhomicidio',
+                                    'crimes' => $this->crimesExtras($crimes),
+                                    'id' => $x,
+                        ]);
+                        ///////////////////////crimes com lesão pela primeira vez//////////////////
+                    }
+                } else if (!$isLesao && !in_array(1, $crimes) && in_array(2, $crimes) && !in_array(12, $crimes) && !in_array(13, $crimes)) {
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    $x = $modelOcorrencia->getId_oco();
+                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'novalesao', 'id' => $x));
+                     ///////////////////////crimes com arma já existente//////////////////
+                }else if ($isArma && !in_array(1, $crimes) && !in_array(2, $crimes) && in_array(12, $crimes) && !in_array(13, $crimes) && !$isHomicidio && !$isLesao && !$isVeiculo) {
+                    //recupera os dados da lesão                    
+                    $ModelArma = $this->getArmaTable()->findArmaOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta lesão
+                    $this->getOcorrenciaTable()->delArmaOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deletar os crimes
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+
+                    //adiciona os crimes os novos crimes
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    //adicionada os dados extra da lesão removido
+                    if (in_array(12, $crimes)) {
+                        $this->getArmaTable()->addArma($ModelArma, $modelOcorrencia->getId_oco());
+                    }
+
+                    //redireciona para action editar lesão e pegar dados extras
+                    if ($isArma){
+                        $x = $modelOcorrencia->getId_oco();
+                         return $this->redirect()->toRoute('ocorrencia', array('action' => 'editararma', 'id' => $x));
+                        //$x = $modelOcorrencia->getId_oco();editararma
+                       // return $this->forward()->dispatch('Application\Controller\ocorrencia', [
+                                  //  'action' => 'editararma',
+                                    //'crimes' => $this->crimesExtras($crimes),
+                                   //'id' => $x,
+                       //]);
+                        ///////////////////////crimes com lesão pela primeira vez//////////////////
+                    }
+                } else if (!$isArma && !in_array(1, $crimes) && !in_array(2, $crimes) && in_array(12, $crimes) && !in_array(13, $crimes)) {
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    $x = $modelOcorrencia->getId_oco();
+                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'novaArma', 'id' => $x));
                 }
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
 
                 // adicionar mensagem de sucesso
