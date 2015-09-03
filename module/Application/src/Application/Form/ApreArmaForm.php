@@ -42,6 +42,8 @@ class ApreArmaForm extends Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
+                'id' => 'descricaoA',
+                'placeholder' => 'Descrição do armamento',
             )
         ));
     }

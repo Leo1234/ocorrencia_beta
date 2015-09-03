@@ -11,23 +11,23 @@
     
         <div class="alert alert-info" role="alert">Dados do homicídio</div>
     <?php
-    if($this->formH){
+    
     // objeto form contato
     $formH = $this->formH;  
     $formH->prepare();
     // configurar url formulário
     $formH->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHomicidio', 'id' => $this->id )));
-    }?>
+    ?>
     
     <?php // renderiza html <form> com atributos configurados no objeto ?>
-    <?php if($this->formH){ echo $this->form()->openTag($formH); } ?>
+    <?php echo $this->form()->openTag($formH); ?>
     <div class="panel-body">
   
 
         <div class="form-group">
             <label for="inputQuantidade" class="col-lg-3 col-md-3 control-label">Quantidade*:</label>
             <div class="col-lg-9  col-md-9">
-                <?php if($this->formH){
+                <?php 
                 // renderiza html input
                 echo $this->formInput($formH->get('qtde'));
                 
@@ -37,14 +37,14 @@
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
                         ->render($formH->get('qtde'));
-                }?>
+                ?>
             </div>
         </div>
         
         <div class="form-group">
             <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Tipo*:</label>
             <div class="col-lg-9  col-md-9">
-                <?php if($this->formH){
+                <?php 
                 // renderiza html input
                 echo $this->formInput($formH->get('tipo_homi'));               
                 // renderiza elemento de erro
@@ -53,14 +53,14 @@
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
                         ->render($formH->get('tipo_homi'));
-                }?>
+                ?>
             </div>
         </div>
         <div class="form-group">
             <label for="inputPresidio" class="col-lg-3 col-md-3 control-label">Presídio?*:</label>
             <div class="col-lg-9  col-md-9">
                 <div class="checkbox">
-                    <?php if($this->formH){
+                    <?php 
                     // renderiza html input
                     echo $this->formRadio($formH->get('presidio'));
                     // renderiza elemento de erro
@@ -69,7 +69,7 @@
                             ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                             ->setMessageCloseString('</small>')
                             ->render($formH->get('presidio'));
-                    }?>
+                    ?>
                 </div>
             </div>
         </div>
@@ -77,71 +77,16 @@
     
     
     
-    
-    <div class="alert alert-info" role="alert">Dados da lesão</div>
-    
-    
-    
-     <?php
-     if($this->formL){
-     $form = $this->formL;  
-    $form->prepare();
-    // configurar url formulário
-    $form->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHomicidio', 'id' => $this->id )));
-     }?>
-    
-    <?php // renderiza html <form> com atributos configurados no objeto ?>
-    <?php if($this->formL){ echo $this->form()->openTag($form); }?>
-    <div class="panel-body">
-  
-
-        <div class="form-group">
-            <label for="inputQuantidade" class="col-lg-3 col-md-3 control-label">Quantidade*:</label>
-            <div class="col-lg-9  col-md-9">
-                <?php if($this->formL){
-                // renderiza html input
-                echo $this->formInput($form->get('qtdeL'));
-                
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($form->get('qtdeL'));
-                }?>
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Tipo*:</label>
-            <div class="col-lg-9  col-md-9">
-                <?php if($this->formL){
-                // renderiza html input
-                echo $this->formInput($form->get('tipo_les'));
-                
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($form->get('tipo_les'));
-                }?>
-            </div>
-        </div>
- 
-    </div>
-    
-    
   
     
     
     <div class="panel-footer">
         
-        <?php if($this->formH){
+        <?php 
         // renderiza html input hidden para id
         echo $this->formHidden($formH->get('id'));
       
-        }?>
+        ?>
 
         <button type="submit" class="btn btn-primary">Atualizar Dados</button>
         <!--<a href="<?php //echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>-->
