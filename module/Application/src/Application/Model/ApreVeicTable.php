@@ -43,7 +43,7 @@ class ApreVeicTable {
             'qtdeV' => $veiculo->getQtdeV(),
             'descricaoV' => $veiculo->getDescricaoV(),
             'id_ocorrencia' => $id_oco,
-            'id_crime' => 12,
+            'id_crime' => 13,
         );
         $this->tableGateway->insert($data);
         return $this->tableGateway->lastInsertValue;
@@ -55,7 +55,7 @@ class ApreVeicTable {
            'qtdeV' => $veiculo->getQtdeV(),
             'descricaoV' => $veiculo->getDescricaoV(),
             'id_ocorrencia' => $id_oco,
-            'id_crime' => 12,
+            'id_crime' => 13,
         );
 
 

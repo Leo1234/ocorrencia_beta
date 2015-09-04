@@ -42,6 +42,8 @@ class ApreVeicForm extends Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
+                'id' => 'qtdeV',
+                'placeholder' => 'Descrição',
             )
         ));
     }
