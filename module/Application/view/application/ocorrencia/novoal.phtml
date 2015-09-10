@@ -3,24 +3,24 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-              Editar dados extra da ocorrência de ID:  <?php echo $this->id ?>       
+             Add dados  lesão e arma da ocorrência ID: <?php echo $this->id ?>       
         </div>
     </div>
     
     <br>
     
-        <div class="alert alert-info" role="alert">Dados do homicídio</div>
+        <div class="alert alert-info" role="alert">Dados da arma</div>
     <?php
     
     // objeto form contato
-    $formH = $this->formH;  
-    $formH->prepare();
+    $formA = $this->formA;  
+    $formA->prepare();
     // configurar url formulário
-    $formH->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHL', 'id' => $this->id )));
+    $formA->setAttribute('action', $this->url('ocorrencia', array('action' => 'adicionarAL', 'id' => $this->id )));
     ?>
     
     <?php // renderiza html <form> com atributos configurados no objeto ?>
-    <?php echo $this->form()->openTag($formH); ?>
+    <?php echo $this->form()->openTag($formA); ?>
     <div class="panel-body">
   
 
@@ -29,50 +29,34 @@
             <div class="col-lg-9  col-md-9">
                 <?php 
                 // renderiza html input
-                echo $this->formInput($formH->get('qtde'));
+                echo $this->formInput($formA->get('qtdeA'));
                 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formH->get('qtde'));
+                        ->render($formA->get('qtdeA'));
                 ?>
             </div>
         </div>
         
         <div class="form-group">
-            <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Tipo*:</label>
+            <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Descrição*:</label>
             <div class="col-lg-9  col-md-9">
                 <?php 
                 // renderiza html input
-                echo $this->formInput($formH->get('tipo_homi'));               
+                echo $this->formInput($formA->get('descricaoA'));               
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formH->get('tipo_homi'));
+                        ->render($formA->get('descricaoA'));
                 ?>
             </div>
         </div>
-        <div class="form-group">
-            <label for="inputPresidio" class="col-lg-3 col-md-3 control-label">Presídio?*:</label>
-            <div class="col-lg-9  col-md-9">
-                <div class="checkbox">
-                    <?php 
-                    // renderiza html input
-                    echo $this->formRadio($formH->get('presidio'));
-                    // renderiza elemento de erro
-                    echo $this->formElementErrors()
-                            ->setMessageOpenFormat('<small class="text-danger">')
-                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                            ->setMessageCloseString('</small>')
-                            ->render($formH->get('presidio'));
-                    ?>
-                </div>
-            </div>
-        </div>
+ 
     </div>
     
       <br>
@@ -82,7 +66,7 @@
     $formL = $this->formL;
     $formL->prepare();
     // configurar url formulário
-    $formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarLesao', 'id' => $this->id)));
+    //$formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarLesao', 'id' => $this->id)));
     ?>
 
     <?php // renderiza html <form> com atributos configurados no objeto  ?>
@@ -135,7 +119,7 @@
         
         <?php 
         // renderiza html input hidden para id
-        echo $this->formHidden($formH->get('id'));
+        echo $this->formHidden($formA->get('id'));
       
         ?>
 

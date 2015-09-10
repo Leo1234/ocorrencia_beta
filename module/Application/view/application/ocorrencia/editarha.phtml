@@ -16,7 +16,7 @@
     $formH = $this->formH;  
     $formH->prepare();
     // configurar url formulário
-    $formH->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHL', 'id' => $this->id )));
+    $formH->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarHA', 'id' => $this->id )));
     ?>
     
     <?php // renderiza html <form> com atributos configurados no objeto ?>
@@ -76,18 +76,18 @@
     </div>
     
       <br>
-    <div class="alert alert-info" role="alert">Dados da lesão</div>
+    <div class="alert alert-info" role="alert">Dados da arma</div>
 
     <?php
-    $formL = $this->formL;
-    $formL->prepare();
+    $formA = $this->formA;
+    $formA->prepare();
     // configurar url formulário
-    $formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarLesao', 'id' => $this->id)));
+    //$formA->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarLesao', 'id' => $this->id)));
     ?>
 
     <?php // renderiza html <form> com atributos configurados no objeto  ?>
     <?php 
-        echo $this->form()->openTag($formL);
+        echo $this->form()->openTag($formA);
      ?>
     <div class="panel-body">
 
@@ -97,31 +97,31 @@
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
-                echo $this->formInput($formL->get('qtdeL'));
+                echo $this->formInput($formA->get('qtdeA'));
 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formL->get('qtdeL'));
+                        ->render($formA->get('qtdeA'));
                 ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Tipo*:</label>
+            <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Descrição*:</label>
             <div class="col-lg-9  col-md-9">
                 <?php
                 // renderiza html input
-                echo $this->formInput($formL->get('tipo_les'));
+                echo $this->formInput($formA->get('descricaoA'));
 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formL->get('tipo_les'));
+                        ->render($formA->get('descricaoA'));
                 ?>
             </div>
         </div>
