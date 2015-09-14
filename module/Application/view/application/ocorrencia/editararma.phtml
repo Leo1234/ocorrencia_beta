@@ -52,7 +52,7 @@
                 <?php
                 if ($this->formA) {
                     // renderiza html input
-                    echo $this->formInput($formA->get('descricaoA'));
+                    echo $this->formElement($formA->get('descricaoA'));
                     // renderiza elemento de erro
                     echo $this->formElementErrors()
                             ->setMessageOpenFormat('<small class="text-danger">')
