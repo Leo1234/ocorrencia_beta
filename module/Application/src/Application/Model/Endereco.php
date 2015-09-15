@@ -50,7 +50,7 @@ class Endereco implements InputFilterAwareInterface {
             ));
 
 
-  $inputFilter->add(array(
+   $inputFilter->add(array(
                 'name' => 'rua',
                 'required' => true,
                 'filters' => array(
@@ -72,7 +72,7 @@ class Endereco implements InputFilterAwareInterface {
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 50,
+                            'max' => 100,
                             'messages' => array(
                                 \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
                                 \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
@@ -81,7 +81,7 @@ class Endereco implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-
+   
             $inputFilter->add(array(
                 'name' => 'numero',
                 'required' => true,

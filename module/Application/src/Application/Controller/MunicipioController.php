@@ -117,7 +117,7 @@ class MunicipioController extends AbstractActionController {
         }
         $form = new MunicipioForm();
         $form->setData($municipio);
-        return ['forMunicipio' => $form];
+        return ['formMunicipio' => $form];
     }
 
 // POST /contatos/editar/id

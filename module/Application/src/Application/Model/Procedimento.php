@@ -72,13 +72,48 @@ class Procedimento implements InputFilterAwareInterface{
                     ),
                 ),
             ));
+            
             $inputFilter->add(array(
                 'name' => 'peso',
                 'required' => true,
                 'filters' => array(
-                    array('name' => 'Int'), # transforma string para inteiro
+                    array('name' => 'StripTags'), # remove xml e html da string
+                    array('name' => 'StringTrim'), # remove espacos do início e do final da string
+                //array('name' => 'StringToUpper'), # transofrma string para maiusculo
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 3,
+                            'messages' => array(
+                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de dígitos aceitáveis %min%.',
+                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de dígitos aceitáveis %max%.',
+                            ),
+                        ),
+                    ),
+                    array(
+                        'name' => 'GreaterThan',
+                        'options' => array(
+                            'min' => 0,
+                            'messages' => array(
+                                \Zend\Validator\GreaterThan::NOT_GREATER => 'A entrada não é maior do que  %min%.',
+                            ),
+                        ),
+                    ),
                 ),
             ));
+
 
             $this->inputFilter = $inputFilter;
         }

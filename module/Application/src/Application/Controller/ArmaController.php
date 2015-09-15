@@ -117,7 +117,7 @@ class ArmaController extends AbstractActionController {
         }
         $form = new ArmaForm();
         $form->setData($arma);
-        return ['forArma' => $form];
+        return ['formArma' => $form];
     }
 
 // POST /contatos/editar/id

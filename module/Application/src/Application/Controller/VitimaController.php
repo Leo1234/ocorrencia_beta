@@ -106,7 +106,7 @@ class VitimaController extends AbstractActionController {
             return $this->redirect()->toRoute('vitimas');
         }
         try {
-            // variável com objeto viatura localizado em formato de array
+            // variável com objeto vitima localizado em formato de array
             $vitima = (array) $this->getVitimaTable()->find($id);
         
             $vitimaObj = $this->getVitimaTable()->find($id);
@@ -121,7 +121,7 @@ class VitimaController extends AbstractActionController {
             // redirecionar para action index
             return $this->redirect()->toRoute('vitimas');
         }
-        // objeto form viatura vazio
+        // objeto form vitima vazio
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
         $form = new VitimaForm($dbAdapter);
         //configura o campo select com valor vindo da view index
@@ -140,7 +140,6 @@ class VitimaController extends AbstractActionController {
         // obtém a requisição
         $request = $this->getRequest();
         $postData = $request->getPost()->toArray();
-
 
 
         if ($request->isPost()) {
@@ -182,7 +181,7 @@ class VitimaController extends AbstractActionController {
                 // com isso os erros serão tratados pelo helpers view
                 return (new ViewModel())
                                 ->setVariable('formVitima', $form)
-                                ->setTemplate('application/vitimas/editar');
+                                ->setTemplate('application/vitima/editar');
             }
         }
     }

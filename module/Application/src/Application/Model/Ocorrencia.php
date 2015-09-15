@@ -27,7 +27,6 @@ class Ocorrencia implements InputFilterAwareInterface {
     protected $inputFilter;
     
     public function ocorrencia($data) {
-
         $this->id_ocorrencia = (!empty($data['id_ocorrencia'])) ? $data['id_ocorrencia'] : null;
         $this->end = (!empty($data['id_end'])) ? $data['id_end'] : null;
         $this->vtr = (!empty($data['id_vtr'])) ? new Viatura($data['id_vtr'], "0") : null;
@@ -71,25 +70,26 @@ class Ocorrencia implements InputFilterAwareInterface {
                 ),
             ));
 
-            $inputFilter->add(array(
-                'name' => 'end',
+             $inputFilter->add(array(
+                'name' => 'rua',
                 'required' => true,
                 'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
+                    array('name' => 'StripTags'), # remove xml e html da string
+                    array('name' => 'StringTrim'), # remove espacos do início e do final da string           
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name' => 'NotEmpty',
                         'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
                         ),
                     ),
                 ),
             ));
- 
+
+         
             $inputFilter->add(array(
                 'name' => 'ciops',
                 'required' => true,
@@ -99,11 +99,23 @@ class Ocorrencia implements InputFilterAwareInterface {
                 ),
                 'validators' => array(
                     array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
+                    array(
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 100,
+                            'max' => 12,
+                            'messages' => array(
+                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
+                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
+                            ),
                         ),
                     ),
                 ),
@@ -153,13 +165,25 @@ class Ocorrencia implements InputFilterAwareInterface {
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
-                'validators' => array(
+               'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                \Zend\Validator\NotEmpty::IS_EMPTY => 'Campo obrigatório.'
+                            ),
+                        ),
+                    ),
                     array(
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 100,
+                            'max' => 1000,
+                            'messages' => array(
+                                \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
+                                \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
+                            ),
                         ),
                     ),
                 ),

@@ -117,7 +117,7 @@ class DrogaController extends AbstractActionController {
         }
         $form = new DrogaForm();
         $form->setData($droga);
-        return ['forDroga' => $form];
+        return ['formDroga' => $form];
     }
 
 // POST /contatos/editar/id

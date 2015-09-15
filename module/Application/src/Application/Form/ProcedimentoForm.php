@@ -35,13 +35,13 @@ class ProcedimentoForm extends Form {
                 'placeholder' => 'Procedimento',
             ),
         ));
-         $this->add(array(
-            'type' => 'Text', 
+            $this->add(array(
+            'type' => 'Zend\Form\Element\Number', # ou 'type' => 'ZendFormElementText'
             'name' => 'peso',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputPeso',
-                'placeholder' => 'Peso',
+                'id' => 'qtdeA',
+                'placeholder' => 'Peso do procedimento',
             ),
         ));
     }

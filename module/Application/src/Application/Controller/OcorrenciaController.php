@@ -1188,9 +1188,10 @@ class OcorrenciaController extends AbstractActionController {
             $modelOcorrencia = new Ocorrencia();
             // passa para o objeto formulário as regras de viltros e validações
             // contidas na entity ocorrencia
-            // $form->setInputFilter($modelOcorrencia->getInputFilter());
+             $form->setInputFilter($modelOcorrencia->getInputFilter());
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());
+            var_dump($form->isValid());
             // verifica se o formulário segue a validação proposta
             if ($form->isValid()) {
 

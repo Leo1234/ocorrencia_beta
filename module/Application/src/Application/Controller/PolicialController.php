@@ -185,7 +185,7 @@ class PolicialController extends AbstractActionController {
                    
                 return (new ViewModel())
                                 ->setVariable('formPolicial', $form)
-                                ->setTemplate('application/policiais/editar');
+                                ->setTemplate('application/policial/editar');
             }
         }
       

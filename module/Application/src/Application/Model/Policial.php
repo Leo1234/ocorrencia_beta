@@ -75,6 +75,15 @@ class Policial implements InputFilterAwareInterface {
                             ),
                         ),
                     ),
+                     array(
+                        'name' => 'GreaterThan',
+                        'options' => array(
+                            'min' => 0,
+                            'messages' => array(
+                                \Zend\Validator\GreaterThan::NOT_GREATER => 'A entrada não é maior do que  %min%.',
+                            ),
+                        ),
+                    ),
                 ),
             ));
             // input filter para campo de nome  
@@ -167,6 +176,44 @@ class Policial implements InputFilterAwareInterface {
                                 \Zend\Validator\StringLength::TOO_SHORT => 'Mínimo de caracteres aceitáveis %min%.',
                                 \Zend\Validator\StringLength::TOO_LONG => 'Máximo de caracteres aceitáveis %max%.',
                             ),
+                        ),
+                    ),
+                ),
+            ));
+            
+             $inputFilter->add(array(
+                'name' => 'data_nasc',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 16,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'data_inclu',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 16,
                         ),
                     ),
                 ),
