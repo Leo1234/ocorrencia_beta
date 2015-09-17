@@ -58,6 +58,15 @@ class Homicidio implements InputFilterAwareInterface {
                             ),
                         ),
                     ),
+                          array(
+                        'name' => 'GreaterThan',
+                        'options' => array(
+                            'min' => 0,
+                            'messages' => array(
+                                \Zend\Validator\GreaterThan::NOT_GREATER => 'A entrada não é maior do que  %min%.',
+                            ),
+                        ),
+                    ),
                 ),
             ));
 

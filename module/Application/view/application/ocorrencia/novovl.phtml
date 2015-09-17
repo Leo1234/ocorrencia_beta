@@ -1,0 +1,121 @@
+<br/>
+<br/>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Add dados veículo/lesão da ocorrência ID: <?php echo $this->id ?>      
+        </div>
+    </div>
+    <br>
+    <div class="alert alert-info" role="alert">Dados do veículo</div> 
+    <?php
+    // objeto form veículo
+    $form = $this->formV;
+    $form->prepare();
+    // configurar url formulário
+    $form->setAttribute('action', $this->url('ocorrencia', array('action' => 'adicionarVL')));
+    ?>
+
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($form) ?>
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="inputQuantidadeV" class="col-lg-3 col-md-3 control-label">Quantidade*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($form->get('qtdeV'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($form->get('qtdeV'));
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputDescricaoV" class="col-lg-3 col-md-3 control-label">Descrição*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($form->get('descricaoV'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($form->get('descricaoV'));
+                ?>
+            </div>
+        </div>
+
+    </div>
+
+    <br>
+    <div class="alert alert-info" role="alert">Dados da lesão</div>
+
+    <?php
+    $formL = $this->formL;
+    $formL->prepare();
+    // configurar url formulário
+    //$formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarLesao', 'id' => $this->id)));
+    ?>
+
+    <?php // renderiza html <form> com atributos configurados no objeto  ?>
+    <?php
+    echo $this->form()->openTag($formL);
+    ?>
+    <div class="panel-body">
+
+
+        <div class="form-group">
+            <label for="inputQuantidade" class="col-lg-3 col-md-3 control-label">Quantidade*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formL->get('qtdeL'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formL->get('qtdeL'));
+                ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputTipo" class="col-lg-3 col-md-3 control-label">Tipo*:</label>
+            <div class="col-lg-9  col-md-9">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formL->get('tipo_les'));
+
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formL->get('tipo_les'));
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <?php
+        // renderiza html input hidden para id
+        echo $this->formHidden($form->get('id'));
+        ?>
+
+        <button type="submit" class="btn btn-primary">Salvar Dados</button>
+        <a href="<?php echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>
+    </div>
+
+    <?php // renderiza html </form>  ?>
+    <?php echo $this->form()->closeTag() ?>
+</div>
