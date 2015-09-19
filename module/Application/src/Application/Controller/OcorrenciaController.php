@@ -256,6 +256,80 @@ class OcorrenciaController extends AbstractActionController {
         );
     }
     
+     public function novovahAction() {
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $formVeiculo = new ApreVeicForm();
+        $formVeiculo->get('id')->setAttributes(array('value' => $id));
+
+        $formArma = new ApreArmaForm();
+        $formArma->get('id')->setAttributes(array('value' => $id));
+        
+         $formHomicidio = new HomicidioForm();
+         $formHomicidio->get('id')->setAttributes(array('value' => $id));
+
+        return new ViewModel(
+                array(
+            'formV' => $formVeiculo,
+            'formA' => $formArma,
+            'formH' => $formHomicidio,
+            'id' => $id,
+                )
+        );
+    }
+    
+    
+     public function novovalAction() {
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $formVeiculo = new ApreVeicForm();
+        $formVeiculo->get('id')->setAttributes(array('value' => $id));
+
+        $formArma = new ApreArmaForm();
+        $formArma->get('id')->setAttributes(array('value' => $id));
+        
+         $formLesao = new LesaoForm();
+         $formLesao->get('id')->setAttributes(array('value' => $id));
+
+        return new ViewModel(
+                array(
+            'formV' => $formVeiculo,
+            'formA' => $formArma,
+            'formL' => $formLesao,
+            'id' => $id,
+                )
+        );
+    }
+    
+     public function novovalhAction() {
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $formVeiculo = new ApreVeicForm();
+        $formVeiculo->get('id')->setAttributes(array('value' => $id));
+
+        $formArma = new ApreArmaForm();
+        $formArma->get('id')->setAttributes(array('value' => $id));
+        
+         $formLesao = new LesaoForm();
+        $formLesao->get('id')->setAttributes(array('value' => $id));
+
+        $formHomicidio = new HomicidioForm();
+        $formHomicidio->get('id')->setAttributes(array('value' => $id));
+
+        return new ViewModel(
+                array(
+            'formV' => $formVeiculo,
+            'formA' => $formArma,
+            'formL' => $formLesao,
+            'formH' => $formHomicidio,
+            'id' => $id,
+                )
+        );
+    }
+    
     public function novohaAction(){
 
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -522,6 +596,89 @@ class OcorrenciaController extends AbstractActionController {
         );
     }
     
+      public function editarvahAction(){
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $formArma = new ApreArmaForm();
+        $ModelArma = (array) $this->getArmaTable()->findArmaOcorrencia($id);
+        $formArma->setData($ModelArma);
+
+        $formVeiculo = new ApreVeicForm();
+        $ModelVeiculo = (array) $this->getVeiculoTable()->findVeiculoOcorrencia($id);
+        $formVeiculo->setData($ModelVeiculo);
+        
+        $formHomicidio = new HomicidioForm();
+        $ModelHomicidio = (array) $this->getHomicidioTable()->findHomicidioOcorrencia($id);
+        $formHomicidio->setData($ModelHomicidio);
+
+        return new ViewModel(
+                array(
+            'formA' => $formArma,
+            'formV' => $formVeiculo,
+            'formH' => $formHomicidio,
+            'id' => $id,
+                )
+        );
+    }
+    
+     public function editarvalAction(){
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $formArma = new ApreArmaForm();
+        $ModelArma = (array) $this->getArmaTable()->findArmaOcorrencia($id);
+        $formArma->setData($ModelArma);
+
+        $formVeiculo = new ApreVeicForm();
+        $ModelVeiculo = (array) $this->getVeiculoTable()->findVeiculoOcorrencia($id);
+        $formVeiculo->setData($ModelVeiculo);
+        
+        $formLesao = new LesaoForm();
+        $ModelLesao = (array) $this->getLesaoTable()->findLesaoOcorrencia($id);
+        $formLesao->setData($ModelLesao);
+
+        return new ViewModel(
+                array(
+            'formA' => $formArma,
+            'formV' => $formVeiculo,
+            'formL' => $formLesao,
+            'id' => $id,
+                )
+        );
+    }
+    
+    public function editarvalhAction(){
+
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        $formArma = new ApreArmaForm();
+        $ModelArma = (array) $this->getArmaTable()->findArmaOcorrencia($id);
+        $formArma->setData($ModelArma);
+
+        $formVeiculo = new ApreVeicForm();
+        $ModelVeiculo = (array) $this->getVeiculoTable()->findVeiculoOcorrencia($id);
+        $formVeiculo->setData($ModelVeiculo);
+        
+        $formLesao = new LesaoForm();
+        $ModelLesao = (array) $this->getLesaoTable()->findLesaoOcorrencia($id);
+        $formLesao->setData($ModelLesao);
+        
+        $formHomicidio = new HomicidioForm();
+        $ModelHomicidio = (array) $this->getHomicidioTable()->findHomicidioOcorrencia($id);
+        $formHomicidio->setData($ModelHomicidio);
+
+        return new ViewModel(
+                array(
+            'formA' => $formArma,
+            'formV' => $formVeiculo,
+            'formL' => $formLesao,
+            'formH' => $formHomicidio,
+            'id' => $id,
+                )
+        );
+    }
+    
     public function adicionarhomicidioAction() {
         // obtém a requisição
         $request = $this->getRequest();
@@ -775,7 +932,186 @@ class OcorrenciaController extends AbstractActionController {
             }
         }
     }
+    
+     public function adicionarVAHAction() {
+        // obtém a requisição
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+        $id = $postData['id'];
 
+        // verifica se a requisição é do tipo post
+        if ($request->isPost()) {
+            $formV = new ApreVeicForm();
+            $formA = new ApreArmaForm();
+            $formH = new HomicidioForm();
+            // instancia model contato com regras de filtros e validações
+            $modelVeiculo = new ApreVeic();
+            $modelArma = new ApreArma();
+            $modelHomicidio = new Homicidio();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity contato
+            $formV->setInputFilter($modelVeiculo->getInputFilter());
+            $formA->setInputFilter($modelArma->getInputFilter());
+            $formH->setInputFilter($modelHomicidio->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $formV->setData($request->getPost());
+            $formA->setData($request->getPost());
+             $formH->setData($request->getPost());
+            //var_dump($form);
+            // verifica se o formulário segue a validação proposta
+            if ($formV->isValid() && $formA->isValid() && $formH->isValid() ) {
+                // aqui vai a lógica para adicionar os dados à tabela no banco
+                // 1 - popular model com valores do formulário
+                $modelVeiculo->exchangeArray($formV->getData());
+                $modelArma->exchangeArray($formA->getData());
+                $modelHomicidio->exchangeArray($formH->getData());
+                // 2 - persistir dados do model para banco de dados
+                $this->getVeiculoTable()->addVeiculo($modelVeiculo, $postData['id']);
+                $this->getArmaTable()->addArma($modelArma, $postData['id']);
+                $this->getHomicidioTable()->addHomicidio($modelHomicidio, $postData['id']);
+
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Dados da veículo/arma/homicídio adicionados com sucesso!");
+
+                // redirecionar para action index no controller contatos
+                return $this->redirect()->toRoute('ocorrencia');
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action novo com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formV', $formV)
+                                ->setVariable('formA', $formA)
+                                 ->setVariable('formH', $formH)
+                               ->setVariable('id', $id)
+                                ->setTemplate('application/ocorrencia/novovah');
+            }
+        }
+    }
+
+ public function adicionarVALAction() {
+        // obtém a requisição
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+        $id = $postData['id'];
+
+        // verifica se a requisição é do tipo post
+        if ($request->isPost()) {
+            $formV = new ApreVeicForm();
+            $formA = new ApreArmaForm();
+            $formL = new LesaoForm();
+            // instancia model contato com regras de filtros e validações
+            $modelVeiculo = new ApreVeic();
+            $modelArma = new ApreArma();
+            $modelLesao = new Lesao();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity contato
+            $formV->setInputFilter($modelVeiculo->getInputFilter());
+            $formA->setInputFilter($modelArma->getInputFilter());
+            $formL->setInputFilter($modelLesao->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $formV->setData($request->getPost());
+            $formA->setData($request->getPost());
+             $formL->setData($request->getPost());
+            //var_dump($form);
+            // verifica se o formulário segue a validação proposta
+            if ($formV->isValid() && $formA->isValid() && $formL->isValid() ) {
+                // aqui vai a lógica para adicionar os dados à tabela no banco
+                // 1 - popular model com valores do formulário
+                $modelVeiculo->exchangeArray($formV->getData());
+                $modelArma->exchangeArray($formA->getData());
+                $modelLesao->exchangeArray($formL->getData());
+                // 2 - persistir dados do model para banco de dados
+                $this->getVeiculoTable()->addVeiculo($modelVeiculo, $postData['id']);
+                $this->getArmaTable()->addArma($modelArma, $postData['id']);
+                $this->getLesaoTable()->addLesao($modelLesao, $postData['id']);
+
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Dados da veículo/arma/lesão adicionados com sucesso!");
+
+                // redirecionar para action index no controller contatos
+                return $this->redirect()->toRoute('ocorrencia');
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action novo com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formV', $formV)
+                                ->setVariable('formA', $formA)
+                                 ->setVariable('formL', $formL)
+                               ->setVariable('id', $id)
+                                ->setTemplate('application/ocorrencia/novoval');
+            }
+        }
+    }
+
+    public function adicionarVALHAction() {
+        // obtém a requisição
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+        $id = $postData['id'];
+
+        // verifica se a requisição é do tipo post
+        if ($request->isPost()) {
+            $formV = new ApreVeicForm();
+            $formA = new ApreArmaForm();
+            $formL = new LesaoForm();
+            $formH = new HomicidioForm();
+            // instancia model contato com regras de filtros e validações
+            $modelVeiculo = new ApreVeic();
+            $modelArma = new ApreArma();
+            $modelLesao = new Lesao();
+            $modelHomicidio = new Homicidio();
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity contato
+            $formV->setInputFilter($modelVeiculo->getInputFilter());
+            $formA->setInputFilter($modelArma->getInputFilter());
+            $formL->setInputFilter($modelLesao->getInputFilter());
+            $formH->setInputFilter($modelHomicidio->getInputFilter());
+            // passa para o objeto formulário os dados vindos da submissão 
+            $formV->setData($request->getPost());
+            $formA->setData($request->getPost());
+             $formL->setData($request->getPost());
+              $formH->setData($request->getPost());
+            //var_dump($form);
+            // verifica se o formulário segue a validação proposta
+            if ($formV->isValid() && $formA->isValid() && $formL->isValid() && $formH->isValid()) {
+                // aqui vai a lógica para adicionar os dados à tabela no banco
+                // 1 - popular model com valores do formulário
+                $modelVeiculo->exchangeArray($formV->getData());
+                $modelArma->exchangeArray($formA->getData());
+                $modelLesao->exchangeArray($formL->getData());
+                $modelHomicidio->exchangeArray($formH->getData());
+                // 2 - persistir dados do model para banco de dados
+                $this->getVeiculoTable()->addVeiculo($modelVeiculo, $postData['id']);
+                $this->getArmaTable()->addArma($modelArma, $postData['id']);
+                $this->getLesaoTable()->addLesao($modelLesao, $postData['id']);
+                $this->getHomicidioTable()->addHomicidio($modelHomicidio, $postData['id']);
+
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Dados da veículo/arma/lesão/homicídio adicionados com sucesso!");
+
+                // redirecionar para action index no controller contatos
+                return $this->redirect()->toRoute('ocorrencia');
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action novo com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formV', $formV)
+                                ->setVariable('formA', $formA)
+                                ->setVariable('formL', $formL)
+                                ->setVariable('formH', $formH)
+                                ->setVariable('id', $id)
+                                ->setTemplate('application/ocorrencia/novovalh');
+            }
+        }
+    }
+
+
+   
+
+    
      public function adicionarHAAction() {
         // obtém a requisição
         $request = $this->getRequest();
@@ -1697,6 +2033,183 @@ class OcorrenciaController extends AbstractActionController {
         }
     }
     
+     public function atualizarVAHAction() {
+
+        // obtém a requisição
+        $request = $this->getRequest();
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if ($request->isPost()) {
+            // instancia formulário
+            $formV = new ApreVeicForm();
+            $formA = new ApreArmaForm();
+            $formH = new HomicidioForm();
+            // instancia model municipio com regras de filtros e validações
+            $modelVeiculo = new ApreVeic();
+            $modelArma = new ApreArma();
+            $modelHomicidio = new Homicidio();
+
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity Municipio
+            $formV->setInputFilter($modelVeiculo->getInputFilter());
+            $formA->setInputFilter($modelArma->getInputFilter());
+            $formH->setInputFilter($modelHomicidio->getInputFilter());
+            
+            // passa para o objeto formulário os dados vindos da submissão 
+            $formV->setData($request->getPost());
+            $formA->setData($request->getPost());
+            $formH->setData($request->getPost());
+            
+            // verifica se o formulário segue a validação proposta
+            if ($formV->isValid() && $formA->isValid() && $formH->isValid()) {
+                // 1 - popular model com valores do formulário
+                $modelVeiculo->exchangeArray($formV->getData());
+                $modelArma->exchangeArray($formA->getData());
+                $modelHomicidio->exchangeArray($formH->getData());
+                // 2 - atualizar dados do model para banco de dados
+                //print_r($modelHomicidio);
+                $this->getVeiculoTable()->update($modelVeiculo, $id);
+                $this->getArmaTable()->update($modelArma, $id);
+                $this->getHomicidioTable()->update($modelHomicidio, $id);
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Dados extras editado com sucesso");
+                // redirecionar para action detalhes
+                return $this->redirect()->toRoute('ocorrencia', array("action" => "index"));
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action editar com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formV', $formV)
+                                ->setVariable('formA', $formA)
+                                ->setVariable('formH', $formH)
+                                ->setVariable('id', $id)
+                                ->setTemplate('application/ocorrencia/editarvah');
+            }
+        }
+    }
+    
+    public function atualizarVALAction() {
+
+        // obtém a requisição
+        $request = $this->getRequest();
+        $id = (int) $this->params()->fromRoute('id', 0);
+
+        if ($request->isPost()) {
+            // instancia formulário
+            $formV = new ApreVeicForm();
+            $formA = new ApreArmaForm();
+            $formL = new LesaoForm();
+            // instancia model municipio com regras de filtros e validações
+            $modelVeiculo = new ApreVeic();
+            $modelArma = new ApreArma();
+            $modelLesao = new Lesao();
+
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity Municipio
+            $formV->setInputFilter($modelVeiculo->getInputFilter());
+            $formA->setInputFilter($modelArma->getInputFilter());
+            $formL->setInputFilter($modelLesao->getInputFilter());
+            
+            // passa para o objeto formulário os dados vindos da submissão 
+            $formV->setData($request->getPost());
+            $formA->setData($request->getPost());
+            $formL->setData($request->getPost());
+            
+            // verifica se o formulário segue a validação proposta
+            if ($formV->isValid() && $formA->isValid() && $formL->isValid()) {
+                // 1 - popular model com valores do formulário
+                $modelVeiculo->exchangeArray($formV->getData());
+                $modelArma->exchangeArray($formA->getData());
+                $modelLesao->exchangeArray($formL->getData());
+                // 2 - atualizar dados do model para banco de dados
+                //print_r($modelHomicidio);
+                $this->getVeiculoTable()->update($modelVeiculo, $id);
+                $this->getArmaTable()->update($modelArma, $id);
+                $this->getLesaoTable()->update($modelLesao, $id);
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Dados extras editado com sucesso");
+                // redirecionar para action detalhes
+                return $this->redirect()->toRoute('ocorrencia', array("action" => "index"));
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action editar com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formV', $formV)
+                                ->setVariable('formA', $formA)
+                                ->setVariable('formL', $formL)
+                                ->setVariable('id', $id)
+                                ->setTemplate('application/ocorrencia/editarval');
+            }
+        }
+    }
+    
+     public function atualizarVALHAction() {
+
+        // obtém a requisição
+        $request = $this->getRequest();
+        $id = (int) $this->params()->fromRoute('id', 0);
+        print_r($id);
+        if ($request->isPost()) {
+            // instancia formulário
+            $formV = new ApreVeicForm();
+            $formA = new ApreArmaForm();
+            $formL = new LesaoForm();
+            $formH = new HomicidioForm();
+            
+            // instancia model municipio com regras de filtros e validações
+            $modelVeiculo = new ApreVeic();
+            $modelArma = new ApreArma();
+            $modelLesao = new Lesao();
+            $modelHomicidio = new Homicidio();
+            
+            // passa para o objeto formulário as regras de viltros e validações
+            // contidas na entity Municipio
+            $formV->setInputFilter($modelVeiculo->getInputFilter());
+            $formA->setInputFilter($modelArma->getInputFilter());
+            $formL->setInputFilter($modelLesao->getInputFilter());
+            $formH->setInputFilter($modelHomicidio->getInputFilter());
+            
+            // passa para o objeto formulário os dados vindos da submissão 
+            $formV->setData($request->getPost());
+            $formA->setData($request->getPost());
+            $formL->setData($request->getPost());
+            $formH->setData($request->getPost());
+            
+            // verifica se o formulário segue a validação proposta
+            if ($formV->isValid() && $formA->isValid() && $formL->isValid() && $formH->isValid()) {
+                // 1 - popular model com valores do formulário
+                $modelVeiculo->exchangeArray($formV->getData());
+                $modelArma->exchangeArray($formA->getData());
+                $modelLesao->exchangeArray($formL->getData());
+                $modelHomicidio->exchangeArray($formH->getData());
+                // 2 - atualizar dados do model para banco de dados
+                //print_r($modelHomicidio);
+                
+                $this->getVeiculoTable()->update($modelVeiculo, $id);
+                $this->getArmaTable()->update($modelArma, $id);
+                $this->getLesaoTable()->update($modelLesao, $id);
+                 $this->getHomicidioTable()->update($modelHomicidio, $id);
+                 
+                // adicionar mensagem de sucesso
+                $this->flashMessenger()
+                        ->addSuccessMessage("Dados extras editado com sucesso");
+                // redirecionar para action detalhes
+                return $this->redirect()->toRoute('ocorrencia', array("action" => "index"));
+            } else { // em caso da validação não seguir o que foi definido
+                // renderiza para action editar com o objeto form populado,
+                // com isso os erros serão tratados pelo helpers view
+                return (new ViewModel())
+                                ->setVariable('formV', $formV)
+                                ->setVariable('formA', $formA)
+                                ->setVariable('formL', $formL)
+                                ->setVariable('formH', $formH)
+                                ->setVariable('id', $id)
+                                ->setTemplate('application/ocorrencia/editarvalh');
+            }
+        }
+    }
     
     public function atualizarHAAction() {
 
@@ -2303,8 +2816,156 @@ class OcorrenciaController extends AbstractActionController {
                     $x = $modelOcorrencia->getId_oco();
                     return $this->redirect()->toRoute('ocorrencia', array('action' => 'novova', 'id' => $x));
                 
-                }
                 
+                 //V A H 1/////////////////////crimes com VEÍCULO/ARMA/HOMICÍDIO já existente//////////////////
+                    
+                }else if ($isVeiculo  && $isArma && $isHomicidio && in_array(1, $crimes) && !in_array(2, $crimes) && in_array(12, $crimes) && in_array(13, $crimes) && !$isLesao) {
+                    //recupera os dados do arma                  
+                    $ModelArma = $this->getArmaTable()->findArmaOcorrencia($modelOcorrencia->getId_oco());
+                    //deleta arma
+                    $this->getOcorrenciaTable()->delArmaOcorrencia($modelOcorrencia->getId_oco());
+                    
+                       //recupera os dados do veículo                   
+                    $ModelVeiculo = $this->getVeiculoTable()->findVeiculoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta veículo
+                    $this->getOcorrenciaTable()->delVeiculoOcorrencia($modelOcorrencia->getId_oco());
+                    
+                         //recupera os dados do homicídio                    
+                    $ModelHomicidio = $this->getHomicidioTable()->findHomicidioOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta homicidio
+                    $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta os crimes
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+
+                    //adiciona os crimes novos 
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    //adicionada os dados extra dos veículo/arma/himicídio removidos
+                    
+                        $this->getArmaTable()->addArma($ModelArma, $modelOcorrencia->getId_oco());
+                        $this->getVeiculoTable()->addVeiculo($ModelVeiculo, $modelOcorrencia->getId_oco());
+                        $this->getHomicidioTable()->addHomicidio($ModelHomicidio, $modelOcorrencia->getId_oco());
+                    
+                    //redireciona para action editar arma/lesão/homicídio e pegar dados extras
+                     $x = $modelOcorrencia->getId_oco();
+                     return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarvah', 'id' => $x)); 
+                     
+                      //V A H 0/////////////////////crimes com VEÍCULO/ARMA/HOMICÍDIO pela primeira vez//////////////////
+                     
+                } else if (!$isVeiculo  && !$isArma && !$isHomicidio && in_array(1, $crimes) && !in_array(2, $crimes) && in_array(12, $crimes) && in_array(13, $crimes) && !$isLesao) {
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    $x = $modelOcorrencia->getId_oco();
+                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'novovah', 'id' => $x));
+                
+                  //V A L 1/////////////////////crimes com VEÍCULO/ARMA/LESÃO já existente//////////////////
+                    
+                }else if ($isVeiculo  && $isArma && $isLesao && !in_array(1, $crimes) && in_array(2, $crimes) && in_array(12, $crimes) && in_array(13, $crimes) && !$isHomicidio) {
+                    //recupera os dados do arma                  
+                    $ModelArma = $this->getArmaTable()->findArmaOcorrencia($modelOcorrencia->getId_oco());
+                    //deleta arma
+                    $this->getOcorrenciaTable()->delArmaOcorrencia($modelOcorrencia->getId_oco());
+                    
+                       //recupera os dados do veículo                   
+                    $ModelVeiculo = $this->getVeiculoTable()->findVeiculoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta veículo
+                    $this->getOcorrenciaTable()->delVeiculoOcorrencia($modelOcorrencia->getId_oco());
+                    
+                         //recupera os dados da lesão                   
+                    $ModelLesao = $this->getLesaoTable()->findLesaoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta lesão
+                    $this->getOcorrenciaTable()->delLesaoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta os crimes
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+
+                    //adiciona os crimes novos 
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    //adicionada os dados extra dos veículo/arma/lesao removidos
+                    
+                        $this->getArmaTable()->addArma($ModelArma, $modelOcorrencia->getId_oco());
+                        $this->getVeiculoTable()->addVeiculo($ModelVeiculo, $modelOcorrencia->getId_oco());
+                        $this->getLesaoTable()->addLesao($ModelLesao, $modelOcorrencia->getId_oco());
+                    
+                    //redireciona para action editar veículo/arma/lesao e pegar dados extras
+                     $x = $modelOcorrencia->getId_oco();
+                     return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarval', 'id' => $x)); 
+                     
+                      //V A L 0/////////////////////crimes com VEÍCULO/ARMA/LESÃO pela primeira vez//////////////////
+                     
+                } else if (!$isVeiculo  && !$isArma && !$isLesao && !in_array(1, $crimes) && in_array(2, $crimes) && in_array(12, $crimes) && in_array(13, $crimes) && !$isHomicidio) {
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    $x = $modelOcorrencia->getId_oco();
+                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'novoval', 'id' => $x));
+                
+                
+                //V A L H 1/////////////////////crimes com VEÍCULO/ARMA/LESÃO/HOMICÍDIO já existente//////////////////
+                    
+                }else if ($isVeiculo  && $isArma && $isLesao && $isHomicidio && in_array(1, $crimes) && in_array(2, $crimes) && in_array(12, $crimes) && in_array(13, $crimes)) {
+                    //recupera os dados do arma                  
+                    $ModelArma = $this->getArmaTable()->findArmaOcorrencia($modelOcorrencia->getId_oco());
+                    //deleta arma
+                    $this->getOcorrenciaTable()->delArmaOcorrencia($modelOcorrencia->getId_oco());
+                    
+                       //recupera os dados do veículo                   
+                    $ModelVeiculo = $this->getVeiculoTable()->findVeiculoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta veículo
+                    $this->getOcorrenciaTable()->delVeiculoOcorrencia($modelOcorrencia->getId_oco());
+                    
+                         //recupera os dados da lesão                   
+                    $ModelLesao = $this->getLesaoTable()->findLesaoOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta lesão
+                    $this->getOcorrenciaTable()->delLesaoOcorrencia($modelOcorrencia->getId_oco());
+                    
+                       //recupera os dados da homicídio                  
+                    $ModelHomicidio = $this->getHomicidioTable()->findHomicidioOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta homicídio
+                    $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
+
+                    //deleta os crimes
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+
+                    //adiciona os crimes novos 
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    //adicionada os dados extra dos veículo/arma/lesao removidos
+                    
+                        $this->getArmaTable()->addArma($ModelArma, $modelOcorrencia->getId_oco());
+                        $this->getVeiculoTable()->addVeiculo($ModelVeiculo, $modelOcorrencia->getId_oco());
+                        $this->getLesaoTable()->addLesao($ModelLesao, $modelOcorrencia->getId_oco());
+                         $this->getHomicidioTable()->addHomicidio($ModelHomicidio, $modelOcorrencia->getId_oco());
+                    
+                    //redireciona para action editar veículo/arma/lesao/homicídio e pegar dados extras
+                     $x = $modelOcorrencia->getId_oco();
+                     return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarvalh', 'id' => $x)); 
+                     
+                      //V A L H 0/////////////////////crimes com VEÍCULO/ARMA/LESÃO/HOMICÍDIO pela primeira vez//////////////////
+                     
+                } else if (!$isVeiculo  && !$isArma && !$isLesao && !$isHomicidio && in_array(1, $crimes) && in_array(2, $crimes) && in_array(12, $crimes) && in_array(13, $crimes)) {
+                    $this->getOcorrenciaTable()->delCrimesOcorrencia($modelOcorrencia->getId_oco());
+                    foreach ($crimes as $cri) {
+                        $this->getOcorrenciaTable()->addCrimeOcorrencia($modelOcorrencia->getId_oco(), $cri);
+                    }
+                    $x = $modelOcorrencia->getId_oco();
+                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'novovalh', 'id' => $x));
+                }
                 
                 
                 
