@@ -33,7 +33,7 @@ class ApreVeicTable {
         $row = $rowset->current();
 
         if (!$row)
-            throw new \Exception("Dados não encontrados de ocorrência de id = {$id}");
+            return false;  //throw new \Exception("Dados não encontrados de ocorrência de id = {$id}");
         return $row;
     }
 
@@ -62,7 +62,7 @@ class ApreVeicTable {
         if ($this->find($id_oco)) {
             $this->tableGateway->update($data, array('id_ocorrencia' => $id_oco));
         } else {
-            throw new Exception("Dados da ocorrência de id = {$id_oco} não encontrado");
+           $this->addVeiculo($veiculo, $id_oco); //throw new Exception("Dados da ocorrência de id = {$id_oco} não encontrado");
         }
     }
 
@@ -71,8 +71,7 @@ class ApreVeicTable {
         $rowset = $this->tableGateway->select(array('id_ocorrencia' => $id));
         $row = $rowset->current();
         if (!$row)
-            throw new Exception("Dados da ocorrência de id = {$id_oco} não encontrado");
-
+            return false; //throw new Exception("Dados da ocorrência de id = {$id_oco} não encontrado");
         return $row;
     }
 

@@ -33,7 +33,7 @@ class HomicidioTable {
         $row = $rowset->current();
        
         if (!$row)
-            throw new \Exception("Não foi encontrado homicidio de id = {$id}");
+            return false; //throw new \Exception("Não foi encontrado homicidio de id = {$id}");
         return $row;
     }
     
@@ -64,7 +64,7 @@ class HomicidioTable {
         if ($this->find($id)) {
             $this->tableGateway->update($data, array('id_ocorrencia' => $id));
         } else {
-            throw new Exception("Dados do homicídio da ocorrência de id = {$id} não encontrado");
+            $this->addHomicidio($ho, $id); //throw new Exception("Dados do homicídio da ocorrência de id = {$id} não encontrado");
         }
     }
     
@@ -73,8 +73,7 @@ class HomicidioTable {
         $rowset = $this->tableGateway->select(array('id_ocorrencia' => $id));
         $row = $rowset->current();
         if (!$row)
-            throw new \Exception("Dados do homicídio da ocorrência de id = {$id} não encontrado");
-
+            return false; //throw new \Exception("Dados do homicídio da ocorrência de id = {$id} não encontrado");
         return $row;
     }
     

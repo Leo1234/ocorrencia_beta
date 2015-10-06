@@ -33,7 +33,7 @@ class LesaoTable {
         $row = $rowset->current();
        
         if (!$row)
-            throw new \Exception("Não foi encontrado dados da lesão de id = {$id}");
+            return false; //throw new \Exception("Não foi encontrado dados da lesão de id = {$id}");
         return $row;
     }
     
@@ -62,7 +62,7 @@ class LesaoTable {
         if ($this->find($id_oco)) {
             $this->tableGateway->update($data, array('id_ocorrencia' => $id_oco));
         } else {
-            throw new Exception("Dados da lesão da ocorrência de id = {$id_oco} não encontrada");
+           $this->addLesao($les, $id_oco); //throw new Exception("Dados da lesão da ocorrência de id = {$id_oco} não encontrada");
         }
     }
     
@@ -71,7 +71,7 @@ class LesaoTable {
         $rowset = $this->tableGateway->select(array('id_ocorrencia' => $id));
         $row = $rowset->current();
         if (!$row)
-            throw new Exception("Dados da lesão da ocorrência de id = {$id} não encontrada");
+            return false; //throw new Exception("Dados da lesão da ocorrência de id = {$id} não encontrada");
 
         return $row;
     }
