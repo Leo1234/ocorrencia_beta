@@ -8,7 +8,7 @@
     </div>
     <?php
     // objeto form contato
-    $form = $this->form;
+    $form = $this->formL;
    
     $form->prepare();
     // configurar url formulário
@@ -63,7 +63,7 @@
         ?>
 
         <button type="submit" class="btn btn-primary">Salvar Dados</button>
-        <a href="<?php echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>
+        <a href="<?php echo $this->url('ocorrencia', array('action' => 'editar', 'id' => $this->id , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default">Voltar</a>
     </div>
 
     <?php // renderiza html </form> ?>

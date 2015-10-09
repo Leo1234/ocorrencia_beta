@@ -236,7 +236,7 @@
         ?>
 
         <button type="submit" class="btn btn-primary">Atualizar Dados</button>
-        <!--<a href="<?php //echo $this->url('ocorrencia');     ?>" class="btn btn-default">Voltar</a>-->
+        <a href="<?php echo $this->url('ocorrencia', array('action' => 'editar', 'id' => $this->id , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default">Voltar</a>
     </div>
 
     <?php // renderiza html </form>   ?>

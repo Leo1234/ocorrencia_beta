@@ -37,7 +37,7 @@
             </div>
             <div class="panel-footer">
                     <a href="<?php echo $this->url('ocorrencia', array('action' => 'editar', 'id' => $this->ocorrencia->getId_oco())); ?>" class="btn btn-warning btn-sm">Editar Ocorrência</a>
-                    <a href="<?php echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>
+                     <a href="<?php echo $this->url('ocorrencia', array('action' => 'editar', 'id' => $this->ocorrencia->getId_oco() , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default">Voltar</a>
                 </div>
         </div>
 
