@@ -5118,7 +5118,7 @@ class OcorrenciaController extends AbstractActionController {
 
                     //redireciona para action editar arma/homicídio e pegar dados extras
                     $x = $modelOcorrencia->getId_oco();
-                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarah', 'id' => $x));
+                    return $this->redirect()->toRoute('ocorrencia', array('action' => 'editarha', 'id' => $x));
 
 
                     //~V ~A L H 1/////////////////////crimes com VEÍCULO/ARMA/LESÃO/HOMICÍDIO já existente//////////////////
