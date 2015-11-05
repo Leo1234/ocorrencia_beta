@@ -3,14 +3,16 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-            Editar dados extra da ocorrência de ID:  <?php echo $this->id ?>       
+            Editar dados extra da ocorrência de ID:  <?php echo $this->id ?>  
+            Crimes:  <?php echo $this->crimes[1]?>
         </div>
+                 
     </div>
     <br>
 
     <div class="alert alert-info" role="alert">Dados do veículo</div>
-    <?php
-// objeto form contato
+    <?php if (in_array(13, $this->crimes)):
+// objeto form 
     $formV = $this->formV;
     $formV->prepare();
 // configurar url formulário
@@ -57,6 +59,7 @@
         </div>
 
     </div>
+    <?php endif ?>
     <br>
     <div class="alert alert-info" role="alert">Dados da arma</div>
 
@@ -184,6 +187,7 @@
                 <?php
                 // renderiza html input
                 echo $this->formInput($formH->get('qtde'));
+                 
 
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
@@ -230,8 +234,6 @@
     </div>
 
 
-
-
     <div class="panel-footer">
 
         <?php
@@ -240,7 +242,7 @@
         ?>
 
         <button type="submit" class="btn btn-primary">Atualizar Dados</button>
-       <a href="<?php echo $this->url('ocorrencia', array('action' => 'editar', 'id' => $this->id , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default">Voltar</a>
+       <a href="<?php echo $this->url('ocorrencia', array('action' => 'editar', 'id' => $this->id , 'formOcorrencia' => $this->form)); ?>" class="btn btn-default">Voltar</a>
     </div>
 
     <?php // renderiza html </form>   ?>
