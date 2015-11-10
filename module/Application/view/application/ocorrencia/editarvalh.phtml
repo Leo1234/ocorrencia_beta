@@ -4,7 +4,6 @@
     <div class="panel-heading">
         <div class="panel-title">
             Editar dados extra da ocorrência de ID:  <?php echo $this->id ?>  
-            crimes:  <?php echo $this->crimes[1] ?>
         </div>
                  
     </div>
@@ -176,7 +175,7 @@
     $formH = $this->formH;
     $formH->prepare();
     // configurar url formulário
-    $formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarVALH', 'id' => $this->id)));
+    $formH->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarVALH', 'id' => $this->id)));
     ?>
 
     <?php // renderiza html <form> com atributos configurados no objeto  ?>
@@ -240,7 +239,7 @@
     <div class="panel-footer">
 
         <?php
-// renderiza html input hidden para id
+       // renderiza html input hidden para id
        // echo $this->formHidden($formV->get('id'));
         ?>
 

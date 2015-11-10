@@ -862,12 +862,10 @@ class OcorrenciaController extends AbstractActionController {
     public function editarvalhAction() {
 
         $id = (int) $this->params()->fromRoute('id', 0);
-        $crimes = (array) $this->getOcorrenciaCrimeTable()->crimesOcorrencia($id);
-        
+        $crimes = (array) $this->getOcorrenciaCrimeTable()->crimesOcorrencia($id);     
         $crimeAux =  array();
 
           if (in_array(1, $crimes)) {
-
             $formHomicidio = new HomicidioForm();
             $ModelHomicidio = (array) $this->getHomicidioTable()->findHomicidioOcorrencia($id);
             $formHomicidio->setData($ModelHomicidio);
@@ -875,7 +873,6 @@ class OcorrenciaController extends AbstractActionController {
         }
 
         if (in_array(2, $crimes)) {
-
             $formLesao = new LesaoForm();
             $ModelLesao = (array) $this->getLesaoTable()->findLesaoOcorrencia($id);
             $formLesao->setData($ModelLesao);
@@ -883,14 +880,12 @@ class OcorrenciaController extends AbstractActionController {
         }
 
         if (in_array(12, $crimes)) {
-
             $formArma = new ApreArmaForm();
             $ModelArma = (array) $this->getArmaTable()->findArmaOcorrencia($id);
             $formArma->setData($ModelArma);
             $crimeAux['formA'] = $formArma;
         }
-        if (in_array(13, $crimes)) {
-            
+        if (in_array(13, $crimes)) {          
             $formVeiculo = new ApreVeicForm();
             $ModelVeiculo = (array) $this->getVeiculoTable()->findVeiculoOcorrencia($id);
             $formVeiculo->setData($ModelVeiculo);
@@ -2377,31 +2372,24 @@ class OcorrenciaController extends AbstractActionController {
         $request = $this->getRequest();
         $id = (int) $this->params()->fromRoute('id', 0);           
         $crimes = (array) $this->getOcorrenciaCrimeTable()->crimesOcorrencia($id);
+ 
+        $status = false; //controla a validação dos formulários
         
-        $lesao = null;
-        $homicidio = null;
-        $veiculo = null;
-        $arma = null;
-        
-        $status = false;
+        $h = false;
+        $l = false;
+        $a = false;
+        $v = false;
         
         
-        
+         // instancia formulário
         $formH = new HomicidioForm();
         $formL = new LesaoForm();
         $formA = new ApreArmaForm();
         $formV = new ApreVeicForm();
         
         
-            $crimeAux =  array();
-
-            $crimeAux['formH'] = $formH;
-
-        // var_dump ($crimes);
-        
         if ($request->isPost()) {
                 
-            // instancia formulário
             // instancia model com regras de filtros e validações
             // passa para o objeto formulário as regras de viltros e validações
             // passa para o objeto formulário os dados vindos da submissão 
@@ -2410,95 +2398,68 @@ class OcorrenciaController extends AbstractActionController {
                 $modelHomicidio = new Homicidio();
                 $formH->setInputFilter($modelHomicidio->getInputFilter());
                 $formH->setData($request->getPost());
+                $h = true;
 
                 if ($formH->isValid()) {
+                    //popular model com valores do formulário
                     $modelHomicidio->exchangeArray($formH->getData());
-                    $this->getHomicidioTable()->update($modelHomicidio, $id);
                 } else {
                     $status = true;
                 }
             }
 
-            if (in_array(2, $crimes)) {   
+            if (in_array(2, $crimes)) {
                 $modelLesao = new Lesao();
                 $formL->setInputFilter($modelLesao->getInputFilter());
                 $formL->setData($request->getPost());
-                
-               if ($formL->isValid()) {
+                $l = true;
+
+                if ($formL->isValid()) {
+                    //popular model com valores do formulário
                     $modelLesao->exchangeArray($formL->getData());
-                    $this->getLesaoTable()->update($modelLesao, $id);
                 } else {
                     $status = true;
                 }
             }
 
-            if (in_array(12, $crimes)) {             
+            if (in_array(12, $crimes)) {
                 $modelArma = new ApreArma();
                 $formA->setInputFilter($modelArma->getInputFilter());
                 $formA->setData($request->getPost());
-                
-                    if ($formA->isValid()) {
+                $a = true;
+
+                if ($formA->isValid()) {
+                    //popular model com valores do formulário
                     $modelArma->exchangeArray($formA->getData());
-                    $this->getArmaTable()->update($modelArma, $id);
                 } else {
                     $status = true;
                 }
             }
-            if (in_array(13, $crimes)) {            
+            if (in_array(13, $crimes)) {
                 $modelVeiculo = new ApreVeic();
                 $formV->setInputFilter($modelVeiculo->getInputFilter());
                 $formV->setData($request->getPost());
-                
-                 if ($formV->isValid()) {
+                $v = true;
+
+                if ($formV->isValid()) {
+                    //popular model com valores do formulário
                     $modelVeiculo->exchangeArray($formV->getData());
-                    $this->getVeiculoTable()->update($modelVeiculo, $id);
                 } else {
                     $status = true;
                 }
-            }       
-           // print_r(in_array(2));
-            // var_dump ($formV);
-            // verifica se o formulário segue a validação proposta
-            /*
-            foreach ($crimeAux as &$cri) {
-                if ($cri->isValid())
-                $valido = $cri;
-            }
-            
-            $result = count($crimeAux);
-            
-            
-            if (!isset($formV)){
-                $veiculo = $formV->isValid();
-                $modelVeiculo->exchangeArray($formV->getData());
-                $this->getVeiculoTable()->update($modelVeiculo, $id);
-            }
-            if (!isset($formA)){
-                $arma = $formA->isValid();
-                $modelArma->exchangeArray($formA->getData());
-                $this->getArmaTable()->update($modelArma, $id);
             }
 
-            if (!isset($formL)) {
-                $lesao = $formL->isValid();
-                $modelLesao->exchangeArray($formL->getData());
-                $this->getLesaoTable()->update($modelLesao, $id);
-            }
-
-            if (!isset($formH)) {
-                $homicidio = $formH->isValid();
-                $modelHomicidio->exchangeArray($formH->getData());
+             // verifica se o formulário segue a validação proposta
+            if (!$status) {
+                // atualizar dados do model para banco de dados
+                if($h)
                 $this->getHomicidioTable()->update($modelHomicidio, $id);
-            }
-*/
-            if (!$status){             
-                
-                // 1 - popular model com valores do formulário
-                              
-                
-                // 2 - atualizar dados do model para banco de dados
-                //print_r($modelHomicidio);
-
+                if($l)
+                $this->getLesaoTable()->update($modelLesao, $id);
+                if($a)
+                $this->getArmaTable()->update($modelArma, $id);
+                if($v)
+                $this->getVeiculoTable()->update($modelVeiculo, $id);
 
                 // adicionar mensagem de sucesso
                 $this->flashMessenger()
@@ -2632,25 +2593,25 @@ class OcorrenciaController extends AbstractActionController {
 
 
                 //V A L H 1/////////////////////crimes com VEÍCULO/ARMA/LESÃO/HOMICÍDIO já existente//////////////////
-                if (in_array(1, $crimes) && $isHomicidio) {
+                if ($isHomicidio) {
                     //recupera os dados da homicídio                  
                     $ModelHomicidio = $this->getHomicidioTable()->findHomicidioOcorrencia($modelOcorrencia->getId_oco());
                     //deleta homicídio
                     $this->getOcorrenciaTable()->delHomicidioOcorrencia($modelOcorrencia->getId_oco());
                 }
-                if (in_array(2, $crimes) && $isLesao) {
+                if ( $isLesao) {
                     //recupera os dados da lesão                   
                     $ModelLesao = $this->getLesaoTable()->findLesaoOcorrencia($modelOcorrencia->getId_oco());
                     //deleta lesão
                     $this->getOcorrenciaTable()->delLesaoOcorrencia($modelOcorrencia->getId_oco());
                 }
-                if (in_array(12, $crimes) && $isArma) {
+                if ($isArma) {
                     //recupera os dados do arma                  
                     $ModelArma = $this->getArmaTable()->findArmaOcorrencia($modelOcorrencia->getId_oco());
                     //deleta arma
                     $this->getOcorrenciaTable()->delArmaOcorrencia($modelOcorrencia->getId_oco());
                 }
-                if (in_array(13, $crimes) && $isVeiculo) {
+                if ($isVeiculo) {
                     //recupera os dados do veículo                   
                     $ModelVeiculo = $this->getVeiculoTable()->findVeiculoOcorrencia($modelOcorrencia->getId_oco());
                     //deleta veículo
@@ -2667,20 +2628,20 @@ class OcorrenciaController extends AbstractActionController {
 
                 //adicionada os dados extra dos veículo/arma/lesão/homicídio se removidos
 
-                if (in_array(1, $crimes) && empty($ModelHomicidio)) {
+                if (in_array(1, $crimes) && $isHomicidio) {
                      $this->getHomicidioTable()->addhomicidio($ModelHomicidio, $modelOcorrencia->getId_oco());
                 
                 }
-                if (in_array(2, $crimes) && empty($ModelLesao)) {
+                if (in_array(2, $crimes) && $isLesao) {
                     $this->getLesaoTable()->addLesao($ModelLesao, $modelOcorrencia->getId_oco());
                
                 }
-                if (in_array(12, $crimes) && empty($ModelArma)) {
+                if (in_array(12, $crimes) && $isArma) {
                     $this->getArmaTable()->addArma($ModelArma, $modelOcorrencia->getId_oco());
                   
                 }
 
-                if (in_array(13, $crimes) && empty($ModelVeiculo)) {
+                if (in_array(13, $crimes) && $isVeiculo) {
                     $this->getVeiculoTable()->addVeiculo($ModelVeiculo, $modelOcorrencia->getId_oco());
                 
                 }
