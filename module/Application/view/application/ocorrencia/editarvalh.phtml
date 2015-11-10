@@ -4,7 +4,7 @@
     <div class="panel-heading">
         <div class="panel-title">
             Editar dados extra da ocorrência de ID:  <?php echo $this->id ?>  
-            Crimes:  <?php echo $this->crimes[1]?>
+            crimes:  <?php echo $this->crimes[1] ?>
         </div>
                  
     </div>
@@ -57,17 +57,18 @@
                 ?>
             </div>
         </div>
-
     </div>
+    
     <?php endif ?>
+    
     <br>
     <div class="alert alert-info" role="alert">Dados da arma</div>
 
-    <?php
+     <?php if (in_array(12, $this->crimes)):
     $formA = $this->formA;
     $formA->prepare();
     // configurar url formulário
-    //$formA->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarLesao', 'id' => $this->id)));
+     $formA->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarVALH', 'id' => $this->id)));
     ?>
 
     <?php // renderiza html <form> com atributos configurados no objeto  ?>
@@ -112,16 +113,16 @@
         </div>
     </div>
 
-
+  <?php endif ?>
 
     <br>
     <div class="alert alert-info" role="alert">Dados da lesão</div>
 
-    <?php
+     <?php if (in_array(2, $this->crimes)):
     $formL = $this->formL;
     $formL->prepare();
     // configurar url formulário
-    //$formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarLesao', 'id' => $this->id)));
+  $formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarVALH', 'id' => $this->id)));
     ?>
 
     <?php // renderiza html <form> com atributos configurados no objeto  ?>
@@ -165,15 +166,17 @@
             </div>
         </div>
     </div>
+      <?php endif ?>
     <br>
 
     <div class="alert alert-info" role="alert">Dados do homicídio</div>
-    <?php
+    
+        <?php if (in_array(1, $this->crimes)):
     // objeto form contato
     $formH = $this->formH;
     $formH->prepare();
     // configurar url formulário
-    $formH->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarVH', 'id' => $this->id)));
+    $formL->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarVALH', 'id' => $this->id)));
     ?>
 
     <?php // renderiza html <form> com atributos configurados no objeto  ?>
@@ -232,13 +235,13 @@
             </div>
         </div>
     </div>
-
+ <?php endif ?>
 
     <div class="panel-footer">
 
         <?php
 // renderiza html input hidden para id
-        echo $this->formHidden($formV->get('id'));
+       // echo $this->formHidden($formV->get('id'));
         ?>
 
         <button type="submit" class="btn btn-primary">Atualizar Dados</button>
