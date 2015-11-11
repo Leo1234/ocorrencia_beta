@@ -1678,7 +1678,7 @@ class OcorrenciaController extends AbstractActionController {
             $modelOcorrencia = new Ocorrencia();
             // passa para o objeto formulário as regras de viltros e validações
             // contidas na entity ocorrência
-            //$form->setInputFilter($modelOcorrencia->getInputFilter());
+            $form->setInputFilter($modelOcorrencia->getInputFilter());
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());
 
@@ -1695,7 +1695,7 @@ class OcorrenciaController extends AbstractActionController {
                 $crimes = $postData['id_crime'];
                 $procedimentos = $postData['procedimento'];
 
-                print_r(crimes);
+               // print_r(crimes);
 
                 $ultimo_id = $this->getOcorrenciaTable()->save($modelOcorrencia);
 
@@ -1719,14 +1719,10 @@ class OcorrenciaController extends AbstractActionController {
                 $this->flashMessenger()->addSuccessMessage("Ocorrência cadastrada com sucesso");
                 // redirecionar para action index no controller 
 
-                if (count($crimes)) {
-                    foreach ($crimes as $cri) {
-                        if ($cri == 1) {
-                            return $this->redirect()->toRoute('ocorrencia', array('action' => 'homicidio', 'id' => $ultimo_id));
-                            break;
-                        }
-                    }
-                }
+                
+                   if (in_array(1, $crimes) || in_array(2, $crimes) || in_array(12, $crimes) || in_array(13, $crimes)) {
+                  return $this->redirect()->toRoute('ocorrencia', array("action" => "editarvalh", "id" => $ultimo_id));
+                 }
 
                 return $this->redirect()->toRoute('ocorrencia', array('action' => 'index', 'id' => $ultimo_id));
                 //return $this->redirect()->toRoute('ocorrencia');
