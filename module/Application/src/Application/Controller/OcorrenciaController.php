@@ -211,8 +211,7 @@ class OcorrenciaController extends AbstractActionController {
         $l = false;
         $a = false;
         $v = false;
-        
-        
+             
          // instancia formulário
         $formH = new HomicidioForm();
         $formL = new LesaoForm();

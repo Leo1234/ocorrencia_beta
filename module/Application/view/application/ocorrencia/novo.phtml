@@ -5,13 +5,13 @@
 
     <div class="panel-heading">
 
-       <div class="panel-titNovale">
+        <div class="panel-titNovale">
             <i class="fa fa-desktop"></i> Nova Ocorrência                    
             <div style="float: right;margin-top: -5px">
 
                <!--  <a href="/ocorrencia_beta/public/ocorrencia/vitimas/0" class="btn btn-success" ><i class="fa fa-user"></i> Vítimas <span class="badge">1</span></a>
                 <a href="/ocorrencia_beta/public/acusado/novo" class="btn btn-danger"><i class="fa fa-user"></i> Acusados <span class="badge">1</span></a>
--->
+                -->
             </div>
         </div>
     </div>
@@ -22,13 +22,41 @@
     $formOcorrencia->prepare();
     // configurar url formulário
 //$formOcorrencia->setAttribute('action', $this->url('ocorrencia', array('action' => 'adicionar')));
-$formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'adicionar']));
+    $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'adicionar']));
     ?>
     <?php // renderiza html <form> com atributos configurados no objeto ?>
     <?php echo $this->form()->openTag($formOcorrencia) ?>
     <div class="panel-body">
         <!--<fieldset  class="scheduler-border">
             <legend class="scheduler-border">Endereço</legend>-->
+        
+        
+        <div class="form-group">
+            <label for="inputLat" class="col-lg-3 col-md-3 control-label">Lat*:</label>
+            <div class="col-lg-2  col-md-2">
+                <?php
+                echo $this->formInput($formOcorrencia->get('lat'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('lat'));
+                ?>
+            </div>
+            <label for="inputLong" class="col-lg-3 col-md-3 control-label">Lng*:</label>
+            <div class="col-lg-2  col-md-2">
+                <?php
+                echo $this->formInput($formOcorrencia->get('long'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('long'));
+                ?>
+            </div>
+        </div>
 
         <div class="form-group">
             <label for="inputRua" class="col-lg-3 col-md-3 control-label">Rua*:</label>
@@ -44,7 +72,7 @@ $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'a
                 ?>
             </div>
         </div>
-           <div class="form-group">
+        <div class="form-group">
             <label for="inputRua" class="col-lg-3 col-md-3 control-label">Número*:</label>
             <div class="col-lg-9  col-md-9">
                 <?php
@@ -58,7 +86,8 @@ $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'a
                 ?>
             </div>
         </div>
-                <div class="form-group">
+
+        <div class="form-group">
             <label for="inputMunicipio" class="col-lg-3 col-md-3 control-label">Município*:</label>
             <div class="col-lg-3  col-md-3">
                 <?php
@@ -74,7 +103,7 @@ $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'a
             </div>
 
         </div>
-        
+
         <div class="form-group">
             <label for="inputBairro" class="col-lg-3 col-md-3 control-label">Bairro*:</label>
             <div class="col-lg-3  col-md-3">
@@ -142,11 +171,11 @@ $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'a
                 ?>
             </div>
         </div>
-        
+
 
         <div id="boxFields">
         </div>
-            
+
         <div class="form-group">
             <label for="inputProcedimento" class="col-lg-3 col-md-3 control-label">Procedimentos*:</label>
             <div class="col-lg-9  col-md-9">
@@ -247,7 +276,7 @@ $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'a
 
 <!--<a href="#" id="add">Adicionar</a>-->
 
- 
+
 
 
 

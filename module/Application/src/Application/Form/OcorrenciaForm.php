@@ -70,6 +70,26 @@ class OcorrenciaForm extends Form {
                 'placeholder' => 'Número',
             ),
         ));
+             
+                         $this->add(array(
+            'type' => 'Zend\Form\Element\Number', # ou 'type' => 'ZendFormElementText'
+            'name' => 'lat',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'lat',
+                'placeholder' => 'Latitude',
+            ),
+        ));
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Number', # ou 'type' => 'ZendFormElementText'
+            'name' => 'long',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'long',
+                'placeholder' => 'Longitude',
+            ),
+        ));
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
