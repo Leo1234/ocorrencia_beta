@@ -1,0 +1,63 @@
+
+<br/>
+<br/>
+<div class="panel panel-primary">
+
+    <div class="panel-heading">
+
+        <div class="panel-titNovale">
+            <i class="fa fa-desktop"></i> coordenadas no mapa                   
+        </div>
+    </div>
+    <?php
+    // objeto form ocorrencia
+    $formOcorrencia = $this->formOcorrencia;
+    // preparar elementos do formulário
+    $formOcorrencia->prepare();
+    // configurar url formulário
+//$formOcorrencia->setAttribute('action', $this->url('ocorrencia', array('action' => 'adicionar')));
+    $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'adicionar']));
+    ?>
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formOcorrencia) ?>
+    <div class="panel-body">
+        <!--<fieldset  class="scheduler-border">
+            <legend class="scheduler-border">Endereço</legend>-->
+
+
+        <div class="form-group">
+            <label for="inputLat" class="col-lg-3 col-md-3 control-label">Lat*:</label>
+            <div class="col-lg-2  col-md-2">
+                <?php
+                echo $this->formInput($formOcorrencia->get('lat'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('lat'));
+                ?>
+            </div>
+            <label for="lng" class="col-lg-3 col-md-3 control-label">Lng*:</label>
+            <div class="col-lg-2  col-md-2">
+                <?php
+                echo $this->formInput($formOcorrencia->get('lng'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('lng'));
+                ?>
+            </div>
+             <a href="<?php echo $this->url('ocorrencia', array('action' => 'novo', 'formOcorrencia' => $this->form)); ?>" class="btn btn-default">Voltar</a>
+        </div>
+        <div id="map-canvas"/>
+    </div>
+</div>
+</div>
+
+
+<?php if (isset($this->map_html)): ?>
+    <?php echo "Localiza o endereço do crime no mapa..." ?>
+<?php endif; ?>

@@ -195,6 +195,7 @@ $(function() {
 });
 
 $(function() {
+   
     $("#id_muni").change(function() {
         $.ajax({
             type: "POST",
@@ -216,6 +217,15 @@ $(function() {
     });
 
 });
+/*
+$(function(){
+    $("#lat").change(function() {
+        $("#map-canvas").append("23423423");
+  
+    });
+});*/
+
+
 
 $(function() {
     $("#municipio").change(function() {

@@ -29,8 +29,8 @@
     <div class="panel-body">
         <!--<fieldset  class="scheduler-border">
             <legend class="scheduler-border">Endereço</legend>-->
-        
-        
+
+
         <div class="form-group">
             <label for="inputLat" class="col-lg-3 col-md-3 control-label">Lat*:</label>
             <div class="col-lg-2  col-md-2">
@@ -47,20 +47,22 @@
             <label for="inputLong" class="col-lg-3 col-md-3 control-label">Lng*:</label>
             <div class="col-lg-2  col-md-2">
                 <?php
-                echo $this->formInput($formOcorrencia->get('long'));
+                echo $this->formInput($formOcorrencia->get('lng'));
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('long'));
+                        ->render($formOcorrencia->get('lng'));
                 ?>
             </div>
+             <a href="<?php echo $this->url('ocorrencia', array('action' => 'mapa', 'id' => $this->id , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Mapa...</a>
+            <!--<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>-->
         </div>
 
         <div class="form-group">
             <label for="inputRua" class="col-lg-3 col-md-3 control-label">Rua*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-4  col-md-4">
                 <?php
                 echo $this->formInput($formOcorrencia->get('rua'));
                 // renderiza elemento de erro
@@ -74,7 +76,7 @@
         </div>
         <div class="form-group">
             <label for="inputRua" class="col-lg-3 col-md-3 control-label">Número*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-4  col-md-4">
                 <?php
                 echo $this->formInput($formOcorrencia->get('numero'));
                 // renderiza elemento de erro
@@ -142,7 +144,7 @@
 
         <div class="form-group">
             <label for="inputComposicao" class="col-lg-3 col-md-3 control-label">Composição*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-5  col-md-5">
                 <?php
                 // renderiza html input
                 echo $this->formSelect($formOcorrencia->get('id_composicao'));
@@ -158,7 +160,7 @@
 
         <div class="form-group">
             <label for="inputCirmes" class="col-lg-3 col-md-3 control-label">Crimes*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-5  col-md-5">
                 <?php
                 // renderiza html input
                 echo $this->formSelect($formOcorrencia->get('id_crime'));
@@ -178,7 +180,7 @@
 
         <div class="form-group">
             <label for="inputProcedimento" class="col-lg-3 col-md-3 control-label">Procedimentos*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-5  col-md-5">
                 <?php
                 // renderiza html input
                 echo $this->formSelect($formOcorrencia->get('procedimento'));
@@ -195,7 +197,7 @@
 
         <div class="form-group">
             <label for="inputCiops" class="col-lg-3 col-md-3 control-label">CIOPS*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
                 echo $this->formInput($formOcorrencia->get('ciops'));
@@ -256,7 +258,7 @@
 
         <div class="form-group">
             <label for="inputBNarracao" class="col-lg-3 col-md-3 control-label">Narração*:</label>
-            <div class="col-lg-9  col-md-9">
+            <div class="col-lg-5  col-md-5">
                 <?php
                 // renderiza html input
                 echo $this->formElement($formOcorrencia->get('narracao'));
@@ -290,3 +292,26 @@
 </div>
 <?php // renderiza html </form> ?>
 <?php echo $this->form()->closeTag() ?>
+
+<!--
+<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-detalhes-contato" data-contato-url="<?php echo $this->url('ocorrencia', array("action" => "detalhes", "id" => $contato->id)); ?>" title="Visualizar" ><span class="glyphicon glyphicon-new-window"></span></button>
+
+ <a href="<?php echo $this->url('ocorrencia', array('action' => 'mapa', 'id' => $this->id , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default">Mapa...</a>
+
+<div class="modal fade" id="modal-detalhes-contato">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="coordenadas">
+                    <span>Coordenadas Google Maps</span>
+                    <label for="lat">Lat:</label>
+                    <input type="text" name="lat" id="lat" value="0" />
+                    <label for="lng">Lng:</label>
+                    <input type="text" name="lng" id="lng" value="0" />
+                </div>
+                <div id="map-canvas"/>
+            </div>
+        </div>
+    </div>
+</div>
+</div>-->

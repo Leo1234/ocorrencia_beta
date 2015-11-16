@@ -83,10 +83,10 @@ class OcorrenciaForm extends Form {
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Number', # ou 'type' => 'ZendFormElementText'
-            'name' => 'long',
+            'name' => 'lng',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'long',
+                'id' => 'lng',
                 'placeholder' => 'Longitude',
             ),
         ));
