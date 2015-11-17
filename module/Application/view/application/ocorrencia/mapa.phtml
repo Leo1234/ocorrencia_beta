@@ -6,7 +6,7 @@
     <div class="panel-heading">
 
         <div class="panel-titNovale">
-            <i class="fa fa-desktop"></i> coordenadas no mapa                   
+            <i class="fa fa-desktop"></i> Coordenadas no mapa                   
         </div>
     </div>
     <?php
@@ -16,7 +16,7 @@
     $formOcorrencia->prepare();
     // configurar url formulário
 //$formOcorrencia->setAttribute('action', $this->url('ocorrencia', array('action' => 'adicionar')));
-    $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'adicionar']));
+    $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'novo']));
     ?>
     <?php // renderiza html <form> com atributos configurados no objeto ?>
     <?php echo $this->form()->openTag($formOcorrencia) ?>

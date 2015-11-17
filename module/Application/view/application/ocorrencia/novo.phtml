@@ -55,9 +55,10 @@
                         ->setMessageCloseString('</small>')
                         ->render($formOcorrencia->get('lng'));
                 ?>
+
             </div>
-             <a href="<?php echo $this->url('ocorrencia', array('action' => 'mapa', 'id' => $this->id , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Mapa...</a>
-            <!--<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>-->
+            <a href="#modal-mapa" class="btn btn-xs btn-info"  data-toggle="modal" data-target="#modal-mapa"><span class="glyphicon glyphicon-search"></span> Mapa...</a>
+            
         </div>
 
         <div class="form-group">
@@ -276,12 +277,6 @@
 
 </div>
 
-<!--<a href="#" id="add">Adicionar</a>-->
-
-
-
-
-
 <div class="panel-footer">
     <?php
     // renderiza html input hidden para id
@@ -294,24 +289,28 @@
 <?php echo $this->form()->closeTag() ?>
 
 <!--
-<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-detalhes-contato" data-contato-url="<?php echo $this->url('ocorrencia', array("action" => "detalhes", "id" => $contato->id)); ?>" title="Visualizar" ><span class="glyphicon glyphicon-new-window"></span></button>
+<button class="btn btn-xs btn-info" data-toggle="modal" data-target="#modal-mapa" title="Visualizar" ><span class="glyphicon glyphicon-new-window"></span></button>
 
- <a href="<?php echo $this->url('ocorrencia', array('action' => 'mapa', 'id' => $this->id , 'formOcorrencia' => $this->form )); ?>" class="btn btn-default">Mapa...</a>
+<a href="<?php echo $this->url('ocorrencia', array('action' => 'mapa', 'id' => $this->id, 'formOcorrencia' => $this->form)); ?>" class="btn btn-default">Mapa...</a>
+-->
 
-<div class="modal fade" id="modal-detalhes-contato">
-    <div class="modal-dialog">
+<div  class="modal fade" tabindex="-1" role="dialog" id="modal-mapa" >
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-body">
-                <div class="coordenadas">
-                    <span>Coordenadas Google Maps</span>
-                    <label for="lat">Lat:</label>
-                    <input type="text" name="lat" id="lat" value="0" />
-                    <label for="lng">Lng:</label>
-                    <input type="text" name="lng" id="lng" value="0" />
-                </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Coordenadas no mapa</h4>
+            </div>
+            <div class="modal-body [modal-scroll]" >
                 <div id="map-canvas"/>
             </div>
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
     </div>
 </div>
-</div>-->
+</div>
+
+
+

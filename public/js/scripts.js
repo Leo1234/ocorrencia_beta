@@ -7,8 +7,7 @@ jq162 = jQuery.noConflict(true);
 v = 0; // total de vítimas
 //selected = [];
   
-  
-  
+
   
   $(function(){
      
@@ -36,8 +35,7 @@ v = 0; // total de vítimas
     });
 });
   
-  
-
+ 
 $(function() {
    
     var status = true;
@@ -311,3 +309,4 @@ $(function() {
 
     });
 });
+

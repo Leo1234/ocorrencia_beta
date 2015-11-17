@@ -24,8 +24,8 @@ class GoogleMap {
     var $lat = -300;
     var $lon = 300;
     var $markers = array();
-    var $height = "100px";
-    var $width = "100px";
+    var $height = "70px";
+    var $width = "70px";
     var $animation = '';
     var $icon = '';
     var $icons = array();

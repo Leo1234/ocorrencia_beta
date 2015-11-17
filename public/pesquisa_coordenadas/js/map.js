@@ -4,18 +4,24 @@
 // *
 
 // Váriáveis necessárias
+
 var map;
 var marker;
-
+var center = new google.maps.LatLng(-3.895794, -38.605375);
 
 
 
 function initialize() {
 
+    $("#modal-mapa").on("shown.bs.modal", function(e) {
+        google.maps.event.trigger(map, "resize");
+        return map.setCenter(center);
+    });
+    
     var mapOptions = {
-        center: new google.maps.LatLng(-3.895794, -38.605375),
+        center: center,
         zoom: 12,
-        mapTypeId: 'roadmap'
+        mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
 
@@ -44,8 +50,6 @@ function initialize() {
         getCoords(lat, lng);
 
     });
-
-
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -111,3 +115,10 @@ function getCoords(lat, lng) {
     // Actualiza o valor do input 'lng'
     coords_lng.value = lng;
 }
+
+
+
+$('#modal-mapa').on('shown.bs.modal', function() {
+    google.maps.event.trigger(map, "resize");
+    var_map.setCenter(center);
+});
