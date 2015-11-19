@@ -62,11 +62,7 @@ class OcorrenciaController extends AbstractActionController {
         return new ViewModel(['ocorrencia' => $paginacao] + $paramsUrl);
     }
 
-    public function novoAction() {
-       
-        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-        $form = new OcorrenciaForm($dbAdapter);
-   
+        public function iniciarMapa() {
 
         $markers = array(
             'Rua Setenta e quatro' => '-3.891161, -38.616232'
@@ -81,7 +77,7 @@ class OcorrenciaController extends AbstractActionController {
             'height' => "400px", //height of the div
             'lat' => -3.891161, //lattitude
             'lon' => -38.616232, //longitude 
-            'draggable'=>true,
+            'draggable' => true,
             'animation' => xx, //animation of the marker
             'markers' => $markers       //loading the array of markers
         );
@@ -89,12 +85,21 @@ class OcorrenciaController extends AbstractActionController {
         $map = $this->getServiceLocator()->get('GMaps\Service\GoogleMap'); //getting the google map object using service manager
         $map->initialize($config);                                         //loading the config   
         $html = $map->generate();                                          //genrating the html map content  
-        return new ViewModel(array('map_html' => $html, 'formOcorrencia' => $form));     
-      
-    
-      // $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-      // $form = new OcorrenciaForm($dbAdapter);
-      // return ['formOcorrencia' => $form];
+        return $html;
+    }
+
+    public function novoAction() {
+
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new OcorrenciaForm($dbAdapter);
+        $html = $this->iniciarMapa();
+
+        return new ViewModel(array('map_html' => $html, 'formOcorrencia' => $form));
+
+
+        // $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        // $form = new OcorrenciaForm($dbAdapter);
+        // return ['formOcorrencia' => $form];
     }
 
     public function mapaAction() {
@@ -203,7 +208,7 @@ class OcorrenciaController extends AbstractActionController {
             // verifica se o formulário segue a validação proposta
             if ($form->isValid()) {
                 $bairro = $this->getBairroTable()->find($postData['id_bai']);
-                $modelEndereco = new Endereco(null, $postData['rua'], $postData['numero'], $bairro);
+                $modelEndereco = new Endereco(null, $postData['rua'], $postData['numero'], $postData['lat'],$postData['lng'], $bairro);
                 $ultimo_idEnd = $this->getEnderecoTable()->save($modelEndereco);
 
                 $modelOcorrencia->exchangeArray($form->getData());
@@ -248,8 +253,10 @@ class OcorrenciaController extends AbstractActionController {
                 // em caso da validação não seguir o que foi definido
                 // renderiza para action novo com o objeto form populado,
                 // com isso os erros serão tratados pelo helpers view
+                $html = $this->iniciarMapa();
                 return (new ViewModel())
                                 ->setVariable('formOcorrencia', $form)
+                                 ->setVariable('map_html', $html)
                                 ->setTemplate('application/ocorrencia/novo');
             }
         }
@@ -764,5 +771,7 @@ class OcorrenciaController extends AbstractActionController {
 
         return $selected;
     }
+    
+
 
 }

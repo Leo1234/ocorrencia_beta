@@ -72,6 +72,8 @@ class EnderecoTable {
     public function save(Endereco $endereco) {
         $data = [
             'id_end' => $endereco->getId_end(),
+            'lat' => $this->latLngEUA($endereco->getLat()),
+            'lng' => $this->latLngEUA($endereco->getLng()),
             'rua' => $endereco->getRua(),
             'numero' => $endereco->getNumero(),
             'id_bai' => $endereco->getId_bai()->getId_bai(),
@@ -116,6 +118,20 @@ class EnderecoTable {
         } else {
             throw new Exception("Endereco #{$id} inexistente");
         }*/
+    }
+    
+          public function latLngEUA($ponto) {
+
+        if ($ponto != "") {
+            list ($i,$d) = explode(',', $ponto);
+
+            $pontoFormatado = $i.$d;
+            if ($pontoFormatado != ".") {
+                return $pontoFormatado;
+            }
+        }
+
+        return "";
     }
 
 }

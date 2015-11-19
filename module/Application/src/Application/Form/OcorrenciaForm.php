@@ -68,6 +68,7 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'numero',
                 'placeholder' => 'Número',
+              
             ),
         ));
              
@@ -78,6 +79,7 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'lat',
                 'placeholder' => 'Latitude',
+                  'step' => 'any',
             ),
         ));
 
@@ -88,8 +90,10 @@ class OcorrenciaForm extends Form {
                 'class' => 'form-control',
                 'id' => 'lng',
                 'placeholder' => 'Longitude',
+                   'step' => 'any',
             ),
         ));
+             
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',

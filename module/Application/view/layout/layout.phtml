@@ -27,7 +27,7 @@
         <?php
         echo $this
                 ->headLink()
-                 ->prependStylesheet($this->basePath() . '/pesquisa_coordenadas/css/style_mapa.css')
+                ->prependStylesheet($this->basePath() . '/pesquisa_coordenadas/css/style_mapa.css')
                 ->prependStylesheet($this->basePath() . '/jquery-ui/themes/black-tie/jquery.ui.theme.css')
                 ->prependStylesheet($this->basePath() . '/jquery-ui/themes/black-tie/jquery-ui.css')
                 ->prependStylesheet($this->basePath() . '/lib/css/sb-admin.css')
@@ -40,8 +40,8 @@
                 ->prependStylesheet($this->basePath() . '/css/fildset.css')
                 ->prependStylesheet($this->basePath() . '/choose/docsupport/style.css')
                 ->prependStylesheet($this->basePath() . '/choose/docsupport/prism.css')
-                ->prependStylesheet($this->basePath() . '/choose/chosen.css') 
-               
+                ->prependStylesheet($this->basePath() . '/choose/chosen.css')
+
 
         ;
         ?> 
@@ -168,17 +168,19 @@
 
                 <div id="page-wrapper">
                     <br>
+                    <br>
+                    <br>
+                    <br>
                     <?php echo $this->message(); ?>
                     <?php echo $this->content; ?>
-
                 </div>
-                
+
                 <script src="<?= $this->basePath() ?>/select2/select2.js"></script>
                 <script src="<?= $this->basePath() ?>/select2/select2_locale_pt-BR.js"></script>
                 <script src="<?= $this->basePath() ?>/js/util.js"></script>
                <!--<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
-                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwOd5a09zESk19OrFer6PjN72iiSgUyg&callback=initMap"
-        async defer></script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwOd5a09zESk19OrFer6PjN72iiSgUyg&callback=initMap"
+                async defer></script>
 
 
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.eot"></script>
@@ -186,7 +188,7 @@
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.ttf"></script>
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff"></script>
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff2"></script>
-                
+
                 <?php
                 echo $this
                         ->headScript()
@@ -213,8 +215,8 @@
                         ->prependFile($this->basePath() . '/choose/x.js')
                         ->prependFile($this->basePath() . '/gmap3-6.0.0/gmap3.js')
                         ->prependFile($this->basePath() . '/gmap3-6.0.0/gmap3.min.js')
-                         ->prependFile($this->basePath() . '/pesquisa_coordenadas/js/map.js')
-                        //->prependFile($this->basePath() . 'https://maps.googleapis.com/maps/api/js?sensor=false')
+                        ->prependFile($this->basePath() . '/pesquisa_coordenadas/js/map.js')
+                //->prependFile($this->basePath() . 'https://maps.googleapis.com/maps/api/js?sensor=false')
 
                 ;
                 echo $this->inlineScript();
@@ -222,12 +224,7 @@
 
                 <?php
                 ?>
-
-
-
-
             </div>
         </div>
-
     </body>
 </html>

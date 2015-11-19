@@ -27,7 +27,7 @@ class OcorrenciaTable {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('o' => 'ocorrencia'));
         $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "o.id_end = e.id_end", array('rua', 'numero','lat','long'));
+        $select->join(array('e' => 'endereco'), "o.id_end = e.id_end", array('rua', 'numero','lat','lng'));
         $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'));
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
         $select->join(array('v' => 'vtr'), "o.id_vtr = v.id_vtr", array('prefixo'));

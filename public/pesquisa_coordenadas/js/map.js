@@ -117,8 +117,3 @@ function getCoords(lat, lng) {
 }
 
 
-
-$('#modal-mapa').on('shown.bs.modal', function() {
-    google.maps.event.trigger(map, "resize");
-    var_map.setCenter(center);
-});

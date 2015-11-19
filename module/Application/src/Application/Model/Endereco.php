@@ -14,16 +14,16 @@ class Endereco implements InputFilterAwareInterface {
     public $id_bai;
     public $rua;
     public $lat;
-    public $long;
+    public $lng;
     protected $inputFilter;
 
-    function __construct($id_end = 0, $rua = "", $numero = "",$lat = "",$long = "", Bairro $b = null) {
+    function __construct($id_end = 0, $rua = "", $numero = "", $lat = "", $lng = "", Bairro $b = null) {
         $this->id_end = $id_end;
         $this->numero = $numero;
         $this->id_bai = $b;
         $this->rua = $rua;
         $this->lat = $lat;
-        $this->long = $long;
+        $this->lng = $lng;
     }
 
     public function exchangeArray($data) {
@@ -31,7 +31,7 @@ class Endereco implements InputFilterAwareInterface {
         $this->numero = (!empty($data['numero'])) ? $data['numero'] : null;
         $this->rua = (!empty($data['rua'])) ? $data['rua'] : null;
         $this->lat = (!empty($data['lat'])) ? $data['lat'] : null;
-        $this->long = (!empty($data['long'])) ? $data['long'] : null;
+        $this->lng = (!empty($data['lng'])) ? $data['lng'] : null;
         $this->id_bai = (!empty($data['id_bai'])) ? new Bairro($data['id_bai'], $data['bairro'], new Municipio($data['id_muni'], $data['municipio'])) : null;
     }
 
@@ -56,7 +56,7 @@ class Endereco implements InputFilterAwareInterface {
             ));
 
 
-   $inputFilter->add(array(
+            $inputFilter->add(array(
                 'name' => 'rua',
                 'required' => true,
                 'filters' => array(
@@ -87,7 +87,7 @@ class Endereco implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-   
+
             $inputFilter->add(array(
                 'name' => 'numero',
                 'required' => true,
@@ -120,7 +120,7 @@ class Endereco implements InputFilterAwareInterface {
                 ),
             ));
 
-                        $inputFilter->add(array(
+            $inputFilter->add(array(
                 'name' => 'lat',
                 'required' => true,
                 'filters' => array(
@@ -151,9 +151,9 @@ class Endereco implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-                        
-                                             $inputFilter->add(array(
-                'name' => 'long',
+
+            $inputFilter->add(array(
+                'name' => 'lng',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'), # remove xml e html da string
@@ -183,7 +183,7 @@ class Endereco implements InputFilterAwareInterface {
                     ),
                 ),
             ));
-            
+
             $this->inputFilter = $inputFilter;
         }
 
@@ -210,8 +210,8 @@ class Endereco implements InputFilterAwareInterface {
         return $this->lat;
     }
 
-    public function getLong() {
-        return $this->long;
+    public function getLng() {
+        return $this->lng;
     }
 
     public function setId_end($id_end) {
@@ -234,9 +234,8 @@ class Endereco implements InputFilterAwareInterface {
         $this->lat = $lat;
     }
 
-    public function setLong($long) {
-        $this->long = $long;
+    public function setLong($lng) {
+        $this->lng = $lng;
     }
-
 
 }
