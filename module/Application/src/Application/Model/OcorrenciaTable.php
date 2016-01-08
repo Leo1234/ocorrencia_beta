@@ -118,7 +118,7 @@ class OcorrenciaTable {
         $select = new Select;
         $select->from('ocorrencia');
         $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('id_end','rua', 'numero'), 'left');
+        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('id_end','rua', 'numero','lat','lng'), 'left');
         $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'), 'left');
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'), 'left');
         $select->join(array('v' => 'vtr'), "ocorrencia.id_vtr = v.id_vtr", array('id_vtr', 'prefixo'), 'left');

@@ -28,7 +28,7 @@ class BairroTable {
         $sql = new \Zend\Db\Sql\Sql($adapter);
 
         // montagem do select com where, like e limit para tabela contatos
-        $select = (new Select('area'))->limit(8);
+        $select = (new Select('area'))->limit(300);
         $select
                 ->columns(array('id_area', 'descricao'))
                 ->where(array('area.id_muni' => $id_muni));
@@ -46,7 +46,7 @@ class BairroTable {
         $sql = new \Zend\Db\Sql\Sql($adapter);
 
         // montagem do select com where, like e limit para tabela contatos
-        $select = (new Select('bairro'))->limit(8);
+        $select = (new Select('bairro'))->limit(300);
         $select
                 ->columns(array('id_bai', 'bairro'))
                 ->where(array('bairro.id_muni' => $id_muni));

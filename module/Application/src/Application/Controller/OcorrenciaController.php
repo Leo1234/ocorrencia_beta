@@ -398,7 +398,7 @@ class OcorrenciaController extends AbstractActionController {
 
                 $modelOcorrencia->ocorrencia($form->getData());
                 $bairro = $this->getBairroTable()->find($postData['id_bai']);
-                $modelEndereco = new Endereco($postData['id_end'], $postData['rua'], $postData['numero'], $bairro);
+                $modelEndereco = new Endereco($postData['id_end'], $postData['rua'], $postData['numero'], $postData['lat'],$postData['lng'], $bairro);
 
                 $this->getEnderecoTable()->update($modelEndereco);
 
@@ -561,6 +561,8 @@ class OcorrenciaController extends AbstractActionController {
             $ocorrencia['datai'] = $this->getOcorrenciaTable()->toDateDMY($ocorrenciaObj->getDatai());
             $ocorrencia['dataf'] = $this->getOcorrenciaTable()->toDateDMY($ocorrenciaObj->getDataf());
             $ocorrencia['id_end'] = $ocorrenciaObj->getEnd()->getId_end();
+            $ocorrencia['lat'] = $ocorrenciaObj->getEnd()->getLat();
+            $ocorrencia['lng'] = $ocorrenciaObj->getEnd()->getLng();
             $ocorrencia['rua'] = $ocorrenciaObj->getEnd()->getRua();
             $ocorrencia['numero'] = $ocorrenciaObj->getEnd()->getNumero();
 
@@ -588,8 +590,12 @@ class OcorrenciaController extends AbstractActionController {
 
         // popula objeto form ocorrencia com objeto model ocorrencia
         $form->setData($ocorrencia);
+        
+        $html = $this->iniciarMapa();
+
+        return new ViewModel(array('map_html' => $html, 'formOcorrencia' => $form));
         // dados eviados para editar.phtml 
-        return ['formOcorrencia' => $form];
+        //return ['formOcorrencia' => $form];
     }
 
     public function deletarAction() {

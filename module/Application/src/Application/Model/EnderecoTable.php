@@ -104,6 +104,8 @@ class EnderecoTable {
     public function update(Endereco $endereco) {
         $data = [
             'id_end' => $endereco->getId_end(),
+            'lat' => $this->latLngEUA($endereco->getLat()),
+            'lng' => $this->latLngEUA($endereco->getLng()),
             'rua' => $endereco->getRua(),
             'numero' => $endereco->getNumero(),
             'id_bai' => $endereco->getId_bai()->getId_bai(),
@@ -111,16 +113,16 @@ class EnderecoTable {
 
         $id = (int) $endereco->getId_end();
         $this->tableGateway->update($data, array('id_end' => $id));
-        
+
         /*
-        if ($this->find($id)) {
-            $this->tableGateway->update($data, array('id_end' => $id));
-        } else {
-            throw new Exception("Endereco #{$id} inexistente");
-        }*/
+          if ($this->find($id)) {
+          $this->tableGateway->update($data, array('id_end' => $id));
+          } else {
+          throw new Exception("Endereco #{$id} inexistente");
+          } */
     }
-    
-          public function latLngEUA($ponto) {
+
+    public function latLngEUA($ponto) {
 
         if ($ponto != "") {
             list ($i,$d) = explode(',', $ponto);

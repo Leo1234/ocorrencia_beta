@@ -5,6 +5,7 @@ return array(
         'invokables' => array(
             'IndexController' => 'Application\Controller\IndexController',
             'DadosController' => 'Application\Controller\DadosController',
+            'RelatoriosController' => 'Application\Controller\RelatoriosController',
             'Application\Controller\Area' => 'Application\Controller\AreaController',
             'Application\Controller\Bairro' => 'Application\Controller\BairroController',
             'Application\Controller\Graduacao' => 'Application\Controller\GraduacaoController',
@@ -54,6 +55,20 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'DadosController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'relatorios' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/relatorios[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RelatoriosController',
                         'action' => 'index',
                     ),
                 ),
