@@ -44,7 +44,7 @@ class RelatoriosForm extends Form {
             'name' => 'id_muniO',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'municipio',
+                'id' => 'municipioR',
                 ' style' => 'width:350px',
             ),
             'options' => array(
@@ -54,7 +54,23 @@ class RelatoriosForm extends Form {
         ));
 
         
-        
+                $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'id_crimeM',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'crimeM',
+                ' style' => 'width:350px',
+                //'multiple' => 'multiple'
+            ),
+            'options' => array(
+                 'disable_inarray_validator' => true,
+                'data-placeholder' => 'Escolha o crime',
+                //'empty_option' => 'Escolha a viatura',
+                'value_options' => $this->getOptionsForSelectC()),
+           
+          
+        ));
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
@@ -85,8 +101,9 @@ class RelatoriosForm extends Form {
             ),
             'options' => array(
                 'label' => 'Escolha o bairro',
-                'empty_option' => 'Escolha o bairro',
-                'value_options' => $this->getOptionsForSelectB()),
+                'empty_option' => 'Escolha a rua',
+               // 'value_options' => $this->getOptionsForSelectB()
+                ),
         ));
 
 
@@ -96,7 +113,7 @@ class RelatoriosForm extends Form {
             'name' => 'datai',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputDatai',
+                'id' => 'inputDataiR',
                 'placeholder' => 'Data/hora Início',
             ),
         ));
@@ -106,7 +123,7 @@ class RelatoriosForm extends Form {
             'name' => 'dataf',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'inputDataf',
+                'id' => 'inputDatafR',
                 'placeholder' => 'Data/hora Fim',
             ),
         ));
@@ -132,5 +149,13 @@ class RelatoriosForm extends Form {
         $dbAdapter = $this->adapter;
         return new ModelMunicipio($dbAdapter);
     }
+   public function getOptionsForSelectC() {
+        $selectData = $this->getCrimeTable()->fetchAll();
+        return $selectData;
+    }
 
+    private function getCrimeTable() {
+        $dbAdapter = $this->adapter;
+        return new ModelCrime($dbAdapter);
+    }
 }

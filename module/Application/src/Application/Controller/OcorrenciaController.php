@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+
 use Application\Model\Ocorrencia;
 use Application\Model\OcorrenciaTable as ModelOcorrencia;
 use Application\Model\PolicialTable as ModelPolicial;
@@ -62,7 +63,7 @@ class OcorrenciaController extends AbstractActionController {
         return new ViewModel(['ocorrencia' => $paginacao] + $paramsUrl);
     }
 
-        public function iniciarMapa() {
+        public function iniciarMapa(){
 
         $markers = array(
             'Rua Setenta e quatro' => '-3.891161, -38.616232'
@@ -778,6 +779,34 @@ class OcorrenciaController extends AbstractActionController {
         return $selected;
     }
     
+    
+   function itinerarioAction() {
+       
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+       
+        var_dump($postData);
+        return new ViewModel(array('dados' =>  $postData));  
+       /*
+       echo 'rrrrrrrrrrrrrr';
+       $result = ['datai']; //= json_decode($_POST['datai']);
+       // var_dump($result);
 
+        
+          $id_muni = $_POST['id_muniO'];
+          $crime = $_POST['id_crimeM'];
+          $datai = $_POST['datai'];
+          $dataf = $_POST['dataf'];
+
+
+
+          if (isset($id_muni) && isset($crime) && isset($datai) && isset($dataf)) {
+          $result = $this->getOcorrenciaTable()->searchItinerario($id_muni, $crime, $datai, $dataf);
+          } else {
+          $result = [];
+          }
+         
+        return new \Zend\View\Model\JsonModel($result);*/
+    }
 
 }

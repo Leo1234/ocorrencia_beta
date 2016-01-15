@@ -47,9 +47,7 @@ public function searchAction()
         $result = $this->getBairroTable()->search($id_muni);   
     } else  {
         $result = [];  
-    }
-    
-    
+    }  
     return new \Zend\View\Model\JsonModel($result);
 }
     // GET /application/bairro/search?query=[id_nome]
@@ -83,6 +81,7 @@ public function searchBairroViaturaAction()
     return new \Zend\View\Model\JsonModel($result);
 }
    
+
     
     public function indexAction() {
       

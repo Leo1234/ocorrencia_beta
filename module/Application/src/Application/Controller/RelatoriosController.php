@@ -47,5 +47,38 @@ class RelatoriosController extends AbstractActionController {
         $html = $map->generate();                                          //genrating the html map content  
         return $html;
     }
+    
+       function itinerarioAction() {
+       
+        $request = $this->getRequest();
+        $postData = $request->getPost()->toArray();
+        
+            $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+            $form = new RelatoriosForm($dbAdapter);
+            // passa para o objeto formulário os dados vindos da submissão 
+            $form->setData($request->getPost());
+       
+        return new ViewModel(array('dados' => $form));  
+       /*
+       echo 'rrrrrrrrrrrrrr';
+       $result = ['datai']; //= json_decode($_POST['datai']);
+       // var_dump($result);
+
+        
+          $id_muni = $_POST['id_muniO'];
+          $crime = $_POST['id_crimeM'];
+          $datai = $_POST['datai'];
+          $dataf = $_POST['dataf'];
+
+
+
+          if (isset($id_muni) && isset($crime) && isset($datai) && isset($dataf)) {
+          $result = $this->getOcorrenciaTable()->searchItinerario($id_muni, $crime, $datai, $dataf);
+          } else {
+          $result = [];
+          }
+         
+        return new \Zend\View\Model\JsonModel($result);*/
+    }
 
 }

@@ -137,9 +137,30 @@ class OcorrenciaTable {
 
         return $row;
     }
-
-
     
+    public function searchItinerario($muni, $crime, $datai, $dataf) {
+
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        $select = new Select;
+        $select->from('ocorrencia');
+        $select->columns(array('*'));
+        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('id_end', 'rua', 'numero', 'lat', 'lng'), 'left');
+        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'), 'left');
+        $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'), 'left');
+        $select->join(array('oc' => 'ocorrencia_crime'), "ocorrencia.id_ocorrencia = oc.id_ocorrencia", array('id_crime'), 'left');
+        $select->where(array('m.id_muni' => $muni, 'oc.id_crime' => $crime));
+        $select->where->between('ocorrencia.datai', $this->toDateYMD($datai), $this->toDateYMD($dataf));
+        $select->order(array('datai ASC'));
+        
+        // executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+
+        return $results;
+    }
+
     public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
         $sql = new Sql($this->adapter);
         $insert = $sql->insert('ocorrencia_policial');

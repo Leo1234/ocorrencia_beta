@@ -192,8 +192,9 @@ $(function() {
     $("#composicao").chosen();
 });
 
-$(function() {
-   
+
+
+$(function() {   
     $("#id_muni").change(function() {
         $.ajax({
             type: "POST",
@@ -213,8 +214,10 @@ $(function() {
             }
         });
     });
-
 });
+
+
+
 /*
 $(function(){
     $("#lat").change(function() {
@@ -222,7 +225,6 @@ $(function(){
   
     });
 });*/
-
 
 
 $(function() {
@@ -245,8 +247,71 @@ $(function() {
             }
         });
     });
-
 });
+
+$(function() {
+    $("#municipioR").change(function() {
+        if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()) {
+            alert('leonildo');
+            var selecionados = new Array();
+            selecionados.push($("#municipioR option:selected").val());
+            selecionados.push($("#crimeM option:selected").val());
+            selecionados.push($("#inputDataiR").val());
+            selecionados.push($("#inputDatafR").val());
+
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/itinerario",
+                //data: {selecionados: selecionados},
+                data: JSON.stringify(selecionados),
+                dataType: "json",
+                success: function(json) {
+                    alert('foi e voltou');
+                    var options = "";
+                    $.each(json, function(key, value) {
+                        options += '<option value="' + value.id_end + '">' + value.rua + '</option>';
+                    });
+                    $("#bairro").html(options);
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+
+    });
+});
+
+
+function isEmptyMunicipio(){
+    if ($("#municipioR option:selected").val() != '')
+        return true;
+    else
+        return false;
+}
+
+function isEmptyCrime(){
+    if ($("#crimeM option:selected").val() != '')
+        return true;
+    else
+        return false;
+}
+
+function isEmptyDataiR(){
+    if ($("#inputDataiR").val() != '')
+        return true;
+    else
+        return false;
+}
+
+function isEmptyDatafR(){
+    if ($("#inputDatafR").val() != '')
+        return true;
+    else
+        return false;
+}
+
 
 $(function() {
     $("#bairro").change(function() {
