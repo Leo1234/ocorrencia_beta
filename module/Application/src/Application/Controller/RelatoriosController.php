@@ -5,11 +5,18 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Form\RelatoriosForm;
+use Application\Model\Ocorrencia;
+use Application\Model\OcorrenciaTable as ModelOcorrencia;
 
 class RelatoriosController extends AbstractActionController {
 
     public function indexAction() {
         return new ViewModel();
+    }
+    
+      private function getOcorrenciaTable() {
+        $adapter = $this->getServiceLocator()->get('AdapterDb');
+        return new ModelOcorrencia($adapter);
     }
     
         public function mapacrimeAction() {
@@ -53,12 +60,17 @@ class RelatoriosController extends AbstractActionController {
         $request = $this->getRequest();
         $postData = $request->getPost()->toArray();
         
-            $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-            $form = new RelatoriosForm($dbAdapter);
+            //$dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+            //$form = new RelatoriosForm($dbAdapter);
             // passa para o objeto formulário os dados vindos da submissão 
-            $form->setData($request->getPost());
+            //$form->setData($request->getPost());
+            
+            
+             $dados = $this->getOcorrenciaTable()->searchItinerario($postData['id_muniO'], $postData['id_crimeM'], $postData['datai'], $postData['dataf']);
+  
+            return new ViewModel($dados);
        
-        return new ViewModel(array('dados' => $form));  
+        //return new ViewModel(array('dados' => $form));  
        /*
        echo 'rrrrrrrrrrrrrr';
        $result = ['datai']; //= json_decode($_POST['datai']);

@@ -1,0 +1,52 @@
+<!--<div class="jumbotron">
+    <h1>Manutenção dos dados</h1>
+    <p class="lead">
+        Clique no link abaixo para preenchimentos dos dados.
+    </p>
+</div>
+-->
+<br/>
+<br/>
+<br/>
+<div class="col-lg-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-file"></i> Testes dos dados</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover table-striped tablesorter">
+                <thead>
+                </thead>
+
+                <tbody>
+
+
+                    <tr>
+
+
+                    </tr>  
+
+                </tbody>
+            </table>  
+
+            Id: <?php echo ($this->dados['id_ocorrencia']); ?><br>
+            Narracao: <?php echo ($this->dados['narracao']); ?><br>
+            Data: <?php echo ($this->dados['datai']); ?><br>
+            Lat: <?php echo ($this->dados['end']->getLat()); ?><br>
+            Lng: <?php echo ($this->dados['end']->getLng()); ?><br>
+            Rua: <?php echo ($this->dados['end']->getRua()); ?><br>
+            Numero: <?php echo ($this->dados['end']->getNumero()); ?><br>
+            <div class="header">
+                <ul class="nav nav-pills pull-left">
+                    <?php
+                    $voltar = $this->url('application', array('action' => 'index'));
+                    ?>
+                    <li <?php echo $this->menuAtivo($voltar); ?>>
+                        <a href="<?php echo $voltar; ?>">voltar</a>
+                    </li>
+                </ul>
+            </div>
+
+     </div>
+
+

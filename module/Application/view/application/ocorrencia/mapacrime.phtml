@@ -1,0 +1,166 @@
+
+<br/>
+<br/>
+<div class="panel panel-primary">
+
+    <div class="panel-heading">
+
+        <div class="panel-titNovale">
+            <i class="fa fa-desktop"></i> Itinerários do crime                  
+            <div style="float: right;margin-top: -5px">
+
+               <!--  <a href="/ocorrencia_beta/public/ocorrencia/vitimas/0" class="btn btn-success" ><i class="fa fa-user"></i> Vítimas <span class="badge">1</span></a>
+                <a href="/ocorrencia_beta/public/acusado/novo" class="btn btn-danger"><i class="fa fa-user"></i> Acusados <span class="badge">1</span></a>
+                -->
+            </div>
+        </div>
+    </div>
+    <?php
+    // objeto form ocorrencia
+    $formRelarorio = $this->formRelarorio;
+    // preparar elementos do formulário
+    $formRelarorio->prepare();
+    // configurar url formulário
+    $formRelarorio->setAttribute('action', $this->url('ocorrencia', ['action' => 'itinerario']));
+    ?>
+    <?php // renderiza html <form> com atributos configurados no objeto ?>
+    <?php echo $this->form()->openTag($formRelarorio) ?>
+    <br/>
+    <br/>
+    <div id="map"></div>
+
+    <div class="panel-body">
+        <!--<fieldset  class="scheduler-border">
+            <legend class="scheduler-border">Endereço</legend>-->
+
+        <label for="inputMunicipio" class="col-lg-3 col-md-3">Município*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formRelarorio->get('id_muniO'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formRelarorio->get('id_muniO'));
+            ?>
+            <br>
+        </div>
+
+        <label for="inputCrimes" class="col-lg-3 col-md-3">Crime*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formRelarorio->get('id_crimeM'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formRelarorio->get('id_crimeM'));
+            ?>
+             <br>
+        </div>
+
+        <label for="inputDataI" class="col-lg-3 col-md-3 ">Data/hora Início*:</label>
+        <div class="col-lg-3  col-md-3">
+            <div class='input-group date' id='datetimepickerF'>
+                <?php
+                // renderiza html input
+                echo $this->formInput($formRelarorio->get('datai'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formRelarorio->get('datai'));
+                ?>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <br>
+        </div>
+
+        <label for="inputDataF" class="col-lg-3 col-md-3 ">Data/hora Fim*:</label>
+        <div class="col-lg-3  col-md-3">
+            <div class='input-group date' id='datetimepickerI'>
+                <?php
+                // renderiza html input
+                echo $this->formInput($formRelarorio->get('dataf'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formRelarorio->get('dataf'));
+                ?>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <br>
+        </div>
+
+        <label for="inputBairro" class="col-lg-3 col-md-3 ">Início*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formRelarorio->get('id_bai'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formRelarorio->get('id_bai'));
+            ?>
+            <br>
+        </div>
+
+        <label for="inputBairro" class="col-lg-3 col-md-3 ">Pontos*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formRelarorio->get('id_bai'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formRelarorio->get('id_bai'));
+            ?>
+            <br>
+        </div>
+        <label for="inputComposicao" class="col-lg-3 col-md-3 " >Fim*:</label>
+        <div class="col-lg-3  col-md-3"> 
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formRelarorio->get('id_bai'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formRelarorio->get('id_bai'));
+            ?>
+            <br>
+            <button type="submit" class="btn btn-primary">Itinerário</button>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="panel-footer">
+
+    <a href="<?php echo $this->url('ocorrencia'); ?>" class="btn btn-default">Voltar</a>
+</div>
+<?php // renderiza html </form>  ?>
+<?php echo $this->form()->closeTag() ?>
+
+
+
+
+
+

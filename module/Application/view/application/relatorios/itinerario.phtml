@@ -14,51 +14,35 @@
             <h3 class="panel-title"><i class="fa fa-file"></i> Testes dos dados</h3>
         </div>
         <div class="panel-body">
+<table class="table table-bordered table-hover table-striped tablesorter">
+                    <thead>
+                    </thead>
 
-           <?php
-// objeto form contato
-    $formV = $this->dados;
-    $formV->prepare();
-// configurar url formulário
-    $formV->setAttribute('action', $this->url('ocorrencia', array('action' => 'atualizarVAL', 'id' => $this->id)));
-    ?>
-
-    <?php // renderiza html <form> com atributos configurados no objeto ?>
-    <?php
-    echo $this->form()->openTag($formV);
-    ?>
-    <div class="panel-body">
-
-        <div class="form-group">
-            <label for="inputQuantidade" class="col-lg-3 col-md-3 control-label">municipio*:</label>
-            <div class="col-lg-9  col-md-9">
-                <?php
-// renderiza html input
-                echo $this->formInput($formV->get('datai'));
-
-// renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formV->get('datai'));
-                ?>
-            </div>
-        </div>
-           
-        </div>
+                    <tbody>
+                        
+                        <?php foreach ($this->dados as $oc): ?>
+                            <tr>
+                                <td class="text-center"><?php echo $oc->getId_oco(); ?></td>
+                                <td class="text-center"><?php echo $oc->getEnd()->getRua(); ?></td>
+                                <td class="text-center"><?php echo $oc->getVtr()->getPrefixo() ?></td> 
+                                  <td class="text-center"><?php echo (new \DateTime($oc->getDatai()))->format('d/m/Y H:i:s'); ?></td>
+                                 <td class="text-center"><?php echo (new \DateTime($oc->getDataf()))->format('d/m/Y H:i:s'); ?></td>
+                                <td class="text-center"><?php echo $oc->getCiops(); ?></td>                            
+                            </tr>  
+                        <?php endforeach;  var_dump($this->dados)?>
+                    </tbody>
+                </table>  
+            
+    <div class="header">
+        <ul class="nav nav-pills pull-left">
+            <?php
+            $voltar = $this->url('application', array('action' => 'index'));
+            ?>
+            <li <?php echo $this->menuAtivo($voltar); ?>>
+                <a href="<?php echo $voltar; ?>">voltar</a>
+            </li>
+        </ul>
     </div>
-</div>
-<div class="header">
-    <ul class="nav nav-pills pull-left">
-        <?php
-        $voltar = $this->url('application', array('action' => 'index'));
-        ?>
-        <li <?php echo $this->menuAtivo($voltar); ?>>
-            <a href="<?php echo $voltar; ?>">voltar</a>
-        </li>
-    </ul>
-</div>
 
 
 

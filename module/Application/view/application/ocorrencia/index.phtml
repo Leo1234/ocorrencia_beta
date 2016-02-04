@@ -59,8 +59,7 @@
                                 <td class="text-center"><?php echo $oc->getVtr()->getPrefixo() ?></td> 
                                   <td class="text-center"><?php echo (new \DateTime($oc->getDatai()))->format('d/m/Y H:i:s'); ?></td>
                                  <td class="text-center"><?php echo (new \DateTime($oc->getDataf()))->format('d/m/Y H:i:s'); ?></td>
-                                <td class="text-center"><?php echo $oc->getCiops(); ?></td>
-                              
+                                <td class="text-center"><?php echo $oc->getCiops(); ?></td>                            
 
                                 <td>
                                     <a class="btn btn-xs btn-info" title="Visualizar" href="<?php echo $this->url('ocorrencia', array("action" => "detalhes", "id" => $oc->getId_oco(),)); ?>"><span class="glyphicon glyphicon-new-window"></span></a>

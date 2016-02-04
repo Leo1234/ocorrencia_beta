@@ -31,6 +31,7 @@ use Application\Model\ApreArmaTable as ModelArma;
 use Application\Model\ApreVeic;
 use Application\Model\ApreVeicTable as ModelVeiculo;
 use Application\Model\DadosExtras;
+use Application\Form\RelatoriosForm;
 
 class OcorrenciaController extends AbstractActionController {
 
@@ -784,10 +785,17 @@ class OcorrenciaController extends AbstractActionController {
        
         $request = $this->getRequest();
         $postData = $request->getPost()->toArray();
-       
-        var_dump($postData);
-        return new ViewModel(array('dados' =>  $postData));  
-       /*
+
+       $dados = (array) $this->getOcorrenciaTable()->searchItinerario($postData['id_muniO'], $postData['id_crimeM'], $postData['datai'], $postData['dataf']);
+        var_dump($dados);
+       // return new ViewModel($dados);
+        
+             return (new ViewModel())
+                                ->setVariable('dados', $dados)
+                                ->setTemplate('application/ocorrencia/itinerario');
+
+
+        /*
        echo 'rrrrrrrrrrrrrr';
        $result = ['datai']; //= json_decode($_POST['datai']);
        // var_dump($result);
@@ -798,8 +806,6 @@ class OcorrenciaController extends AbstractActionController {
           $datai = $_POST['datai'];
           $dataf = $_POST['dataf'];
 
-
-
           if (isset($id_muni) && isset($crime) && isset($datai) && isset($dataf)) {
           $result = $this->getOcorrenciaTable()->searchItinerario($id_muni, $crime, $datai, $dataf);
           } else {
@@ -807,6 +813,16 @@ class OcorrenciaController extends AbstractActionController {
           }
          
         return new \Zend\View\Model\JsonModel($result);*/
+    }
+    
+    public function mapacrimeAction() {
+
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new RelatoriosForm($dbAdapter);
+        $html = $this->iniciarMapa();
+
+        return new ViewModel(array('map_html' => $html, 'formRelarorio' => $form));
+
     }
 
 }

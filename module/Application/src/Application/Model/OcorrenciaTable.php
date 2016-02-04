@@ -139,10 +139,32 @@ class OcorrenciaTable {
     }
     
     public function searchItinerario($muni, $crime, $datai, $dataf) {
-
-        $adapter = $this->tableGateway->getAdapter();
-        $sql = new \Zend\Db\Sql\Sql($adapter);
-
+        
+       
+        
+      // $datai = $this->toDateYMD($datai);
+       //$dataf = $this->toDateYMD($dataf);
+        
+        var_dump($dataf);
+        var_dump($datai);
+        var_dump($muni);
+        var_dump($crime);
+        
+      /*
+      
+        $dbAdapter = $this->adapter;
+        $sql = 'SELECT e.lat, e.lng, e.rua, c.crime, o.datai FROM ocorrencia As o LEFT JOIN ocorrencia_crime AS oc ON o.id_ocorrencia = oc.id_ocorrencia  LEFT JOIN crime AS c ON oc.id_crime = c.id_cri LEFT JOIN endereco AS e ON o.id_end = e.id_end LEFT JOIN bairro AS b ON e.id_bai = b.id_bai WHERE b.id_muni =' . $muni.' AND oc.id_crime= ' .$crime. ' AND o.datai BETWEEN "' .$datai. '" AND "' .$dataf.'"';
+        //$sql = 'SELECT  o.datai FROM ocorrencia AS o';
+        $statement = $dbAdapter->query($sql);
+        $result = $statement->execute();
+        //$selectData = array();
+          var_dump($result);
+          return $result;
+   */
+        
+      $adapter = $this->tableGateway->getAdapter();
+      $sql = new \Zend\Db\Sql\Sql($adapter);
+      
         $select = new Select;
         $select->from('ocorrencia');
         $select->columns(array('*'));
@@ -153,12 +175,16 @@ class OcorrenciaTable {
         $select->where(array('m.id_muni' => $muni, 'oc.id_crime' => $crime));
         $select->where->between('ocorrencia.datai', $this->toDateYMD($datai), $this->toDateYMD($dataf));
         $select->order(array('datai ASC'));
-        
-        // executar select
-        $statement = $sql->getSqlStringForSqlObject($select);
-        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
 
-        return $results;
+        // executar select
+       // $statement = $sql->getSqlStringForSqlObject($select);
+        //$results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+        
+        $rowset = $this->tableGateway->selectWith($select);
+        $row = $rowset->current();
+
+        //var_dump($row);
+        return $row;
     }
 
     public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
