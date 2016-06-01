@@ -19,23 +19,21 @@
                 </thead>
 
                 <tbody>
-
-
-                    <tr>
-
-
-                    </tr>  
-
+                    <?php foreach ($this->dados as $dados): ?>
+                        <tr>
+                            <td class="text-center">Id: <?php echo ($dados['id_ocorrencia']); ?></td>
+                            <td class="text-center"> Narracao: <?php echo ($dados['narracao']); ?></td>    
+                            <td class="text-center"> Data: <?php echo ($dados['datai']); ?></td>
+                            <td class="text-center"> Lat: <?php echo ($dados['lat']); ?></td> 
+                            <td class="text-center">Lng: <?php echo ($dados['lng']); ?></td>
+                            <td class="text-center"> Rua: <?php echo ($dados['rua']); ?></td> 
+                            <td class="text-center"> Numero: <?php echo ($dados['numero']); ?></td>
+                        </tr>  
+                    <?php endforeach; ?>
                 </tbody>
             </table>  
 
-            Id: <?php echo ($this->dados['id_ocorrencia']); ?><br>
-            Narracao: <?php echo ($this->dados['narracao']); ?><br>
-            Data: <?php echo ($this->dados['datai']); ?><br>
-            Lat: <?php echo ($this->dados['end']->getLat()); ?><br>
-            Lng: <?php echo ($this->dados['end']->getLng()); ?><br>
-            Rua: <?php echo ($this->dados['end']->getRua()); ?><br>
-            Numero: <?php echo ($this->dados['end']->getNumero()); ?><br>
+        
             <div class="header">
                 <ul class="nav nav-pills pull-left">
                     <?php

@@ -1,4 +1,4 @@
-function initMap() {
+function initMap(){
   var directionsService = new google.maps.DirectionsService;
   var directionsDisplay = new google.maps.DirectionsRenderer;
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -14,7 +14,7 @@ function initMap() {
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
-  var checkboxArray = document.getElementById('waypoints');
+  var checkboxArray = document.getElementById('pontos');
   for (var i = 0; i < checkboxArray.length; i++) {
     if (checkboxArray.options[i].selected) {
       waypts.push({
@@ -25,8 +25,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   }
 
   directionsService.route({
-    origin: document.getElementById('start').value,
-    destination: document.getElementById('end').value,
+    origin: document.getElementById('inicio').value,
+    destination: document.getElementById('fim').value,
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING

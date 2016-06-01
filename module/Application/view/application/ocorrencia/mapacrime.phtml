@@ -21,13 +21,14 @@
     // preparar elementos do formulário
     $formRelarorio->prepare();
     // configurar url formulário
-    $formRelarorio->setAttribute('action', $this->url('ocorrencia', ['action' => 'itinerario']));
+    //$formRelarorio->setAttribute('action', $this->url('ocorrencia', ['action' => 'itinerario']));
     ?>
     <?php // renderiza html <form> com atributos configurados no objeto ?>
     <?php echo $this->form()->openTag($formRelarorio) ?>
     <br/>
     <br/>
     <div id="map"></div>
+
 
     <div class="panel-body">
         <!--<fieldset  class="scheduler-border">
@@ -107,28 +108,28 @@
         <div class="col-lg-3  col-md-3">
             <?php
             // renderiza html input
-            echo $this->formSelect($formRelarorio->get('id_bai'));
+            echo $this->formSelect($formRelarorio->get('inicio'));
             // renderiza elemento de erro
             echo $this->formElementErrors()
                     ->setMessageOpenFormat('<small class="text-danger">')
                     ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                     ->setMessageCloseString('</small>')
-                    ->render($formRelarorio->get('id_bai'));
+                    ->render($formRelarorio->get('inicio'));
             ?>
             <br>
         </div>
 
-        <label for="inputBairro" class="col-lg-3 col-md-3 ">Pontos*:</label>
+        <label for="inputBairro" class="col-lg-3 col-md-3 ">Pontos*:</label>     
         <div class="col-lg-3  col-md-3">
             <?php
             // renderiza html input
-            echo $this->formSelect($formRelarorio->get('id_bai'));
+            echo $this->formSelect($formRelarorio->get('pontos'));
             // renderiza elemento de erro
             echo $this->formElementErrors()
                     ->setMessageOpenFormat('<small class="text-danger">')
                     ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                     ->setMessageCloseString('</small>')
-                    ->render($formRelarorio->get('id_bai'));
+                    ->render($formRelarorio->get('pontos'));
             ?>
             <br>
         </div>
@@ -136,16 +137,17 @@
         <div class="col-lg-3  col-md-3"> 
             <?php
             // renderiza html input
-            echo $this->formSelect($formRelarorio->get('id_bai'));
+            echo $this->formSelect($formRelarorio->get('fim'));
             // renderiza elemento de erro
             echo $this->formElementErrors()
                     ->setMessageOpenFormat('<small class="text-danger">')
                     ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                     ->setMessageCloseString('</small>')
-                    ->render($formRelarorio->get('id_bai'));
+                    ->render($formRelarorio->get('fim'));
             ?>
             <br>
-            <button type="submit" class="btn btn-primary">Itinerário</button>
+             <input type="submit" id="submit">
+             <div id="directions-panel"></div>
         </div>
 
     </div>

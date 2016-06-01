@@ -71,43 +71,54 @@ class RelatoriosForm extends Form {
            
           
         ));
-
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Select',
-            'name' => 'id_bai',
-            'attributes' => array(
-                'class' => 'form-control',
-                'id' => 'composicao',
-                ' style' => 'width:350px',
-                //'multiple' => 'true'
-                'multiple' => 'multiple'
-            ),
-            'options' => array(
-                'disable_inarray_validator' => true,
-                   'label' => 'Escolha o bairro',
-                'empty_option' => 'Escolha o bairro',
-                'value_options' => $this->getOptionsForSelectB()),
-        ));
         
 
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
-            'name' => 'id_bai',
+            'name' => 'inicio',
             'attributes' => array(
-                'class' => 'form-control',
-                'id' => 'bairro',
+                'class' => 'form-control bairro',
+                'id' => 'inicio',
                 ' style' => 'width:350px',
             // 'multiple' => 'true'
             ),
             'options' => array(
-                'label' => 'Escolha o bairro',
+                'label' => 'Escolha a rua',
                 'empty_option' => 'Escolha a rua',
-               // 'value_options' => $this->getOptionsForSelectB()
                 ),
         ));
 
+  $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'pontos',
+            'attributes' => array(
+                'class' => 'form-control bairro',
+                'id' => 'pontos',
+                ' style' => 'width:350px',
+                'multiple' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Escolha a rua',
+                'empty_option' => 'Escolha a rua',
+                ),
+        ));
 
-
+  
+          $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'fim',
+            'attributes' => array(
+                'class' => 'form-control bairro',
+                'id' => 'fim',
+                ' style' => 'width:350px',
+            // 'multiple' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Escolha a rua',
+                'empty_option' => 'Escolha a rua',
+                ),
+        ));
+          
         $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
             'name' => 'datai',

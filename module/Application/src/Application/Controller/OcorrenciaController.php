@@ -71,6 +71,7 @@ class OcorrenciaController extends AbstractActionController {
         );  //markers location with latitude and longitude
 
         $config = array(
+            'api_key' => 'AIzaSyDjwOd5a09zESk19OrFer6PjN72iiSgUyg',
             'sensor' => 'true', //true or false 
             'div_id' => 'map', //div id of the google map
             'div_class' => 'grid_6', //div class of the google map
@@ -783,36 +784,31 @@ class OcorrenciaController extends AbstractActionController {
     
    function itinerarioAction() {
        
-        $request = $this->getRequest();
-        $postData = $request->getPost()->toArray();
-
-       $dados = (array) $this->getOcorrenciaTable()->searchItinerario($postData['id_muniO'], $postData['id_crimeM'], $postData['datai'], $postData['dataf']);
-        var_dump($dados);
-       // return new ViewModel($dados);
+       // $request = $this->getRequest();
+        //$postData = $request->getPost()->toArray();
         
+        //$selecionados = $_POST['select'];
+      
+        $id_muniO = $_POST['id_muniO'];
+        $id_crimeM = $_POST['id_crimeM'];
+        $datai = $_POST['datai'];
+        $dataf = $_POST['dataf'];
+        
+        if (isset($_POST['id_muniO'])) {
+            $result = (array) $this->getOcorrenciaTable()->searchItinerario($id_muniO, $id_crimeM, $datai, $dataf);
+        } else {
+            $result = [];
+        }
+ 
+          /*
              return (new ViewModel())
                                 ->setVariable('dados', $dados)
                                 ->setTemplate('application/ocorrencia/itinerario');
 
-
-        /*
-       echo 'rrrrrrrrrrrrrr';
-       $result = ['datai']; //= json_decode($_POST['datai']);
-       // var_dump($result);
-
-        
-          $id_muni = $_POST['id_muniO'];
-          $crime = $_POST['id_crimeM'];
-          $datai = $_POST['datai'];
-          $dataf = $_POST['dataf'];
-
-          if (isset($id_muni) && isset($crime) && isset($datai) && isset($dataf)) {
-          $result = $this->getOcorrenciaTable()->searchItinerario($id_muni, $crime, $datai, $dataf);
-          } else {
-          $result = [];
-          }
+         */
+      
          
-        return new \Zend\View\Model\JsonModel($result);*/
+        return new \Zend\View\Model\JsonModel($result);
     }
     
     public function mapacrimeAction() {

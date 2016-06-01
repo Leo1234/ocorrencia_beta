@@ -201,7 +201,7 @@ $(function() {
             url: "/ocorrencia_beta/public/bairro/search",
             data: {id_muni: $("#id_muni").val()},
             dataType: "json",
-            success: function(json) {
+            success: function(json){
                 var options = "";
                 $.each(json, function(key, value) {
                     options += '<option value="' + value.id_area + '">' + value.descricao + '</option>';
@@ -250,28 +250,38 @@ $(function() {
 });
 
 $(function() {
-    $("#municipioR").change(function() {
-        if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()) {
-            alert('leonildo');
-            var selecionados = new Array();
-            selecionados.push($("#municipioR option:selected").val());
-            selecionados.push($("#crimeM option:selected").val());
-            selecionados.push($("#inputDataiR").val());
-            selecionados.push($("#inputDatafR").val());
-
+    $("#municipioR").change(function(){
+        
+      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
+            
+            
+            var muniR  = $("#municipioR option:selected").val();     
+            var crimeM = $("#municipioR option:selected").val();
+            var dataI  = $("#inputDataiR").val();
+            var dataF  = $("#inputDatafR").val();
+            
+            //var jsonString = JSON.stringify(selecionados);
+            
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/itinerario",
-                //data: {selecionados: selecionados},
-                data: JSON.stringify(selecionados),
+                data: { 
+                        id_muniO    :muniR, 
+                        id_crimeM   :crimeM, 
+                        datai       :dataI, 
+                        dataf       :dataF
+                }, 
+               // data: JSON.stringify(selecionados),
+                 //data: data_to_send,
                 dataType: "json",
                 success: function(json) {
-                    alert('foi e voltou');
                     var options = "";
                     $.each(json, function(key, value) {
-                        options += '<option value="' + value.id_end + '">' + value.rua + '</option>';
+                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
                     });
-                    $("#bairro").html(options);
+                    $(".bairro").each(function(e){
+                        $(this).html(options);
+                    });
 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -279,7 +289,7 @@ $(function() {
                 }
             });
         }
-
+alert(JSON.stringify(selecionados));
     });
 });
 
