@@ -16,7 +16,7 @@ namespace GMaps\Service;
  */
 class GoogleMap {
 
-    var $api_key = 'AIzaSyDjwOd5a09zESk19OrFer6PjN72iiSgUyg';
+    //var $api_key = '';
     var $sensor = 'false';
     var $div_id = '';
     var $div_class = '';

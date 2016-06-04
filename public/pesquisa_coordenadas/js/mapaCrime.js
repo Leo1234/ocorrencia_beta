@@ -7,10 +7,11 @@ function initMap(){
   });
   directionsDisplay.setMap(map);
 
-  document.getElementById('submit').addEventListener('click', function() {
+  document.getElementById('fim').addEventListener('click', function() {
     calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
 }
+google.maps.event.addDomListener(window, 'load', initMap);
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   var waypts = [];
@@ -39,7 +40,7 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
       // For each route, display summary information.
       for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
-        summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+        summaryPanel.innerHTML += '<b>Segmento de rota: ' + routeSegment +
             '</b><br>';
         summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';

@@ -1,0 +1,8 @@
+.modal > div {
+	width: 800px;
+	position: relative;
+	margin: 10% auto;
+	padding: 15px 20px;
+	background: #fff;
+}
+

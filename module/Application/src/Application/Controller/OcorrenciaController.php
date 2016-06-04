@@ -67,7 +67,7 @@ class OcorrenciaController extends AbstractActionController {
         public function iniciarMapa(){
 
         $markers = array(
-            'Rua Setenta e quatro' => '-3.891161, -38.616232'
+            'Rua Setenta e quatro' => '3.926944, -38.608310'
         );  //markers location with latitude and longitude
 
         $config = array(
@@ -592,8 +592,7 @@ class OcorrenciaController extends AbstractActionController {
 
 
         // popula objeto form ocorrencia com objeto model ocorrencia
-        $form->setData($ocorrencia);
-        
+        $form->setData($ocorrencia);      
         $html = $this->iniciarMapa();
 
         return new ViewModel(array('map_html' => $html, 'formOcorrencia' => $form));
@@ -817,7 +816,7 @@ class OcorrenciaController extends AbstractActionController {
         $form = new RelatoriosForm($dbAdapter);
         $html = $this->iniciarMapa();
 
-        return new ViewModel(array('map_html' => $html, 'formRelarorio' => $form));
+        return new ViewModel(array('formRelarorio' => $form));
 
     }
 

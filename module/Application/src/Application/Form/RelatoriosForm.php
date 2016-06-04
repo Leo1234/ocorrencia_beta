@@ -37,8 +37,7 @@ class RelatoriosForm extends Form {
             'class' => 'form-horizontal',
         ));
 
-
-
+ 
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'id_muniO',
