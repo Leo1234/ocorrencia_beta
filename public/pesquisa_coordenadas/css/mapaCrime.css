@@ -9,6 +9,12 @@
         width: 65%;
         height: 140%;
       }
+      #ponto-mapa {
+        height: 140%;
+        float: left;
+        width: 65%;
+        height: 140%;
+      }
 #right-panel {
   font-family: 'Roboto','sans-serif';
   line-height: 30px;

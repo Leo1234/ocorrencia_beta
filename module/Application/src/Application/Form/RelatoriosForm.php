@@ -55,10 +55,10 @@ class RelatoriosForm extends Form {
         
                 $this->add(array(
             'type' => 'Zend\Form\Element\Select',
-            'name' => 'id_crimeM',
+            'name' => 'id_crimeR',
             'attributes' => array(
                 'class' => 'form-control',
-                'id' => 'crimeM',
+                'id' => 'crimeR',
                 ' style' => 'width:350px',
                 //'multiple' => 'multiple'
             ),

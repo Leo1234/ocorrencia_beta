@@ -1,14 +1,14 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwOd5a09zESk19OrFer6PjN72iiSgUyg&callback=initMap"
 async></script>
-
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true"></script>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-heading">
 
                 <div class="panel-titNovale">
-                    <i class="glyphicon glyphicon-road"></i> Itinerários do crime                  
+                    <i class="fa fa-map-marker"></i> Localização dos crimes                  
                     <div style="float: right;margin-top: -5px">
 
                <!--  <a href="/ocorrencia_beta/public/ocorrencia/vitimas/0" class="btn btn-success" ><i class="fa fa-user"></i> Vítimas <span class="badge">1</span></a>
@@ -30,7 +30,7 @@ async></script>
      
             <div class="panel-body">
 
-                <div id="map">
+                <div id="ponto-mapa">
 
                 </div>
      
@@ -104,20 +104,7 @@ async></script>
                     <br>
                 </div>
 
-                <label for="inputBairro" class="col-lg-3 col-md-3 ">Início*:</label>
-                <div class="col-lg-3  col-md-3">
-                    <?php
-                    // renderiza html input
-                    echo $this->formSelect($formRelarorio->get('inicio'));
-                    // renderiza elemento de erro
-                    echo $this->formElementErrors()
-                            ->setMessageOpenFormat('<small class="text-danger">')
-                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                            ->setMessageCloseString('</small>')
-                            ->render($formRelarorio->get('inicio'));
-                    ?>
-                    <br>
-                </div>
+          
 
                 <label for="inputBairro" class="col-lg-3 col-md-3 ">Pontos*:</label>     
                 <div class="col-lg-3  col-md-3">
@@ -133,23 +120,6 @@ async></script>
                     ?>
                     <br>
                 </div>
-                <label for="inputComposicao" class="col-lg-3 col-md-3 " >Fim*:</label>
-                <div class="col-lg-3  col-md-3"> 
-                    <?php
-                    // renderiza html input
-                    echo $this->formSelect($formRelarorio->get('fim'));
-                    // renderiza elemento de erro
-                    echo $this->formElementErrors()
-                            ->setMessageOpenFormat('<small class="text-danger">')
-                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                            ->setMessageCloseString('</small>')
-                            ->render($formRelarorio->get('fim'));
-                    ?>
-                    <br>
-
-                    <div id="directions-panel"></div>
-                </div>
-
             </div>
         </div>
     </div>

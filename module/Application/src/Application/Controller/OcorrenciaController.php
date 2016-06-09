@@ -783,10 +783,7 @@ class OcorrenciaController extends AbstractActionController {
     
    function itinerarioAction() {
        
-       // $request = $this->getRequest();
-        //$postData = $request->getPost()->toArray();
-        
-        //$selecionados = $_POST['select'];
+  
       
         $id_muniO = $_POST['id_muniO'];
         $id_crimeM = $_POST['id_crimeM'];
@@ -798,19 +795,22 @@ class OcorrenciaController extends AbstractActionController {
         } else {
             $result = [];
         }
- 
-          /*
-             return (new ViewModel())
-                                ->setVariable('dados', $dados)
-                                ->setTemplate('application/ocorrencia/itinerario');
-
-         */
-      
-         
+   
         return new \Zend\View\Model\JsonModel($result);
     }
     
     public function mapacrimeAction() {
+
+        $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
+        $form = new RelatoriosForm($dbAdapter);
+        $html = $this->iniciarMapa();
+
+        return new ViewModel(array('formRelarorio' => $form));
+
+    }
+    
+        
+    public function pontoscrimeAction() {
 
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
         $form = new RelatoriosForm($dbAdapter);

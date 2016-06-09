@@ -256,7 +256,7 @@ $(function() {
             
             
             var muniR  = $("#municipioR option:selected").val();     
-            var crimeM = $("#municipioR option:selected").val();
+            var crimeM = $("#crimeR option:selected").val();
             var dataI  = $("#inputDataiR").val();
             var dataF  = $("#inputDatafR").val();
             
@@ -291,8 +291,143 @@ $(function() {
         }
 alert(JSON.stringify(selecionados));
     });
+    
 });
 
+$(function() {
+    $("#inputDataiR").change(function(){
+        
+      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
+            
+            
+            var muniR  = $("#municipioR option:selected").val();     
+            var crimeM = $("#crimeR  option:selected").val();
+            var dataI  = $("#inputDataiR").val();
+            var dataF  = $("#inputDatafR").val();
+            
+            //var jsonString = JSON.stringify(selecionados);
+            
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/itinerario",
+                data: { 
+                        id_muniO    :muniR, 
+                        id_crimeM   :crimeM, 
+                        datai       :dataI, 
+                        dataf       :dataF
+                }, 
+               // data: JSON.stringify(selecionados),
+                 //data: data_to_send,
+                dataType: "json",
+                success: function(json) {
+                    var options = "";
+                    $.each(json, function(key, value) {
+                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                    });
+                    $(".bairro").each(function(e){
+                        $(this).html(options);
+                    });
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+alert(JSON.stringify(selecionados));
+    });
+    
+});
+
+$(function() {
+    $("#inputDatafR").change(function(){
+        
+      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
+            
+            
+            var muniR  = $("#municipioR option:selected").val();     
+            var crimeM = $("#crimeR  option:selected").val();
+            var dataI  = $("#inputDataiR").val();
+            var dataF  = $("#inputDatafR").val();
+            
+            //var jsonString = JSON.stringify(selecionados);
+            
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/itinerario",
+                data: { 
+                        id_muniO    :muniR, 
+                        id_crimeM   :crimeM, 
+                        datai       :dataI, 
+                        dataf       :dataF
+                }, 
+               // data: JSON.stringify(selecionados),
+                 //data: data_to_send,
+                dataType: "json",
+                success: function(json) {
+                    var options = "";
+                    $.each(json, function(key, value) {
+                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                    });
+                    $(".bairro").each(function(e){
+                        $(this).html(options);
+                    });
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+alert(JSON.stringify(selecionados));
+    });
+    
+});
+
+$(function() {
+    $("#crimeR").change(function(){
+        
+      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
+            
+            
+            var muniR  = $("#municipioR option:selected").val();     
+            var crimeM = $("#crimeR  option:selected").val();
+            var dataI  = $("#inputDataiR").val();
+            var dataF  = $("#inputDatafR").val();
+            
+            //var jsonString = JSON.stringify(selecionados);
+            
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/itinerario",
+                data: { 
+                        id_muniO    :muniR, 
+                        id_crimeM   :crimeM, 
+                        datai       :dataI, 
+                        dataf       :dataF
+                }, 
+               // data: JSON.stringify(selecionados),
+                 //data: data_to_send,
+                dataType: "json",
+                success: function(json) {
+                    var options = "";
+                    $.each(json, function(key, value) {
+                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                    });
+                    $(".bairro").each(function(e){
+                        $(this).html(options);
+                    });
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+alert(JSON.stringify(selecionados));
+    });
+    
+});
 
 function isEmptyMunicipio(){
     if ($("#municipioR option:selected").val() != '')
@@ -302,7 +437,7 @@ function isEmptyMunicipio(){
 }
 
 function isEmptyCrime(){
-    if ($("#crimeM option:selected").val() != '')
+    if ($("#crimeR option:selected").val() != '')
         return true;
     else
         return false;

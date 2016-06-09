@@ -29,6 +29,8 @@ class RelatoriosController extends AbstractActionController {
 
     }
 
+
+    
     public function iniciarMapa() {
 
         $markers = array(
