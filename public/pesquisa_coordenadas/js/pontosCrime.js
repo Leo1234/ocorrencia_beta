@@ -20,6 +20,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 function plotapontos(){
 
     var waypts = [];
+    var waypts_aux = [];
     var checkboxArray = document.getElementById('pontos');
     for (var i = 0; i < checkboxArray.length; i++) {
         if (checkboxArray.options[i].selected) {
@@ -29,13 +30,18 @@ function plotapontos(){
         }
     }
 
-    for (i = 0; i < waypts.length; i++) {
-         //alert(waypts[i]);
+    for (i = 0; i < waypts.length; i++){
+        waypts_aux[i] = waypts[i].split(",");
+    }
+    
+    for (i = 0; i < waypts_aux.length; i++) {
+        
         marker = new google.maps.Marker({
-            position: new google.maps.LatLng(waypts[i]),
+            position: new google.maps.LatLng(waypts_aux[i][0],waypts_aux[i][1]),
             map: map
         });
     }
+     //alert(waypts_aux[0][1]);
 }
 
 

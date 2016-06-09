@@ -367,7 +367,7 @@ $(function() {
                 success: function(json) {
                     var options = "";
                     $.each(json, function(key, value) {
-                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                        options += '<option value="' + value.lat+","+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
                     });
                     $(".bairro").each(function(e){
                         $(this).html(options);
