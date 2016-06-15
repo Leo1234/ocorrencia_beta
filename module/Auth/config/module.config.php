@@ -12,18 +12,20 @@ return array(
     'router' => array(
         'routes' => array(
             'auth' => array(
-                'type'      => 'Literal',
-                'options'   => array(
-                    'route'    => '/login',
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/login[/:menssagem]',
+                    'constraints' => array(
+                        'menssagem' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
                     'defaults' => array(
                         'controller' => 'AuthController',
-                        'action'     => 'index',
+                        'action' => 'index',
                     ),
                 ),
             ),
         ),
     ),
-    
 
     # definir e gerenciar servicos
     'service_manager' => array(

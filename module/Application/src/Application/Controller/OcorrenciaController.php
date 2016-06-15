@@ -5,6 +5,8 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+use Zend\Session\Container;
+
 use Application\Model\Ocorrencia;
 use Application\Model\OcorrenciaTable as ModelOcorrencia;
 use Application\Model\PolicialTable as ModelPolicial;
@@ -32,6 +34,18 @@ use Application\Model\ApreVeic;
 use Application\Model\ApreVeicTable as ModelVeiculo;
 use Application\Model\DadosExtras;
 use Application\Form\RelatoriosForm;
+
+
+use Zend\Authentication\Result;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable;
+use Auth\Form\LoginForm;
+use Zend\Authentication\Storage\Session as SessionStorage;
+
+//use Zend\Db\Adapter\Adapter as DbAdapter;
+
+
+
 
 class OcorrenciaController extends AbstractActionController {
 
@@ -93,6 +107,9 @@ class OcorrenciaController extends AbstractActionController {
 
     public function novoAction() {
 
+        
+        $this->redirecionaUsuarioNaoLogado();
+        
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
         $form = new OcorrenciaForm($dbAdapter);
         $html = $this->iniciarMapa();
@@ -818,6 +835,97 @@ class OcorrenciaController extends AbstractActionController {
 
         return new ViewModel(array('formRelarorio' => $form));
 
+    }
+    
+     public function autenticacaoAction() {
+         
+           // Login form
+        $loginForm = new LoginForm();
+        $request = $this->getRequest();
+        
+        $login = $request->getPost('login');
+        $senha = $request->getPost('senha');
+
+        $loginForm->setData($request->getPost());
+
+        $zendDb = $this->getServiceLocator()->get('AdapterDb');
+       
+
+        $authAdapter = new DbTable(
+                $zendDb,
+                'usuario',
+                'login', 
+                'senha'
+        );       
+        
+        //$authAdapter->setCredentialTreatment('md5(?) AND senha != "compromised"');
+        $authAdapter->setIdentity($login);
+        $authAdapter->setCredential($senha);
+
+        $authService = new AuthenticationService();
+        $result = $authService->authenticate($authAdapter);
+
+        if ($result->isValid()) {
+ 
+            // Se validou damos um get nos dados autenticados usando o $result->getIdentity()
+            //$identity = $result->getIdentity();           
+            // Login para autenticação
+            //$auth = new AuthenticationService();
+            //$authService->setStorage(new SessionStorage('login'));
+            // $container = new Container('login');
+            // $container->ocorrencia = '1';
+            //var_dump($container->offsetExists('ocorrencia')); die(); 
+            // $auth->authenticate($authAdapter);
+            $sessao = new Container('Auth');
+            $sessao->admin = true;
+            
+            $this->redirect()->toRoute('application', array('action' => 'index'));
+        } else {
+            /* Caso falhe a autenticação, será gerado o log abaixo que será impresso&nbsp;
+             * na tela do computador para você sabe do problema ocorrido.
+             * os erros listados abaixo são os erros mais comuns que podem ocorrer.
+             */
+            switch ($result->getCode()){
+                case Result::FAILURE_IDENTITY_NOT_FOUND:
+                    $menssagem = 'Usuário inválido';
+                    $this->layout('layout/auth');
+                    return (new ViewModel())
+                                    ->setVariable('menssagem', $menssagem)
+                                    ->setVariable('formLogin', $loginForm)
+                                    ->setTemplate('auth/auth/index');
+                    //$this->redirect()->toRoute('auth', array('menssagem' => $menssagem));
+                    break;
+                case Result::FAILURE_CREDENTIAL_INVALID:
+                          $menssagem = 'Usuário e senha não correspondem';
+                    $this->layout('layout/auth');
+                    return (new ViewModel())
+                                    ->setVariable('menssagem', $menssagem)
+                                    ->setVariable('formLogin', $loginForm)
+                                    ->setTemplate('auth/auth/index');
+                    break;
+                default: $mensagem = 'Houve algum erro com a conexão do sistema. Favor, entrar em contato.';
+                            break;
+                  
+            }
+        } 
+        
+    }
+    
+      protected function redirecionaUsuarioNaoLogado(){
+             $sessao = new Container('Auth');
+            if (!$sessao->admin) {
+                return $this->redirect()->toRoute('auth', array('action' => 'sair'));
+            }/*
+        $auth = new AuthenticationService();
+        $auth->setStorage(new SessionStorage('login'));
+        if (!$auth->hasIdentity())
+            $this->redirect()->toRoute('auth', array('action' => 'sair'));*/
+    }
+    
+        public function sairAction() {
+        $sessao = new Container('Auth');
+        $sessao->getManager()->getStorage()->clear();  
+        return $this->redirect()->toRoute('auth', array('action' => 'login'));
     }
 
 }

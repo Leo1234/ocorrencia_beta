@@ -7,7 +7,7 @@ function initMap(){
   });
   directionsDisplay.setMap(map);
 
-  document.getElementById('fim').addEventListener('click', function() {
+  document.getElementById('enviar').addEventListener('click', function() {
     calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
 }

@@ -12,19 +12,18 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\ModuleManager;
+use Zend\Session\SessionManager;
+use Zend\Session\Container;
 
 use Application\Model\Viatura,
     Application\Model\ViaturaTable;
-
 use Application\Model\Area,
     Application\Model\AreaTable;
- 
 // import Zend\Db
 use Zend\Db\ResultSet\ResultSet,
     Zend\Db\TableGateway\TableGateway;
-
 use Application\View\Helper\ViaturaFilter;
-
 
 class Module {
 
@@ -51,7 +50,6 @@ class Module {
     /**
      * Register View Helper
      */
- 
     public function getViewHelperConfig() {
         return array(
             # registrar View Helper com injecao de dependecia
@@ -67,51 +65,129 @@ class Module {
                 'util' => function($sm) {
             return new View\Helper\Util();
         },
-              
+                'AuthService' => function ($sm) {
+            $adapter = $sm->get('AdapterDb');
+            $dbAuthAdapter = new DbAuthAdapter($adapter, 'usuario', 'login', 'senha');
+
+            $auth = new AuthenticationService();
+            $auth->setAdapter($dbAuthAdapter);
+
+            return $auth;
+        }
             )
         );
     }
 
-    public function getServiceConfig()
-    {
+    public function getServiceConfig() {
         return array(
             'factories' => array(
-                /*
-                 ///----------------viatura--------------///
-                'ViaturaTableGateway' => function ($sm) {
-                    // obter adapter db atraves do service manager
-                    $adapter = $sm->get('AdapterDb');
-
-                    // configurar ResultSet com nosso model Contato
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Viatura());
-
-                    // return TableGateway configurado para nosso model Viatura
-                    return new TableGateway('vtr', $adapter, null, $resultSetPrototype);
-                },
-                'ModelViatura' => function ($sm){
-                    // return instacia Model ViaturaTable
-                    return new ViaturaTable($sm->get('ViaturaTableGateway'));
-                },*/
-                ///----------------area--------------///
-                        
                 'AreaTableGateway' => function ($sm) {
-                    // obter adapter db atraves do service manager
-                    $adapter = $sm->get('AdapterDb');
+            // obter adapter db atraves do service manager
+            $adapter = $sm->get('AdapterDb');
 
-                    // configurar ResultSet com nosso model Contato
-                    $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Area());
+            // configurar ResultSet com nosso model Contato
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new Area());
 
-                    // return TableGateway configurado para nosso model Viatura
-                    return new TableGateway('area', $adapter, null, $resultSetPrototype);
-                },
-                          'ModelArea' => function ($sm){
-                    // return instacia Model ViaturaTable
-                    return new AreaTable($sm->get('AreaTableGateway'));
-                },
+            // return TableGateway configurado para nosso model Viatura
+            return new TableGateway('area', $adapter, null, $resultSetPrototype);
+        },
+                'ModelArea' => function ($sm) {
+            // return instacia Model ViaturaTable
+            return new AreaTable($sm->get('AreaTableGateway'));
+        },
+                'Zend\Session\SessionManager' => function ($sm) {
+            $config = $sm->get('config');
+            if (isset($config['session'])) {
+                $session = $config['session'];
+
+                $sessionConfig = null;
+                if (isset($session['config'])) {
+                    $class = isset($session['config']['class']) ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';
+                    $options = isset($session['config']['options']) ? $session['config']['options'] : array();
+                    $sessionConfig = new $class();
+                    $sessionConfig->setOptions($options);
+                }
+
+                $sessionStorage = null;
+                if (isset($session['storage'])) {
+                    $class = $session['storage'];
+                    $sessionStorage = new $class();
+                }
+
+                $sessionSaveHandler = null;
+                if (isset($session['save_handler'])) {
+                    // class should be fetched from service manager since it will require constructor arguments
+                    $sessionSaveHandler = $sm->get($session['save_handler']);
+                }
+
+                $sessionManager = new SessionManager($sessionConfig, $sessionStorage, $sessionSaveHandler);
+            } else {
+                $sessionManager = new SessionManager();
+            }
+            Container::setDefaultManager($sessionManager);
+            return $sessionManager;
+        },
             ),
         );
     }
+
+    public function bootstrapSession($e) {
+        $session = $e->getApplication()
+                ->getServiceManager()
+                ->get('Zend\Session\SessionManager');
+        $session->start();
+
+        $container = new Container('initialized');
+        if (!isset($container->init)) {
+            $serviceManager = $e->getApplication()->getServiceManager();
+            $request = $serviceManager->get('Request');
+
+            $session->regenerateId(true);
+            $container->init = 1;
+            $container->remoteAddr = $request->getServer()->get('REMOTE_ADDR');
+            $container->httpUserAgent = $request->getServer()->get('HTTP_USER_AGENT');
+
+            $config = $serviceManager->get('Config');
+            if (!isset($config['session'])) {
+                return;
+            }
+
+            $sessionConfig = $config['session'];
+            if (isset($sessionConfig['validators'])) {
+                $chain = $session->getValidatorChain();
+
+                foreach ($sessionConfig['validators'] as $validator) {
+                    switch ($validator) {
+                        case 'Zend\Session\Validator\HttpUserAgent':
+                            $validator = new $validator($container->httpUserAgent);
+                            break;
+                        case 'Zend\Session\Validator\RemoteAddr':
+                            $validator = new $validator($container->remoteAddr);
+                            break;
+                        default:
+                            $validator = new $validator();
+                    }
+
+                    $chain->attach('session.validate', array($validator, 'isValid'));
+                }
+            }
+        }
+    }
     
+
+
+    public function verificaAutenticacao($e) {
+        // vamos descobrir onde estamos?
+        $controller = $e->getTarget();
+        $rota = $controller->getEvent()->getRouteMatch()->getMatchedRouteName();
+
+        if ($rota != 'login' && $rota != 'login/default') {
+            $sessao = new Container('Auth');
+            if (!$sessao->admin) {
+                return $controller->redirect()->toRoute('auth');
+            }
+        }
+    }
+
 }

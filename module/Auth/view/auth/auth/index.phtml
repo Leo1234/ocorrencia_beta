@@ -1,6 +1,30 @@
-<form class="form-signin" role="form">
-    <h2 class="form-signin-heading">SGO :: Autenticação</h2>
-    <input type="input" class="form-control" placeholder="Usuário" required="" autofocus="">
-    <input type="password" class="form-control" placeholder="Senha" required="">
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Logar</button>
-</form>
+
+<?php
+$formLogin = $this->formLogin;
+// preparar elementos do formulário
+$formLogin->prepare();
+// configurar url formulário
+$formLogin->setAttribute('action', $this->url('ocorrencia', ['action' => 'autenticacao']));
+?>  
+
+<?php // renderiza html <form> com atributos configurados no objeto  ?>
+<?php echo $this->form()->openTag($formLogin) ?>
+
+<h2 class="form-signin-heading">SGO :: Autenticação</h2>
+<?php
+// renderiza html input
+echo $this->formInput($formLogin->get('login'));
+?>
+
+<?php
+// renderiza html input
+echo $this->formInput($formLogin->get('senha'));
+?>
+ <button type="submit" class="btn btn-lg btn-primary btn-block">Logar</button>
+
+ <br>
+ <?php echo "<center><b><font color=#F00><blink>".$this->menssagem ."</blink></font></b></center>" ?>  
+
+ <?php echo $this->form()->closeTag() ?>
+
+
