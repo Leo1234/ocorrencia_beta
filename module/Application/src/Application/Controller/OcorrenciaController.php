@@ -56,7 +56,8 @@ class OcorrenciaController extends AbstractActionController {
     }
 
     public function indexAction() {
-
+    
+        
         $paramsUrl = [
             'pagina_atual' => $this->params()->fromQuery('pagina', 1),
             'itens_pagina' => $this->params()->fromQuery('itens_pagina', 10),
@@ -75,7 +76,7 @@ class OcorrenciaController extends AbstractActionController {
         );
 
         // retonar paginação mais os params de url para view
-        return new ViewModel(['ocorrencia' => $paginacao] + $paramsUrl);
+        return new ViewModel(['ocorrencia' => $paginacao ] + $paramsUrl );
     }
 
         public function iniciarMapa(){
@@ -798,21 +799,35 @@ class OcorrenciaController extends AbstractActionController {
     }
     
     
-   function itinerarioAction() {
-       
-  
-      
+   function itinerarioAction(){
+
+
         $id_muniO = $_POST['id_muniO'];
         $id_crimeM = $_POST['id_crimeM'];
         $datai = $_POST['datai'];
         $dataf = $_POST['dataf'];
-        
+
         if (isset($_POST['id_muniO'])) {
             $result = (array) $this->getOcorrenciaTable()->searchItinerario($id_muniO, $id_crimeM, $datai, $dataf);
         } else {
             $result = [];
         }
-   
+
+        return new \Zend\View\Model\JsonModel($result);
+    }
+
+       function graficoAction(){
+
+        $id_crimeG = $_POST['id_crimeM'];
+        $datai = $_POST['datai'];
+        $dataf = $_POST['dataf'];
+
+        if ($_POST['id_crimeM']){
+            $result = (array) $this->getOcorrenciaTable()->searchGrafico($id_crimeG, $datai, $dataf);
+        } else {
+            $result = [];
+        }
+
         return new \Zend\View\Model\JsonModel($result);
     }
     
@@ -823,10 +838,8 @@ class OcorrenciaController extends AbstractActionController {
         $html = $this->iniciarMapa();
 
         return new ViewModel(array('formRelarorio' => $form));
-
     }
-    
-        
+
     public function pontoscrimeAction() {
 
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
@@ -834,84 +847,84 @@ class OcorrenciaController extends AbstractActionController {
         $html = $this->iniciarMapa();
 
         return new ViewModel(array('formRelarorio' => $form));
-
     }
-    
-     public function autenticacaoAction() {
-         
-           // Login form
+
+    public function autenticacaoAction() {
+
+        // Login form
         $loginForm = new LoginForm();
         $request = $this->getRequest();
-        
-        $login = $request->getPost('login');
-        $senha = $request->getPost('senha');
+         $loginForm->setData($request->getPost());
 
-        $loginForm->setData($request->getPost());
+      
+        if ($loginForm->isValid()) {
+            $login = $request->getPost('login');
+            $senha = $request->getPost('senha');
 
-        $zendDb = $this->getServiceLocator()->get('AdapterDb');
-       
 
-        $authAdapter = new DbTable(
-                $zendDb,
-                'usuario',
-                'login', 
-                'senha'
-        );       
-        
-        //$authAdapter->setCredentialTreatment('md5(?) AND senha != "compromised"');
-        $authAdapter->setIdentity($login);
-        $authAdapter->setCredential($senha);
 
-        $authService = new AuthenticationService();
-        $result = $authService->authenticate($authAdapter);
-
-        if ($result->isValid()) {
- 
-            // Se validou damos um get nos dados autenticados usando o $result->getIdentity()
-            //$identity = $result->getIdentity();           
-            // Login para autenticação
-            //$auth = new AuthenticationService();
-            //$authService->setStorage(new SessionStorage('login'));
-            // $container = new Container('login');
-            // $container->ocorrencia = '1';
-            //var_dump($container->offsetExists('ocorrencia')); die(); 
-            // $auth->authenticate($authAdapter);
-            $sessao = new Container('Auth');
-            $sessao->admin = true;
+            $zendDb = $this->getServiceLocator()->get('AdapterDb');
             
-            $this->redirect()->toRoute('application', array('action' => 'index'));
-        } else {
-            /* Caso falhe a autenticação, será gerado o log abaixo que será impresso&nbsp;
-             * na tela do computador para você sabe do problema ocorrido.
-             * os erros listados abaixo são os erros mais comuns que podem ocorrer.
-             */
-            switch ($result->getCode()){
-                case Result::FAILURE_IDENTITY_NOT_FOUND:
-                    $menssagem = 'Usuário inválido';
-                    $this->layout('layout/auth');
-                    return (new ViewModel())
-                                    ->setVariable('menssagem', $menssagem)
-                                    ->setVariable('formLogin', $loginForm)
-                                    ->setTemplate('auth/auth/index');
-                    //$this->redirect()->toRoute('auth', array('menssagem' => $menssagem));
-                    break;
-                case Result::FAILURE_CREDENTIAL_INVALID:
-                          $menssagem = 'Usuário e senha não correspondem';
-                    $this->layout('layout/auth');
-                    return (new ViewModel())
-                                    ->setVariable('menssagem', $menssagem)
-                                    ->setVariable('formLogin', $loginForm)
-                                    ->setTemplate('auth/auth/index');
-                    break;
-                default: $mensagem = 'Houve algum erro com a conexão do sistema. Favor, entrar em contato.';
-                            break;
-                  
+            $authAdapter = new DbTable(
+                    $zendDb, 'usuario', 'login', 'senha'
+            );
+
+            $authAdapter->setIdentity($login);
+            $authAdapter->setCredential($senha);
+            
+            //$authAdapter->setCredentialTreatment('md5(?) AND senha != "compromised"');
+            $authService = new AuthenticationService();
+            $result = $authService->authenticate($authAdapter);
+
+
+            if ($result->isValid()){
+
+                // Se validou damos um get nos dados autenticados usando o $result->getIdentity()
+                // $auth->authenticate($authAdapter);
+
+                $sessao = new Container('Auth');
+                $sessao->admin = true;
+                $sessao->usuario = $result->getIdentity();
+
+                $this->redirect()->toRoute('application', array('action' => 'index'));
+            } else {
+                /* Caso falhe a autenticação, será gerado o log abaixo que será impresso&nbsp;
+                 * na tela do computador para você sabe do problema ocorrido.
+                 * os erros listados abaixo são os erros mais comuns que podem ocorrer.
+                 */
+                switch ($result->getCode()) {
+                    case Result::FAILURE_IDENTITY_NOT_FOUND:
+                        $menssagem = 'Usuário inválido';
+                        $this->layout('layout/auth');
+                        return (new ViewModel())
+                                        ->setVariable('menssagem', $menssagem)
+                                        ->setVariable('formLogin', $loginForm)
+                                        ->setTemplate('auth/auth/index');
+                        //$this->redirect()->toRoute('auth', array('menssagem' => $menssagem));
+                        break;
+                    case Result::FAILURE_CREDENTIAL_INVALID:
+                        $menssagem = 'Usuário e senha não correspondem';
+                        $this->layout('layout/auth');
+                        return (new ViewModel())
+                                        ->setVariable('menssagem', $menssagem)
+                                        ->setVariable('formLogin', $loginForm)
+                                        ->setTemplate('auth/auth/index');
+                        break;
+                    default: $mensagem = 'Houve algum erro com a conexão do sistema. Favor, entrar em contato.';
+                        break;
+                }
             }
-        } 
-        
+        } else {
+            $menssagem = 'Insira seu login/senha. ';
+            $this->layout('layout/auth');
+            return (new ViewModel())
+                            ->setVariable('menssagem', $menssagem)
+                            ->setVariable('formLogin', $loginForm)
+                            ->setTemplate('auth/auth/index');
+        }
     }
-    
-      protected function redirecionaUsuarioNaoLogado(){
+
+    protected function redirecionaUsuarioNaoLogado(){
              $sessao = new Container('Auth');
             if (!$sessao->admin) {
                 return $this->redirect()->toRoute('auth', array('action' => 'sair'));

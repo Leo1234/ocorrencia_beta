@@ -1,0 +1,16 @@
+*{
+        font-family: calibri;        
+    }
+
+    .box {
+        margin: 0px auto;
+        width: 40%;
+    }
+
+    .box-chart {
+      
+        width: 40%;
+       // margin: 0 auto;
+        padding: 10px;
+    }
+

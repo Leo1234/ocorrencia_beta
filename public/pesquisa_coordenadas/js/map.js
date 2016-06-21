@@ -5,6 +5,8 @@
 
 // Váriáveis necessárias
 
+
+
 var map;
 var marker;
 var center = new google.maps.LatLng(-3.895794, -38.605375);
@@ -115,5 +117,4 @@ function getCoords(lat, lng) {
     // Actualiza o valor do input 'lng'
     coords_lng.value = lng;
 }
-
 

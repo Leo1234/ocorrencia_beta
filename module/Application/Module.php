@@ -177,17 +177,4 @@ class Module {
     
 
 
-    public function verificaAutenticacao($e) {
-        // vamos descobrir onde estamos?
-        $controller = $e->getTarget();
-        $rota = $controller->getEvent()->getRouteMatch()->getMatchedRouteName();
-
-        if ($rota != 'login' && $rota != 'login/default') {
-            $sessao = new Container('Auth');
-            if (!$sessao->admin) {
-                return $controller->redirect()->toRoute('auth');
-            }
-        }
-    }
-
 }

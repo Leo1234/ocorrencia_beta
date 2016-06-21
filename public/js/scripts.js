@@ -6,6 +6,24 @@ jq162 = jQuery.noConflict(true);
 
 v = 0; // total de vítimas
 //selected = [];
+
+var x = [];
+var y = [];
+
+var arrayMes = new Array(12);
+arrayMes[0] = "Janeiro";
+arrayMes[1] = "Fevereiro";
+arrayMes[2] = "Março";
+arrayMes[3] = "Abril";
+arrayMes[4] = "Maio";
+arrayMes[5] = "Junho";
+arrayMes[6] = "Julho";
+arrayMes[7] = "Agosto";
+arrayMes[8] = "Setembro";
+arrayMes[9] = "Outubro";
+arrayMes[10] = "Novembro";
+arrayMes[11] = "Dezembro";
+
   
 
   
@@ -38,8 +56,7 @@ v = 0; // total de vítimas
  
 $(function() {
    
-    var status = true;
-    
+    var status = true;   
     $("#crime").change(function() {
         var selected = [];
         $('#crime :selected').each(function(){
@@ -323,6 +340,7 @@ $(function() {
                     var options = "";
                     $.each(json, function(key, value) {
                         options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                        
                     });
                     $(".bairro").each(function(e){
                         $(this).html(options);
@@ -343,8 +361,7 @@ $(function() {
     $("#inputDatafR").change(function(){
         
       if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
-            
-            
+          
             var muniR  = $("#municipioR option:selected").val();     
             var crimeM = $("#crimeR  option:selected").val();
             var dataI  = $("#inputDataiR").val();
@@ -458,6 +475,161 @@ function isEmptyDatafR(){
 }
 
 
+
+$(function() {
+    $("#crimeG").change(function() {
+        if (isEmptyCrimeG() && isEmptyDataiG() && isEmptyDatafG()) {
+
+            var crimeM = $("#crimeG  option:selected").val();
+            var dataI = $("#inputDataiG").val();
+            var dataF = $("#inputDatafG").val();
+
+            //var jsonString = JSON.stringify(selecionados);
+
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/grafico",
+                data: {
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
+                dataType: "json",
+                success: function(json) {
+                    var options = "";
+                    $.each(json, function(key, value) {
+                        options += '<option value="' + value.lat + ", " + value.lng + '">' + value.rua + ", " + value.bairro + '</option>';
+                    });
+                    $(".bairro").each(function(e) {
+                        $(this).html(options);
+                    });
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+        alert(JSON.stringify(selecionados));
+    });
+
+});
+
+
+
+$(function() {
+    $("#inputDataiG").change(function() {
+        if (isEmptyCrimeG() && isEmptyDataiG() && isEmptyDatafG()) {
+
+            var crimeM = $("#crimeG  option:selected").val();
+            var dataI = $("#inputDataiG").val();
+            var dataF = $("#inputDatafG").val();
+
+            //var jsonString = JSON.stringify(selecionados);
+
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/grafico",
+                data: {
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
+                dataType: "json",
+                success: function(json) {
+                    var options = "";
+                    $.each(json, function(key, value) {
+                        options += '<option value="' + value.lat + ", " + value.lng + '">' + value.rua + ", " + value.bairro + '</option>';
+                    });
+                    $(".bairro").each(function(e) {
+                        $(this).html(options);
+                    });
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+        alert(JSON.stringify(selecionados));
+    });
+
+});
+
+$(function() {
+    $("#inputDatafG").change(function() {
+        if (isEmptyCrimeG() && isEmptyDataiG() && isEmptyDatafG()) {
+
+            var crimeM = $("#crimeG  option:selected").val();
+            var dataI = $("#inputDataiG").val();
+            var dataF = $("#inputDatafG").val();
+
+            //var jsonString = JSON.stringify(selecionados);
+
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/grafico",
+                data: {
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
+                dataType: "json",
+                success: function(json) {
+                    var options = "";
+                    $.each(json, function(key, value) {         
+                        x [key] = getMesExtenso(value.mes);
+                        y [key] = value.qtd;                       
+                    });
+                    $(".bairro").each(function(e) {
+                        $(this).html(options);
+                    });
+                    //alert(JSON.stringify(y));
+                    var stry = y.join(",");
+                    var strx = JSON.stringify(x);
+                    //alert(strx);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+    });
+
+});
+
+function getMesExtenso(mes){
+    return this.arrayMes[mes];
+}
+
+function isEmptyCrimeG() {
+    if ($("#crimeG option:selected").val() !== '')
+        return true;
+    else
+        return false;
+}
+
+function isEmptyDataiG() {
+    if ($("#inputDataiG").val() !== '')
+        return true;
+    else
+        return false;
+}
+
+function isEmptyDatafG() {
+    if ($("#inputDatafG").val() !== '')
+        return true;
+    else
+        return false;
+}
+
+
 $(function() {
     $("#bairro").change(function() {
         $.ajax({
@@ -519,4 +691,5 @@ $(function() {
 
     });
 });
+
 

@@ -30,6 +30,7 @@
                 ->prependStylesheet($this->basePath() . '/pesquisa_coordenadas/css/style_mapa.css')
                 ->prependStylesheet($this->basePath() . '/pesquisa_coordenadas/css/mapaCrime.css')
                 ->prependStylesheet($this->basePath() . '/pesquisa_coordenadas/css/modal.css')
+                ->prependStylesheet($this->basePath() . '/grafico/css/grafico.css')
                 ->prependStylesheet($this->basePath() . '/jquery-ui/themes/black-tie/jquery.ui.theme.css')
                 ->prependStylesheet($this->basePath() . '/jquery-ui/themes/black-tie/jquery-ui.css')
                 ->prependStylesheet($this->basePath() . '/lib/css/sb-admin.css')
@@ -107,8 +108,8 @@
                             </li>
                         </ul>
 
-                        <ul class="nav navbar-nav navbar-right navbar-user">
-                            <li class="dropdown messages-dropdown">
+                       <ul class="nav navbar-nav navbar-right navbar-user">
+                            <!-- <li class="dropdown messages-dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> Messages <span class="badge">7</span> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li class="dropdown-header">7 New Messages</li>
@@ -141,7 +142,7 @@
                                     <li class="divider"></li>
                                     <li><a href="#">View Inbox <span class="badge">7</span></a></li>
                                 </ul>
-                            </li>
+                            </li> 
                             <li class="dropdown alerts-dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> Alerts <span class="badge">3</span> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -154,12 +155,13 @@
                                     <li class="divider"></li>
                                     <li><a href="#">View All</a></li>
                                 </ul>
-                            </li>
+                            </li>-->
                             <li class="dropdown user-dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i><?php echo "john Smit"; ?><b class="caret"></b></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user "></i><?php
+                                    $children = $this->viewModel()->getCurrent()->getChildren();
+                                    $child = $children[0];
+                                    ?><?php echo" " . $child->usuario; ?><b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                                    <li><a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge">7</span></a></li>
                                     <li><a href="<?php echo $this->url('config', array('action' => 'index')); ?>"><i class="fa fa-gear"></i> Configurações</a></li>
                                     <li class="divider"></li>
                                     <li><a href="<?php echo $this->url('ocorrencia', ['action' => 'sair']) ?>"><i class="fa fa-power-off"></i>Sair</a></li>
@@ -181,22 +183,14 @@
                 <script src="<?= $this->basePath() ?>/select2/select2.js"></script>
                 <script src="<?= $this->basePath() ?>/select2/select2_locale_pt-BR.js"></script>
                 <script src="<?= $this->basePath() ?>/js/util.js"></script>
-              
-                
-              
-               
-
-
-
-
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.eot"></script>
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.svg"></script>
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.ttf"></script>
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff"></script>
                 <script src="<?= $this->basePath() ?>/fonts/glyphicons-halflings-regular.woff2"></script>
-               
-        <!--<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
-                
+
+<!--<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
+
 
 
 
@@ -224,19 +218,22 @@
                         ->prependFile($this->basePath() . '/js/html5shiv.js')
                         ->prependFile($this->basePath() . '/js/respond.min.js')
                         ->prependFile($this->basePath() . '/choose/x.js')
-                       // ->prependFile($this->basePath() . '/gmap3-6.0.0/gmap3.js')
+                        // ->prependFile($this->basePath() . '/gmap3-6.0.0/gmap3.js')
                         //->prependFile($this->basePath() . '/gmap3-6.0.0/gmap3.min.js')
                         ->prependFile($this->basePath() . '/pesquisa_coordenadas/js/map.js')
+                      //->prependFile($this->basePath() . '/grafico/js/pesquisa.js')
                         ->prependFile($this->basePath() . '/pesquisa_coordenadas/js/mapaCrime.js')
                         ->prependFile($this->basePath() . '/pesquisa_coordenadas/js/pontosCrime.js')
+                        ->prependFile($this->basePath() . '/grafico/js/Chart.min.js')
+                        ->prependFile($this->basePath() . '/grafico/js/grafico.js')
 
 
                 ;
                 echo $this->inlineScript();
                 ?>
 
-              
-              
+
+
             </div>
         </div>
     </body>

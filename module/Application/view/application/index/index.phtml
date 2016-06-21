@@ -1,3 +1,5 @@
+ 
+
 <div class="row">
     <div class="col-lg-12">
         <br/>
@@ -11,6 +13,17 @@
         </div>
     </div>
 </div><!-- /.row -->
+
+<?php
+// objeto form ocorrencia
+$formRelarorio = $this->formRelarorio;
+// preparar elementos do formulário
+$formRelarorio->prepare();
+// configurar url formulário
+//$formRelarorio->setAttribute('action', $this->url('ocorrencia', ['action' => 'mapacrime']));
+?>
+<?php // renderiza html <form> com atributos configurados no objeto ?>
+<?php echo $this->form()->openTag($formRelarorio) ?>
 
 <div class="row">
     <div class="col-lg-3">
@@ -130,10 +143,66 @@
                 <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> Traffic Statistics: October 1, 2013 - October 31, 2013</h3>
             </div>
             <div class="panel-body">
-                <div id="morris-chart-area">grgerhyteyhrturturryujtyujtyjtyhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+               <label for="inputCrimes" class="col-lg-1 col-md-1">Crime*:</label>
+    <div class="col-lg-3  col-md-3">
+        <?php
+        // renderiza html input
+        echo $this->formSelect($formRelarorio->get('id_crimeG'));
+        // renderiza elemento de erro
+        echo $this->formElementErrors()
+                ->setMessageOpenFormat('<small class="text-danger">')
+                ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                ->setMessageCloseString('</small>')
+                ->render($formRelarorio->get('id_crimeR'));
+        ?>
+        <br>
+    </div>
+       <div class="box-chart">
+        <canvas id="GraficoBarra" style="width:100%;"></canvas>
+    </div>
+    <label for="inputDataI" class="col-lg-1 col-md-1 ">Data/hora Início*:</label>
+    <div class="col-lg-3  col-md-3">
+        <div class='input-group date' id='datetimepickerF'>
+            <?php
+            // renderiza html input
+            echo $this->formInput($formRelarorio->get('dataiG'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formRelarorio->get('datai'));
+            ?>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        <br>
+    </div>
+
+    <label for="inputDataF" class="col-lg-1 col-md-1 ">Data/hora Fim*:</label>
+    <div class="col-lg-3  col-md-3">
+        <div class='input-group date' id='datetimepickerI'>
+            <?php
+            // renderiza html input
+            echo $this->formInput($formRelarorio->get('datafG'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formRelarorio->get('dataf'));
+            ?>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        <br>
+    </div>
+</div>
+ 
             </div>
         </div>
-    </div>
 </div><!-- /.row -->
 
 <div class="row">

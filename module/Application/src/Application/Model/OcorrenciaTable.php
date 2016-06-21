@@ -9,6 +9,7 @@ use Zend\Db\Adapter\Adapter,
     Zend\Paginator\Adapter\DbSelect,
     Zend\Paginator\Paginator;
 use Zend\Db\Sql\Sql;
+use Zend\Db\Sql\Expression;
 
 class OcorrenciaTable {
 
@@ -140,22 +141,6 @@ class OcorrenciaTable {
     
     public function searchItinerario($muni, $crime, $datai, $dataf) {
 
-
-
-        // $datai = $this->toDateYMD($datai);
-        //$dataf = $this->toDateYMD($dataf);
-        /*
-
-          $dbAdapter = $this->adapter;
-          $sql = 'SELECT e.lat, e.lng, e.rua, c.crime, o.datai FROM ocorrencia As o LEFT JOIN ocorrencia_crime AS oc ON o.id_ocorrencia = oc.id_ocorrencia  LEFT JOIN crime AS c ON oc.id_crime = c.id_cri LEFT JOIN endereco AS e ON o.id_end = e.id_end LEFT JOIN bairro AS b ON e.id_bai = b.id_bai WHERE b.id_muni =' . $muni.' AND oc.id_crime= ' .$crime. ' AND o.datai BETWEEN "' .$datai. '" AND "' .$dataf.'"';
-          //$sql = 'SELECT  o.datai FROM ocorrencia AS o';
-          $statement = $dbAdapter->query($sql);
-          $result = $statement->execute();
-          //$selectData = array();
-          var_dump($result);
-          return $result;
-         */
-
         $adapter = $this->tableGateway->getAdapter();
         $sql = new \Zend\Db\Sql\Sql($adapter);
 
@@ -184,12 +169,66 @@ class OcorrenciaTable {
             }
         }
         return FALSE;
+    }
+    
+        public function searchGrafico($crime, $datai, $dataf) {
 
-        // return $results;
-        // $rowset = $this->tableGateway->selectWith($select);
-        // $row = $rowset->current();
-        //var_dump($row);
-        // return $row;
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        $select = new Select;
+        $select->from('ocorrencia');
+        $select->columns(array(
+            'mes' => new Expression('MONTH( datai )'),
+            'qtd' => new Expression('COUNT(ocorrencia.id_ocorrencia)')
+        ));
+        $select->join(array('oc' => 'ocorrencia_crime'), "ocorrencia.id_ocorrencia = oc.id_ocorrencia", array('id_crime'), 'left');
+        $select->where(array('oc.id_crime' => $crime));
+        $select->group('mes');
+        $select->where->between('ocorrencia.datai', $this->toDateYMD($datai), $this->toDateYMD($dataf));
+        $select->order(array('mes ASC'));
+
+        // executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+        if ($results->count() > 0) {
+            $returnArr = array();
+            while ($results->valid()) {
+                $returnArr[] = $results->current();
+                $results->next();
+            }
+            if (count($returnArr) > 0) {
+                return $returnArr;
+            }
+        }
+        return FALSE;
+        /*
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        $select = new Select;
+        $select->from('ocorrencia');
+        $select->columns(array('mes' => 'DATEPART(month, o.datai)', 'count' => new \Zend\Db\Sql\Expression('COUNT(o.id_ocorrencia)')));
+        $select->join(array('oc' => 'ocorrencia_crime'), "ocorrencia.id_ocorrencia = oc.id_ocorrencia", array('oc.id_crime'), 'left');
+        $select->where(array('oc.id_crime' => $crime));
+        $select->where->between('ocorrencia.datai', $this->toDateYMD($datai), $this->toDateYMD($dataf));
+        //$select->group('mes');
+        $select->order(array('ocorrencia.datai ASC'));
+
+        // executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+        if ($results->count() > 0) {
+            $returnArr = array();
+            while ($results->valid()) {
+                $returnArr[] = $results->current();
+                $results->next();
+            }
+            if (count($returnArr) > 0) {
+                return $returnArr;             
+            }
+        }
+        return FALSE;    */   
     }
 
     public function addPolicialOcorrencia($id_ocorrencia, $id_policial) {
