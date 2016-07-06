@@ -14,6 +14,7 @@ class MapaController extends AbstractActionController {
     );  //markers location with latitude and longitude
 
     $config = array(
+        //'api_key' => 'AIzaSyDjwOd5a09zESk19OrFer6PjN72iiSgUyg',
         'sensor' => 'true',         //true or false
         'div_id' => 'map',          //div id of the google map
         'div_class' => 'grid_6',    //div class of the google map

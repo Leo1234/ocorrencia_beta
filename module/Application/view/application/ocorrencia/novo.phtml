@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    
+
     <div  class="modal fade" tabindex="-1" role="dialog" id="modal-mapa" >
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -36,266 +36,266 @@
         </div>
     </div>
 </div>
-    
-    <?php
-    // objeto form ocorrencia
-    $formOcorrencia = $this->formOcorrencia;
-    // preparar elementos do formulário
-    $formOcorrencia->prepare();
-    // configurar url formulário
+
+<?php
+// objeto form ocorrencia
+$formOcorrencia = $this->formOcorrencia;
+// preparar elementos do formulário
+$formOcorrencia->prepare();
+// configurar url formulário
 //$formOcorrencia->setAttribute('action', $this->url('ocorrencia', array('action' => 'adicionar')));
-    $formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'adicionar']));
-    ?>
-    <?php // renderiza html <form> com atributos configurados no objeto ?>
-    <?php echo $this->form()->openTag($formOcorrencia) ?>
-    <div class="panel-body">
-        <!--<fieldset  class="scheduler-border">
-            <legend class="scheduler-border">Endereço</legend>-->
+$formOcorrencia->setAttribute('action', $this->url('ocorrencia', ['action' => 'adicionar']));
+?>
+<?php // renderiza html <form> com atributos configurados no objeto ?>
+<?php echo $this->form()->openTag($formOcorrencia) ?>
+<div class="panel-body">
+    <!--<fieldset  class="scheduler-border">
+        <legend class="scheduler-border">Endereço</legend>-->
 
 
-        <div class="form-group">
-            <label for="inputLat" class="col-lg-3 col-md-3 control-label">Lat*:</label>
-            <div class="col-lg-2  col-md-2">
-                <?php
-                echo $this->formElement($formOcorrencia->get('lat'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('lat'));
-                ?>
-            </div>
-            <label for="inputLong" class="col-lg-3 col-md-3 control-label">Lng*:</label>
-            <div class="col-lg-2  col-md-2">
-                <?php
-                echo $this->formElement($formOcorrencia->get('lng'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('lng'));
-                ?>
-
-            </div>
-            <a href="#modal-mapa" class="btn btn-xs btn-info"  data-toggle="modal" data-target="#modal-mapa"><span class="glyphicon glyphicon-search"></span> Mapa...</a>
-            
+    <div class="form-group">
+        <label for="inputLat" class="col-lg-3 col-md-3 control-label">Lat*:</label>
+        <div class="col-lg-2  col-md-2">
+            <?php
+            echo $this->formElement($formOcorrencia->get('lat'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('lat'));
+            ?>
         </div>
-
-        <div class="form-group">
-            <label for="inputRua" class="col-lg-3 col-md-3 control-label">Rua*:</label>
-            <div class="col-lg-4  col-md-4">
-                <?php
-                echo $this->formInput($formOcorrencia->get('rua'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('rua'));
-                ?>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputRua" class="col-lg-3 col-md-3 control-label">Número*:</label>
-            <div class="col-lg-4  col-md-4">
-                <?php
-                echo $this->formInput($formOcorrencia->get('numero'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('numero'));
-                ?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="inputMunicipio" class="col-lg-3 col-md-3 control-label">Município*:</label>
-            <div class="col-lg-3  col-md-3">
-                <?php
-                // renderiza html input
-                echo $this->formSelect($formOcorrencia->get('id_muniO'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('id_muniO'));
-                ?>
-            </div>
+        <label for="inputLong" class="col-lg-3 col-md-3 control-label">Lng*:</label>
+        <div class="col-lg-2  col-md-2">
+            <?php
+            echo $this->formElement($formOcorrencia->get('lng'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('lng'));
+            ?>
 
         </div>
+        <a href="#modal-mapa" class="btn btn-xs btn-info"  data-toggle="modal" data-target="#modal-mapa"><span class="glyphicon glyphicon-search"></span> Mapa...</a>
 
-        <div class="form-group">
-            <label for="inputBairro" class="col-lg-3 col-md-3 control-label">Bairro*:</label>
-            <div class="col-lg-3  col-md-3">
-                <?php
-                // renderiza html input
-                echo $this->formSelect($formOcorrencia->get('id_bai'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('id_bai'));
-                ?>
-            </div>
+    </div>
 
+    <div class="form-group">
+        <label for="inputRua" class="col-lg-3 col-md-3 control-label">Rua*:</label>
+        <div class="col-lg-4  col-md-4">
+            <?php
+            echo $this->formInput($formOcorrencia->get('rua'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('rua'));
+            ?>
         </div>
-
-        <!--</fieldset>-->
-
-        <div class="form-group" id="log">
-            <label for="inputViatuta" class="col-lg-3 col-md-3 control-label">Viatura*:</label>
-            <div class="col-lg-3  col-md-3">
-                <?php
-                // renderiza html input
-                echo $this->formSelect($formOcorrencia->get('id_vtr'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('id_vtr'));
-                ?>
-            </div>
-
+    </div>
+    <div class="form-group">
+        <label for="inputRua" class="col-lg-3 col-md-3 control-label">Número*:</label>
+        <div class="col-lg-4  col-md-4">
+            <?php
+            echo $this->formInput($formOcorrencia->get('numero'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('numero'));
+            ?>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label for="inputComposicao" class="col-lg-3 col-md-3 control-label">Composição*:</label>
-            <div class="col-lg-5  col-md-5">
-                <?php
-                // renderiza html input
-                echo $this->formSelect($formOcorrencia->get('id_composicao'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('id_composicao'));
-                ?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="inputCirmes" class="col-lg-3 col-md-3 control-label">Crimes*:</label>
-            <div class="col-lg-5  col-md-5">
-                <?php
-                // renderiza html input
-                echo $this->formSelect($formOcorrencia->get('id_crime'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('id_crime'));
-                ?>
-            </div>
-        </div>
-
-
-        <div id="boxFields">
-        </div>
-
-        <div class="form-group">
-            <label for="inputProcedimento" class="col-lg-3 col-md-3 control-label">Procedimentos*:</label>
-            <div class="col-lg-5  col-md-5">
-                <?php
-                // renderiza html input
-                echo $this->formSelect($formOcorrencia->get('procedimento'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('procedimento'));
-                ?>
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="inputCiops" class="col-lg-3 col-md-3 control-label">CIOPS*:</label>
-            <div class="col-lg-3  col-md-3">
-                <?php
-                // renderiza html input
-                echo $this->formInput($formOcorrencia->get('ciops'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('ciops'));
-                ?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="inputDataI" class="col-lg-3 col-md-3 control-label">Data/hora Início*:</label>
-            <div class="col-lg-3  col-md-3">
-                <div class='input-group date' id='datetimepickerF'>
-                    <?php
-                    // renderiza html input
-                    echo $this->formInput($formOcorrencia->get('datai'));
-                    // renderiza elemento de erro
-                    echo $this->formElementErrors()
-                            ->setMessageOpenFormat('<small class="text-danger">')
-                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                            ->setMessageCloseString('</small>')
-                            ->render($formOcorrencia->get('datai'));
-                    ?>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="inputDataF" class="col-lg-3 col-md-3 control-label">Data/hora Fim*:</label>
-            <div class="col-lg-3  col-md-3">
-                <div class='input-group date' id='datetimepickerI'>
-                    <?php
-                    // renderiza html input
-                    echo $this->formInput($formOcorrencia->get('dataf'));
-                    // renderiza elemento de erro
-                    echo $this->formElementErrors()
-                            ->setMessageOpenFormat('<small class="text-danger">')
-                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                            ->setMessageCloseString('</small>')
-                            ->render($formOcorrencia->get('dataf'));
-                    ?>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <label for="inputBNarracao" class="col-lg-3 col-md-3 control-label">Narração*:</label>
-            <div class="col-lg-5  col-md-5">
-                <?php
-                // renderiza html input
-                echo $this->formElement($formOcorrencia->get('narracao'));
-                // renderiza elemento de erro
-                echo $this->formElementErrors()
-                        ->setMessageOpenFormat('<small class="text-danger">')
-                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
-                        ->setMessageCloseString('</small>')
-                        ->render($formOcorrencia->get('narracao'));
-                ?>
-            </div>
+    <div class="form-group">
+        <label for="inputMunicipio" class="col-lg-3 col-md-3 control-label">Município*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formOcorrencia->get('id_muniO'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('id_muniO'));
+            ?>
         </div>
 
     </div>
+
+    <div class="form-group">
+        <label for="inputBairro" class="col-lg-3 col-md-3 control-label">Bairro*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formOcorrencia->get('id_bai'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('id_bai'));
+            ?>
+        </div>
+
+    </div>
+
+    <!--</fieldset>-->
+
+    <div class="form-group" id="log">
+        <label for="inputViatuta" class="col-lg-3 col-md-3 control-label">Viatura*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formOcorrencia->get('id_vtr'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('id_vtr'));
+            ?>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <label for="inputComposicao" class="col-lg-3 col-md-3 control-label">Composição*:</label>
+        <div class="col-lg-5  col-md-5">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formOcorrencia->get('id_composicao'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('id_composicao'));
+            ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputCirmes" class="col-lg-3 col-md-3 control-label">Crimes*:</label>
+        <div class="col-lg-5  col-md-5">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formOcorrencia->get('id_crime'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('id_crime'));
+            ?>
+        </div>
+    </div>
+
+
+    <div id="boxFields">
+    </div>
+
+    <div class="form-group">
+        <label for="inputProcedimento" class="col-lg-3 col-md-3 control-label">Procedimentos*:</label>
+        <div class="col-lg-5  col-md-5">
+            <?php
+            // renderiza html input
+            echo $this->formSelect($formOcorrencia->get('procedimento'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('procedimento'));
+            ?>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="inputCiops" class="col-lg-3 col-md-3 control-label">CIOPS*:</label>
+        <div class="col-lg-3  col-md-3">
+            <?php
+            // renderiza html input
+            echo $this->formInput($formOcorrencia->get('ciops'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('ciops'));
+            ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputDataI" class="col-lg-3 col-md-3 control-label">Data/hora Início*:</label>
+        <div class="col-lg-3  col-md-3">
+            <div class='input-group date' id='datetimepickerF'>
+                <?php
+                // renderiza html input
+                echo $this->formInput($formOcorrencia->get('datai'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('datai'));
+                ?>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="inputDataF" class="col-lg-3 col-md-3 control-label">Data/hora Fim*:</label>
+        <div class="col-lg-3  col-md-3">
+            <div class='input-group date' id='datetimepickerI'>
+                <?php
+                // renderiza html input
+                echo $this->formInput($formOcorrencia->get('dataf'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formOcorrencia->get('dataf'));
+                ?>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="inputBNarracao" class="col-lg-3 col-md-3 control-label">Narração*:</label>
+        <div class="col-lg-5  col-md-5">
+            <?php
+            // renderiza html input
+            echo $this->formElement($formOcorrencia->get('narracao'));
+            // renderiza elemento de erro
+            echo $this->formElementErrors()
+                    ->setMessageOpenFormat('<small class="text-danger">')
+                    ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                    ->setMessageCloseString('</small>')
+                    ->render($formOcorrencia->get('narracao'));
+            ?>
+        </div>
+    </div>
+
+</div>
 
 </div>
 

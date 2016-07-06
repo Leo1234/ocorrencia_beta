@@ -1,7 +1,29 @@
 </br>
 </br>
 
-<script src="https://maps.googleapis.com/maps/api/js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDo3Wi6RumeBaR-OuddzVf-X7ukW0UADLg"
+  type="text/javascript"></script>
+
+
+<div  class="modal fade" tabindex="-1" role="dialog" id="modal-mapa" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Coordenadas no mapa</h4>
+            </div>
+
+            <div id="map-canvas"/>
+
+             </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        </div>
+    </div>
+</div>
+</div>
+
 
 <div class="panel panel-primary">
     <div class="panel-heading">
@@ -9,6 +31,8 @@
             Editar Ocorrencia ID:  <?php echo $this->id ?>  
         </div>
     </div>
+
+
 
     <?php
     // objeto form ocorrencia
@@ -53,9 +77,9 @@
             <a href="#modal-mapa" class="btn btn-xs btn-info"  data-toggle="modal" data-target="#modal-mapa"><span class="glyphicon glyphicon-search"></span> Mapa...</a>
 
         </div>
-       <div class="form-group">
+        <div class="form-group">
             <label for="inputRua" class="col-lg-3 col-md-3 control-label">Rua*:</label>
-             <div class="col-lg-4  col-md-4">
+            <div class="col-lg-4  col-md-4">
                 <?php
                 echo $this->formInput($formOcorrencia->get('rua'));
                 // renderiza elemento de erro
@@ -69,7 +93,7 @@
         </div>
         <div class="form-group">
             <label for="inputRua" class="col-lg-3 col-md-3 control-label">Número*:</label>
-             <div class="col-lg-4  col-md-4">
+            <div class="col-lg-4  col-md-4">
                 <?php
                 echo $this->formInput($formOcorrencia->get('numero'));
                 // renderiza elemento de erro
@@ -136,7 +160,7 @@
 
         <div class="form-group">
             <label for="inputComposicao" class="col-lg-3 col-md-3 control-label">Composição*:</label>
-             <div class="col-lg-5  col-md-5">
+            <div class="col-lg-5  col-md-5">
                 <?php
                 // renderiza html input
                 echo $this->formSelect($formOcorrencia->get('id_composicao'));
@@ -168,7 +192,7 @@
 
         <div class="form-group">
             <label for="inputProcedimento" class="col-lg-3 col-md-3 control-label">Procedimentos*:</label>
-             <div class="col-lg-5  col-md-5">
+            <div class="col-lg-5  col-md-5">
                 <?php
                 // renderiza html input
                 echo $this->formSelect($formOcorrencia->get('procedimento'));
@@ -185,7 +209,7 @@
 
         <div class="form-group">
             <label for="inputCiops" class="col-lg-3 col-md-3 control-label">CIOPS*:</label>
-             <div class="col-lg-3  col-md-3">
+            <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
                 echo $this->formInput($formOcorrencia->get('ciops'));
@@ -246,7 +270,7 @@
 
         <div class="form-group">
             <label for="inputBNarracao" class="col-lg-3 col-md-3 control-label">Narração*:</label>
-             <div class="col-lg-5  col-md-5">
+            <div class="col-lg-5  col-md-5">
                 <?php
                 // renderiza html input
                 echo $this->formElement($formOcorrencia->get('narracao'));
@@ -276,24 +300,3 @@
 <?php // renderiza html </form>  ?>
 <?php echo $this->form()->closeTag() ?>
 
-
-
-
-<div  class="modal fade" tabindex="-1" role="dialog" id="modal-mapa" >
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Coordenadas no mapa</h4>
-            </div>
-
-            <div id="map-canvas"/>
-
-            </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        </div>
-    </div>
-</div>
-</div>

@@ -55,13 +55,10 @@ function isEmptyDatafG() {
 
 window.onload = function(){
 $("#btnGrafico").click(function(){
- 
     if (isEmptyCrimeG() && isEmptyDataiG() && isEmptyDatafG()) {
-
             var crimeM = $("#crimeG  option:selected").val();
             var dataI = $("#inputDataiG").val();
             var dataF = $("#inputDatafG").val();
-
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/grafico",

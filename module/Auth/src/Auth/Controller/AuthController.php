@@ -24,7 +24,8 @@ class AuthController extends AbstractActionController {
         $request = $this->getRequest();
         
         $login = $request->getPost('login');
-        $senha = $request->getPost('senha');
+        $senha = (int)$request->getPost('senha');   
+        
 
         $loginForm->setData($request->getPost());
 
@@ -35,12 +36,16 @@ class AuthController extends AbstractActionController {
                 $zendDb,
                 'usuario',
                 'login', 
-                'senha'
+                'senha',
+                'MD5(?)'
         );       
-        
-        //$authAdapter->setCredentialTreatment('md5(?) AND senha != "compromised"');
+
         $authAdapter->setIdentity($login);
-        $authAdapter->setCredential($senha);
+        $authAdapter->setCredential(md5($senha));
+        //$authAdapter->setCredentialTreatment("MD5(?)");
+
+        //var_dump(md5($senha)); die();
+
 
         $authService = new AuthenticationService();
 
@@ -55,19 +60,11 @@ class AuthController extends AbstractActionController {
             $auth = new AuthenticationService();
             $auth->setStorage(new SessionStorage($identity));
             $auth->authenticate($authAdapter);
-   
 
-            /* Imprimindo os dados na tela para confirmar os dados autenticados
-             * pronto, se aparecer os dados isso quer dizer que o usuario está autenticado no sistema
-             */
-            
-           // exit(var_dump($identity));
             $this->redirect()->toRoute('application', array('action'=>'index'));
 
         } else {
             /* Caso falhe a autenticação, será gerado o log abaixo que será impresso&nbsp;
-             * na tela do computador para você sabe do problema ocorrido.
-             * os erros listados abaixo são os erros mais comuns que podem ocorrer.
              */
             switch ($result->getCode()) {
                 case Result::FAILURE_IDENTITY_NOT_FOUND:
@@ -75,7 +72,7 @@ class AuthController extends AbstractActionController {
                     $this->redirect()->toRoute('auth', array('menssagem' => $mensagem ));
                     break;
                 case Result::FAILURE_CREDENTIAL_INVALID:
-                     $mensagem = 'Login e senha não correspondem';
+                     $mensagem = md5($senha);
                     break;
                 default: $mensagem = 'Houve algum erro com a conexão do sistema. Favor, entrar em contato.';
                             break;
@@ -86,10 +83,9 @@ class AuthController extends AbstractActionController {
     
     }
     
-    public function sairAction() {
+    public function sairAction(){
         $sessao = new Container('Auth');
         $sessao->getManager()->getStorage()->clear();  
         return $this->redirect()->toRoute('/auth/index');
     }
-
 }
