@@ -117,7 +117,7 @@ class OcorrenciaController extends AbstractActionController {
         return new ViewModel(array('map_html' => $html, 'formOcorrencia' => $form));
     }
 
-    public function mapaAction() {
+    public function mapaAction(){
 
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
         $form = new OcorrenciaForm($dbAdapter);
@@ -530,7 +530,6 @@ class OcorrenciaController extends AbstractActionController {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        // se id = 0 ou não informado redirecione para contatos
         if (!$id) {
             // adicionar mensagem
             $this->flashMessenger()->addMessage("Ocorrencia não encontrada");
@@ -824,15 +823,24 @@ class OcorrenciaController extends AbstractActionController {
 
         return new \Zend\View\Model\JsonModel($result);
     }
-     function HomicidioPacatuba(){
+     function countHomicidiosAction(){
 
-        $id_crimeG = $_POST['id_crimeM'];
-        if ($_POST['id_crimeM']){
-            $result = (array) $this->getOcorrenciaTable()->searchHomicidoPAcatuba($id_crimeG);
-        } else {
-            $result = [];
-        }
+        $result = (array) $this->getOcorrenciaTable()->searchHomicidios();
+        return new \Zend\View\Model\JsonModel($result);
+    }
+    function countLesaoAction(){
 
+        $result = (array) $this->getOcorrenciaTable()->searchLesoes();
+        return new \Zend\View\Model\JsonModel($result);
+    }
+      function countArmaAction(){
+
+        $result = (array) $this->getOcorrenciaTable()->searchArmas();
+        return new \Zend\View\Model\JsonModel($result);
+    }
+        function countEntopercenteAction(){
+
+        $result = (array) $this->getOcorrenciaTable()->searchEntorpecentes();
         return new \Zend\View\Model\JsonModel($result);
     }
     public function mapacrimeAction() {
@@ -858,14 +866,12 @@ class OcorrenciaController extends AbstractActionController {
         // Login form
         $loginForm = new LoginForm();
         $request = $this->getRequest();
-         $loginForm->setData($request->getPost());
+        $loginForm->setData($request->getPost());
 
       
         if ($loginForm->isValid()) {
             $login = $request->getPost('login');
             $senha = $request->getPost('senha');
-
-
 
             $zendDb = $this->getServiceLocator()->get('AdapterDb');
             
@@ -889,8 +895,7 @@ class OcorrenciaController extends AbstractActionController {
                 $this->redirect()->toRoute('application', array('action' => 'index'));
             } else {
                 /* Caso falhe a autenticação, será gerado o log abaixo que será impresso;
-                 * na tela do computador para você sabe do problema ocorrido.
-                 * os erros listados abaixo são os erros mais comuns que podem ocorrer.
+                 
                  */
                 switch ($result->getCode()) {
                     case Result::FAILURE_IDENTITY_NOT_FOUND:

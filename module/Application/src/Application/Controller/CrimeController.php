@@ -26,7 +26,7 @@ class CrimeController extends AbstractActionController {
         $paramsUrl = [
             'pagina_atual' => $this->params()->fromQuery('pagina', 1),
             'itens_pagina' => $this->params()->fromQuery('itens_pagina', 10),
-            'coluna_crime' => $this->params()->fromQuery('coluna_crime', 'crime'),
+            'coluna_crime' => $this->params()->fromQuery('coluna_crime', 'nome_crime'),
             'coluna_sort' => $this->params()->fromQuery('coluna_sort', 'ASC'),
             'search' => $this->params()->fromQuery('search', null),
         ];

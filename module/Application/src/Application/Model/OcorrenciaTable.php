@@ -171,26 +171,20 @@ class OcorrenciaTable {
         return FALSE;
     }
     
-     public function searchHomicido($muni) {
+     public function searchHomicidios() {
 
         $adapter = $this->tableGateway->getAdapter();
         $sql = new \Zend\Db\Sql\Sql($adapter);
 
         $select = new Select;
-        $select->from('ocorrencia');
-            $select->columns(array(
-             array('*'),
-            'qtd' => new Expression('COUNT(ocorrencia.id_ocorrencia)')
+        $select->from('ocorrencia_crime');
+        $select->columns(array(
+           //'crim' => 'nome_crime',
+            'qtdH' => new Expression('COUNT(ocorrencia_crime.id_ocorrencia)')
         ));
-        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('id_end', 'rua', 'numero', 'lat', 'lng'), 'left');
-        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'), 'left');
-        $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'), 'left');
-        $select->join(array('oc' => 'ocorrencia_crime'), "ocorrencia.id_ocorrencia = oc.id_ocorrencia", array('id_crime'), 'left');
-        $select->where(array('m.id_muni' => $muni, 'oc.id_crime' =>1));
-       // $select->where->between('ocorrencia.datai', $this->toDateYMD($datai), $this->toDateYMD($dataf));
-        $select->order(array('datai ASC'));
+        $select->where(array('ocorrencia_crime.id_crime'=>1));
 
-        // executar select
+        //executar select
         $statement = $sql->getSqlStringForSqlObject($select);
         $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
         if ($results->count() > 0) {
@@ -206,7 +200,89 @@ class OcorrenciaTable {
         return FALSE;
     }
     
+    public function searchLesoes() {
+
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        $select = new Select;
+        $select->from('ocorrencia_crime');
+        $select->columns(array(
+            'qtdL' => new Expression('COUNT(ocorrencia_crime.id_ocorrencia)')
+        ));
+        $select->where(array('ocorrencia_crime.id_crime'=>2));
+
+        //executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+        if ($results->count() > 0) {
+            $returnArr = array();
+            while ($results->valid()) {
+                $returnArr[] = $results->current();
+                $results->next();
+            }
+            if (count($returnArr) > 0) {
+                return $returnArr;
+            }
+        }
+        return FALSE;
+    }
     
+        public function searchArmas() {
+
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        $select = new Select;
+        $select->from('ocorrencia_crime');
+        $select->columns(array(
+            'qtd' => new Expression('COUNT(ocorrencia_crime.id_ocorrencia)')
+        ));
+        $select->where(array('ocorrencia_crime.id_crime'=>12));
+
+        //executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+        if ($results->count() > 0) {
+            $returnArr = array();
+            while ($results->valid()) {
+                $returnArr[] = $results->current();
+                $results->next();
+            }
+            if (count($returnArr) > 0) {
+                return $returnArr;
+            }
+        }
+        return FALSE;
+    }
+    
+    public function searchEntorpecentes() {
+
+        $adapter = $this->tableGateway->getAdapter();
+        $sql = new \Zend\Db\Sql\Sql($adapter);
+
+        $select = new Select;
+        $select->from('ocorrencia_crime');
+        $select->columns(array(
+            'qtd' => new Expression('COUNT(ocorrencia_crime.id_ocorrencia)')
+        ));
+        $select->where(array('ocorrencia_crime.id_crime'=>10));
+
+        //executar select
+        $statement = $sql->getSqlStringForSqlObject($select);
+        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+        if ($results->count() > 0) {
+            $returnArr = array();
+            while ($results->valid()) {
+                $returnArr[] = $results->current();
+                $results->next();
+            }
+            if (count($returnArr) > 0) {
+                return $returnArr;
+            }
+        }
+        return FALSE;
+    }
         public function searchGrafico($crime, $datai, $dataf) {
 
         $adapter = $this->tableGateway->getAdapter();
@@ -375,13 +451,13 @@ class OcorrenciaTable {
     public function crimesOcorrencia($id) {
         $dbAdapter = $this->adapter;
         //$sql = 'SELECT id_cri,crime FROM crime ORDER BY id_cri ASC';
-        $sql = 'SELECT id_cri,crime FROM ocorrencia As o LEFT JOIN ocorrencia_crime AS oc ON o.id_ocorrencia = oc.id_ocorrencia  LEFT JOIN crime AS c ON oc.id_crime = c.id_cri WHERE oc.id_ocorrencia =' . $id;
+        $sql = 'SELECT id_cri,nome_crime FROM ocorrencia As o LEFT JOIN ocorrencia_crime AS oc ON o.id_ocorrencia = oc.id_ocorrencia  LEFT JOIN crime AS c ON oc.id_crime = c.id_cri WHERE oc.id_ocorrencia =' . $id;
         $statement = $dbAdapter->query($sql);
         $result = $statement->execute();
         $selectData = array();
 
         foreach ($result as $res) {
-            $selectData[$res['id_cri']] = $res['crime'];
+            $selectData[$res['id_cri']] = $res['nome_crime'];
         }
         return $selectData;
     }

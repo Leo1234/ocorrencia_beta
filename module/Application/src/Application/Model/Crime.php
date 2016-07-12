@@ -19,7 +19,7 @@ class Crime implements InputFilterAwareInterface {
     
     public function exchangeArray($data) {
         $this->id_cri = (!empty($data['id_cri'])) ? $data['id_cri'] : null;
-        $this->crime = (!empty($data['crime'])) ? $data['crime'] : null;
+        $this->crime = (!empty($data['nome_crime'])) ? $data['nome_crime'] : null;
     }
      public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new Exception('Não utilizado.');

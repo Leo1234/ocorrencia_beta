@@ -99,4 +99,83 @@ $("#btnGrafico").click(function(){
         }
         
     });
+    
+     $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/countLesao",
+                data: { },
+                dataType: "json",
+                success: function(json) {
+                    var qtdL;
+                    $.each(json, function(key, value) {
+                        qtdL = value.qtdL;
+                    });
+                   
+                    $( ".lesao" ).append('<p class="announcement-heading">'+qtdL+'</p>');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+            
+            
+            
+            
+             $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/countHomicidios",
+                data: {},
+                dataType: "json",
+                success: function(json) {
+                    var qtdH;
+                    $.each(json, function(key, value) {
+                        qtdH = value.qtdH;
+                    });
+                   
+                    $( ".homicidio" ).append('<p class="announcement-heading">'+qtdH+'</p>');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+            
+             $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/countArma",
+                data: {},
+                dataType: "json",
+                success: function(json) {
+                    var qtd;
+                    $.each(json, function(key, value) {
+                        qtd = value.qtd;
+                    });
+                   
+                    $( ".arma" ).append('<p class="announcement-heading">'+qtd+'</p>');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+            
+            
+             $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/countEntopercente",
+                data: {},
+                dataType: "json",
+                success: function(json) {
+                    var qtd;
+                    $.each(json, function(key, value) {
+                        qtd = value.qtd;
+                    });
+                   
+                    $( ".entorpecente" ).append('<p class="announcement-heading">'+qtd+'</p>');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+            
 };    
+
+   

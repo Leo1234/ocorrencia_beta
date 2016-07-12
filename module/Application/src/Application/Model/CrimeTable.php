@@ -25,7 +25,7 @@ class CrimeTable {
 
    
     
-     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'crime ASC', $like = null, $itensPaginacao = 5)          
+     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'nome_crime ASC', $like = null, $itensPaginacao = 5)          
 {      
         $select = new Select;
         $select->from('crime');
@@ -37,7 +37,7 @@ class CrimeTable {
                 ->where
                 ->like('id_cri', "%{$like}%")
                 ->or
-                ->like('crime', "%{$like}%")
+                ->like('nome_crime', "%{$like}%")
         ;
     }
     
@@ -69,13 +69,13 @@ class CrimeTable {
 }
    public function fetchAll() {
         $dbAdapter = $this->adapter;
-        $sql = 'SELECT id_cri,crime FROM crime ORDER BY id_cri ASC';
+        $sql = 'SELECT id_cri, nome_crime FROM crime ORDER BY id_cri ASC';
         $statement = $dbAdapter->query($sql);
         $result = $statement->execute();
         $selectData = array();
 
         foreach ($result as $res) {
-            $selectData[$res['id_cri']] = $res['crime'];
+            $selectData[$res['id_cri']] = $res['nome_crime'];
         }
         return $selectData;
     }
@@ -92,7 +92,7 @@ class CrimeTable {
       public function save(Crime $crime) {
         $data = [
             'id_cri' => $crime->getId_cri(),
-            'crime' => $crime->getCrime(),
+            'nome_crime' => $crime->getCrime(),
         ];
 
         return $this->tableGateway->insert($data);
@@ -100,7 +100,7 @@ class CrimeTable {
            public function update(Crime $crime) {
         $data = [
              'id_cri' => $crime->getId_cri(),
-            'crime' => $crime->getCrime(),
+           'nome_crime' => $crime->getCrime(),
         ];
 
         $id = (int) $crime->getId_cri();
