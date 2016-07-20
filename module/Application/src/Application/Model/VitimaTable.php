@@ -39,10 +39,10 @@ class VitimaTable {
 
     public function fetchPaginator($pagina = 1, $itensPagina = 10, $ordem = 'nome ASC', $like = null, $itensPaginacao = 5) {
         $select = new Select;
-        $select->from(array('v' => 'vitima'));
+            $select->from('vitima');
         $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "v.id_end = e.id_end", array('rua', 'numero'));
-        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai','bairro','id_area'));
+        $select->join(array('e' => 'endereco'), "vitima.id_end = e.id_end", array('rua', 'numero','lat','lng'));
+        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'));
         $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'));
         $select->order($ordem);
 

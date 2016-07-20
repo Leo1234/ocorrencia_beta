@@ -17,14 +17,14 @@ $(function() {
 
 
 
-$(function() {   
+$(function() {
     $("#id_muni").change(function() {
         $.ajax({
             type: "POST",
             url: "/ocorrencia_beta/public/bairro/search",
             data: {id_muni: $("#id_muni").val()},
             dataType: "json",
-            success: function(json){
+            success: function(json) {
                 var options = "";
                 $.each(json, function(key, value) {
                     options += '<option value="' + value.id_area + '">' + value.descricao + '</option>';
@@ -65,48 +65,48 @@ $(function() {
 });
 
 $(function() {
-    $("#municipioR").change(function(){
-        
-      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()){
+    $("#municipioR").change(function() {
+
+        if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()) {
 
             var diasSemana = [];
             var j = 0;
             var checkboxArray = document.getElementById('diaSemana');
-            for (var i = 0; i < checkboxArray.length; i++){
-                if (checkboxArray.options[i].selected){
-                    diasSemana[j]= checkboxArray[i].value;
+            for (var i = 0; i < checkboxArray.length; i++) {
+                if (checkboxArray.options[i].selected) {
+                    diasSemana[j] = checkboxArray[i].value;
                     j++;
                 }
             }
-           // alert(diasSemana);
-           alert(document.getElementById('diaSemana').selectedIndex);
-            
-            var muniR  = $("#municipioR option:selected").val();     
+            // alert(diasSemana);
+            //alert(document.getElementById('diaSemana').selectedIndex);
+
+            var muniR = $("#municipioR option:selected").val();
             var crimeM = $("#crimeR option:selected").val();
-            var dataI  = $("#inputDataiR").val();
-            var dataF  = $("#inputDatafR").val();
-            
+            var dataI = $("#inputDataiR").val();
+            var dataF = $("#inputDatafR").val();
+
             //var jsonString = JSON.stringify(selecionados);
-            
+
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/itinerario",
-                data:{
+                data: {
                     id_muniO: muniR,
                     id_crimeM: crimeM,
                     datai: dataI,
                     dataf: dataF,
                     dias: diasSemana
-                }, 
-               // data: JSON.stringify(selecionados),
-                 //data: data_to_send,
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
                 dataType: "json",
                 success: function(json) {
                     var options = "";
                     $.each(json, function(key, value) {
-                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                        options += '<option value="' + value.lat + ", " + value.lng + '">' + value.rua + ", " + value.bairro + '</option>';
                     });
-                    $(".bairro").each(function(e){
+                    $(".bairro").each(function(e) {
                         $(this).html(options);
                     });
 
@@ -116,55 +116,55 @@ $(function() {
                 }
             });
         }
-alert(JSON.stringify(selecionados));
+        alert(JSON.stringify(selecionados));
     });
-    
+
 });
 
 
 $(function() {
-    $("#diaSemana").change(function(){
-        
-      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()){
+    $("#diaSemana").change(function() {
+
+        if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()) {
 
             var diasSemana = [];
             var j = 0;
             var checkboxArray = document.getElementById('diaSemana');
-            for (var i = 0; i < checkboxArray.length; i++){
-                if (checkboxArray.options[i].selected){
-                    diasSemana[j]= checkboxArray[i].value;
+            for (var i = 0; i < checkboxArray.length; i++) {
+                if (checkboxArray.options[i].selected) {
+                    diasSemana[j] = checkboxArray[i].value;
                     j++;
                 }
             }
-            
-           // alert(diasSemana);
-            
-            var muniR  = $("#municipioR option:selected").val();     
+
+            // alert(diasSemana);
+
+            var muniR = $("#municipioR option:selected").val();
             var crimeM = $("#crimeR option:selected").val();
-            var dataI  = $("#inputDataiR").val();
-            var dataF  = $("#inputDatafR").val();
-            
+            var dataI = $("#inputDataiR").val();
+            var dataF = $("#inputDatafR").val();
+
             //var jsonString = JSON.stringify(selecionados);
-            
+
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/itinerario",
-                data:{
+                data: {
                     id_muniO: muniR,
                     id_crimeM: crimeM,
                     datai: dataI,
                     dataf: dataF,
                     dias: diasSemana
-                }, 
-               // data: JSON.stringify(selecionados),
-                 //data: data_to_send,
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
                 dataType: "json",
                 success: function(json) {
                     var options = "";
                     $.each(json, function(key, value) {
-                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                        options += '<option value="' + value.lat + ", " + value.lng + '">' + value.rua + ", " + value.bairro + '</option>';
                     });
-                    $(".bairro").each(function(e){
+                    $(".bairro").each(function(e) {
                         $(this).html(options);
                     });
 
@@ -174,44 +174,53 @@ $(function() {
                 }
             });
         }
-alert(JSON.stringify(selecionados));
+        alert(JSON.stringify(selecionados));
     });
-    
+
 });
 
 
 $(function() {
-    $("#inputDataiR").change(function(){
-        
-      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
-            
-            
-            var muniR  = $("#municipioR option:selected").val();     
+    $("#inputDataiR").change(function() {
+        if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()) {
+
+            var diasSemana = [];
+            var j = 0;
+            var checkboxArray = document.getElementById('diaSemana');
+            for (var i = 0; i < checkboxArray.length; i++) {
+                if (checkboxArray.options[i].selected) {
+                    diasSemana[j] = checkboxArray[i].value;
+                    j++;
+                }
+            }
+
+            var muniR = $("#municipioR option:selected").val();
             var crimeM = $("#crimeR  option:selected").val();
-            var dataI  = $("#inputDataiR").val();
-            var dataF  = $("#inputDatafR").val();
-            
+            var dataI = $("#inputDataiR").val();
+            var dataF = $("#inputDatafR").val();
+
             //var jsonString = JSON.stringify(selecionados);
-            
+
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/itinerario",
-                data: { 
-                        id_muniO    :muniR, 
-                        id_crimeM   :crimeM, 
-                        datai       :dataI, 
-                        dataf       :dataF
-                }, 
-               // data: JSON.stringify(selecionados),
-                 //data: data_to_send,
+                data: {
+                    id_muniO: muniR,
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF,
+                    dias: diasSemana
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
                 dataType: "json",
                 success: function(json) {
                     var options = "";
                     $.each(json, function(key, value) {
-                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
-                        
+                        options += '<option value="' + value.lat + ", " + value.lng + '">' + value.rua + ", " + value.bairro + '</option>';
+
                     });
-                    $(".bairro").each(function(e){
+                    $(".bairro").each(function(e) {
                         $(this).html(options);
                     });
 
@@ -221,41 +230,52 @@ $(function() {
                 }
             });
         }
-alert(JSON.stringify(selecionados));
+        alert(JSON.stringify(selecionados));
     });
-    
+
 });
 
 $(function() {
-    $("#inputDatafR").change(function(){
-        
-      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
-          
-            var muniR  = $("#municipioR option:selected").val();     
+    $("#inputDatafR").change(function() {
+
+        if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()) {
+
+            var diasSemana = [];
+            var j = 0;
+            var checkboxArray = document.getElementById('diaSemana');
+            for (var i = 0; i < checkboxArray.length; i++) {
+                if (checkboxArray.options[i].selected) {
+                    diasSemana[j] = checkboxArray[i].value;
+                    j++;
+                }
+            }
+
+            var muniR = $("#municipioR option:selected").val();
             var crimeM = $("#crimeR  option:selected").val();
-            var dataI  = $("#inputDataiR").val();
-            var dataF  = $("#inputDatafR").val();
-            
+            var dataI = $("#inputDataiR").val();
+            var dataF = $("#inputDatafR").val();
+
             //var jsonString = JSON.stringify(selecionados);
-            
+
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/itinerario",
-                data: { 
-                        id_muniO    :muniR, 
-                        id_crimeM   :crimeM, 
-                        datai       :dataI, 
-                        dataf       :dataF
-                }, 
-               // data: JSON.stringify(selecionados),
-                 //data: data_to_send,
+                data: {
+                    id_muniO: muniR,
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF,
+                    dias: diasSemana
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
                 dataType: "json",
                 success: function(json) {
                     var options = "";
                     $.each(json, function(key, value) {
-                        options += '<option value="' + value.lat+","+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                        options += '<option value="' + value.lat + "," + value.lng + '">' + value.rua + ", " + value.bairro + '</option>';
                     });
-                    $(".bairro").each(function(e){
+                    $(".bairro").each(function(e) {
                         $(this).html(options);
                     });
 
@@ -265,42 +285,52 @@ $(function() {
                 }
             });
         }
-alert(JSON.stringify(selecionados));
+        alert(JSON.stringify(selecionados));
     });
-    
+
 });
 
 $(function() {
-    $("#crimeR").change(function(){
-        
-      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
-            
-            
-            var muniR  = $("#municipioR option:selected").val();     
+    $("#crimeR").change(function() {
+
+        if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()) {
+
+            var diasSemana = [];
+            var j = 0;
+            var checkboxArray = document.getElementById('diaSemana');
+            for (var i = 0; i < checkboxArray.length; i++) {
+                if (checkboxArray.options[i].selected) {
+                    diasSemana[j] = checkboxArray[i].value;
+                    j++;
+                }
+            }
+
+            var muniR = $("#municipioR option:selected").val();
             var crimeM = $("#crimeR  option:selected").val();
-            var dataI  = $("#inputDataiR").val();
-            var dataF  = $("#inputDatafR").val();
-            
+            var dataI = $("#inputDataiR").val();
+            var dataF = $("#inputDatafR").val();
+
             //var jsonString = JSON.stringify(selecionados);
-            
+
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/itinerario",
-                data: { 
-                        id_muniO    :muniR, 
-                        id_crimeM   :crimeM, 
-                        datai       :dataI, 
-                        dataf       :dataF
-                }, 
-               // data: JSON.stringify(selecionados),
-                 //data: data_to_send,
+                data: {
+                    id_muniO: muniR,
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF,
+                    dias: diasSemana
+                },
+                // data: JSON.stringify(selecionados),
+                //data: data_to_send,
                 dataType: "json",
                 success: function(json) {
                     var options = "";
                     $.each(json, function(key, value) {
-                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                        options += '<option value="' + value.lat + ", " + value.lng + '">' + value.rua + ", " + value.bairro + '</option>';
                     });
-                    $(".bairro").each(function(e){
+                    $(".bairro").each(function(e) {
                         $(this).html(options);
                     });
 
@@ -310,38 +340,38 @@ $(function() {
                 }
             });
         }
-alert(JSON.stringify(selecionados));
+        alert(JSON.stringify(selecionados));
     });
-    
+
 });
 
-function isEmptyMunicipio(){
+function isEmptyMunicipio() {
     if ($("#municipioR option:selected").val() != '')
         return true;
     else
         return false;
 }
 
-function isEmptyCrime(){
+function isEmptyCrime() {
     if ($("#crimeR option:selected").val() != '')
         return true;
     else
         return false;
 }
-function isEmptyDiaSemana(){
+function isEmptyDiaSemana() {
     if (document.getElementById('diaSemana').selectedIndex >= 0)
         return true;
     else
         return false;
 }
-function isEmptyDataiR(){
+function isEmptyDataiR() {
     if ($("#inputDataiR").val() != '')
         return true;
     else
         return false;
 }
 
-function isEmptyDatafR(){
+function isEmptyDatafR() {
     if ($("#inputDatafR").val() != '')
         return true;
     else
@@ -411,4 +441,4 @@ $(function() {
     });
 });
 
-  
+

@@ -22,7 +22,7 @@ class VitimaController extends AbstractActionController {
         return new ModelVitima($dbAdapter);
     }
 
-    public function indexAction() {
+    public function indexAction(){
 
         $paramsUrl = [
             'pagina_atual' => $this->params()->fromQuery('pagina', 1),
@@ -40,7 +40,7 @@ class VitimaController extends AbstractActionController {
                 /* $search */ $paramsUrl['search'],
                 /* $itensPaginacao */ 5
         );
-
+       //var_dump($paginacao); die();
         // retonar paginação mais os params de url para view
         return new ViewModel(['vitima' => $paginacao] + $paramsUrl);
     }
