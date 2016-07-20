@@ -139,27 +139,40 @@ class OcorrenciaTable {
         return $row;
     }
     
-    public function searchItinerario($muni, $crime, $datai, $dataf) {
+    public function searchItinerario($muni, $crime, $datai, $dataf, $dias) {
+        
+        
 
-        $adapter = $this->tableGateway->getAdapter();
-        $sql = new \Zend\Db\Sql\Sql($adapter);
+        $diaSemana = implode(", ", $dias);
+        
+        $dbAdapter = $this->adapter;
+        $dti = $this->toDateYMD($datai);
+        $dtf = $this->toDateYMD($dataf);
+        $select = 'select * from ocorrencia o INNER JOIN endereco e ON o.id_end = e.id_end INNER JOIN bairro b ON e.id_bai = b.id_bai INNER JOIN municipio m ON b.id_muni = m.id_muni INNER JOIN ocorrencia_crime oc ON o.id_ocorrencia = oc.id_ocorrencia WHERE o.datai BETWEEN "'.$dti.'" AND "'.$dtf.'" AND m.id_muni = '.$muni.' AND oc.id_crime = '.$crime.' AND DAYOFWEEK(o.datai) IN ('.$diaSemana.')  ORDER BY o.datai ASC';
+        $statement = $dbAdapter->query($select);
+        $results = $statement->execute();
+     
 
-        $select = new Select;
-        $select->from('ocorrencia');
-        $select->columns(array('*'));
-        $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('id_end', 'rua', 'numero', 'lat', 'lng'), 'left');
-        $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'), 'left');
-        $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'), 'left');
-        $select->join(array('oc' => 'ocorrencia_crime'), "ocorrencia.id_ocorrencia = oc.id_ocorrencia", array('id_crime'), 'left');
-        $select->where(array('m.id_muni' => $muni, 'oc.id_crime' => $crime));
-        $select->where->between('ocorrencia.datai', $this->toDateYMD($datai), $this->toDateYMD($dataf));
-        $select->order(array('datai ASC'));
+/*  $adapter = $this->tableGateway->getAdapter();
+          $sql = new \Zend\Db\Sql\Sql($adapter);
+          $select = new Select;
+          $select->from('ocorrencia');
+          $select->columns(array('*'));
+          $select->join(array('e' => 'endereco'), "ocorrencia.id_end = e.id_end", array('id_end', 'rua', 'numero', 'lat', 'lng'), 'left');
+          $select->join(array('b' => 'bairro'), "e.id_bai = b.id_bai", array('id_bai', 'bairro'), 'left');
+          $select->join(array('m' => 'municipio'), "b.id_muni = m.id_muni", array('id_muni', 'municipio'), 'left');
+          $select->join(array('oc' => 'ocorrencia_crime'), "ocorrencia.id_ocorrencia = oc.id_ocorrencia", array('id_crime'), 'left');
+          $select->where(array('m.id_muni' => $muni, 'oc.id_crime' => $crime));
+          $select->where->between('ocorrencia.datai', $this->toDateYMD($datai), $this->toDateYMD($dataf));
+          $select->order(array('datai ASC'));
 
-        // executar select
-        $statement = $sql->getSqlStringForSqlObject($select);
-        $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+          $statement = $sql->getSqlStringForSqlObject($select);
+          $results = $adapter->query($statement, $adapter::QUERY_MODE_EXECUTE);
+         */
+
+              $returnArr = array();
         if ($results->count() > 0) {
-            $returnArr = array();
+            //$returnArr = array();
             while ($results->valid()) {
                 $returnArr[] = $results->current();
                 $results->next();

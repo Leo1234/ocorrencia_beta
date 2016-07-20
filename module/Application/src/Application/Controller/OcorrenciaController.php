@@ -799,9 +799,12 @@ class OcorrenciaController extends AbstractActionController {
         $id_crimeM = $_POST['id_crimeM'];
         $datai = $_POST['datai'];
         $dataf = $_POST['dataf'];
+        $dias = $_POST['dias'];
+        
+   
 
         if (isset($_POST['id_muniO'])) {
-            $result = (array) $this->getOcorrenciaTable()->searchItinerario($id_muniO, $id_crimeM, $datai, $dataf);
+            $result = (array) $this->getOcorrenciaTable()->searchItinerario($id_muniO, $id_crimeM, $datai, $dataf, $dias);
         } else {
             $result = [];
         }

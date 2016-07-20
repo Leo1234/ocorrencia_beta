@@ -103,7 +103,20 @@ async></script>
                     ?>
                     <br>
                 </div>
-
+         <label for="inputDiaSemana" class="col-lg-3 col-md-3">Dia da Semana*:</label>
+                <div class="col-lg-3  col-md-3">
+                    <?php
+                    // renderiza html input
+                    echo $this->formSelect($formRelarorio->get('diaSemana'));
+                    // renderiza elemento de erro
+                    echo $this->formElementErrors()
+                            ->setMessageOpenFormat('<small class="text-danger">')
+                            ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                            ->setMessageCloseString('</small>')
+                            ->render($formRelarorio->get('diaSemana'));
+                    ?>
+                    <br>
+                </div>
                 <label for="inputBairro" class="col-lg-3 col-md-3 ">Início*:</label>
                 <div class="col-lg-3  col-md-3">
                     <?php

@@ -67,8 +67,19 @@ $(function() {
 $(function() {
     $("#municipioR").change(function(){
         
-      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR()){
-            
+      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()){
+
+            var diasSemana = [];
+            var j = 0;
+            var checkboxArray = document.getElementById('diaSemana');
+            for (var i = 0; i < checkboxArray.length; i++){
+                if (checkboxArray.options[i].selected){
+                    diasSemana[j]= checkboxArray[i].value;
+                    j++;
+                }
+            }
+           // alert(diasSemana);
+           alert(document.getElementById('diaSemana').selectedIndex);
             
             var muniR  = $("#municipioR option:selected").val();     
             var crimeM = $("#crimeR option:selected").val();
@@ -80,11 +91,12 @@ $(function() {
             $.ajax({
                 type: "POST",
                 url: "/ocorrencia_beta/public/ocorrencia/itinerario",
-                data: { 
-                        id_muniO    :muniR, 
-                        id_crimeM   :crimeM, 
-                        datai       :dataI, 
-                        dataf       :dataF
+                data:{
+                    id_muniO: muniR,
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF,
+                    dias: diasSemana
                 }, 
                // data: JSON.stringify(selecionados),
                  //data: data_to_send,
@@ -108,6 +120,65 @@ alert(JSON.stringify(selecionados));
     });
     
 });
+
+
+$(function() {
+    $("#diaSemana").change(function(){
+        
+      if (isEmptyMunicipio() && isEmptyCrime() && isEmptyDataiR() && isEmptyDatafR() && isEmptyDiaSemana()){
+
+            var diasSemana = [];
+            var j = 0;
+            var checkboxArray = document.getElementById('diaSemana');
+            for (var i = 0; i < checkboxArray.length; i++){
+                if (checkboxArray.options[i].selected){
+                    diasSemana[j]= checkboxArray[i].value;
+                    j++;
+                }
+            }
+            
+           // alert(diasSemana);
+            
+            var muniR  = $("#municipioR option:selected").val();     
+            var crimeM = $("#crimeR option:selected").val();
+            var dataI  = $("#inputDataiR").val();
+            var dataF  = $("#inputDatafR").val();
+            
+            //var jsonString = JSON.stringify(selecionados);
+            
+            $.ajax({
+                type: "POST",
+                url: "/ocorrencia_beta/public/ocorrencia/itinerario",
+                data:{
+                    id_muniO: muniR,
+                    id_crimeM: crimeM,
+                    datai: dataI,
+                    dataf: dataF,
+                    dias: diasSemana
+                }, 
+               // data: JSON.stringify(selecionados),
+                 //data: data_to_send,
+                dataType: "json",
+                success: function(json) {
+                    var options = "";
+                    $.each(json, function(key, value) {
+                        options += '<option value="' + value.lat+", "+value.lng + '">' + value.rua +", "+value.bairro+ '</option>';
+                    });
+                    $(".bairro").each(function(e){
+                        $(this).html(options);
+                    });
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert("Error... " + textStatus + "        " + errorThrown);
+                }
+            });
+        }
+alert(JSON.stringify(selecionados));
+    });
+    
+});
+
 
 $(function() {
     $("#inputDataiR").change(function(){
@@ -257,7 +328,12 @@ function isEmptyCrime(){
     else
         return false;
 }
-
+function isEmptyDiaSemana(){
+    if (document.getElementById('diaSemana').selectedIndex >= 0)
+        return true;
+    else
+        return false;
+}
 function isEmptyDataiR(){
     if ($("#inputDataiR").val() != '')
         return true;

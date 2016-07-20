@@ -120,6 +120,29 @@ class RelatoriosForm extends Form {
                 'empty_option' => 'Escolha a rua',
                 ),
         ));
+  
+    $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'diaSemana',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'diaSemana',
+                ' style' => 'width:350px',
+                'multiple' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Escolha o dia da semana',
+                'value_options' => array(
+                    '1' => 'Domingo',
+                    '2' => 'Segunda-Feira',
+                    '3' => 'Terça-Feira',
+                    '4' => 'Quarta-Feira',
+                    '5' => 'Quinta-Feira',
+                    '6' => 'Sexta-Feira',
+                    '7' => 'Sábado',
+                    
+                )),
+        ));
 
   
           $this->add(array(
