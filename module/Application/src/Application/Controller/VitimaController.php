@@ -159,7 +159,7 @@ class VitimaController extends AbstractActionController {
             if ($form->isValid()) {
 
                 $bairro = $this->getBairroTable()->find($postData['id_bai']);
-                $modelEndereco = new Endereco($postData['id_end'], $postData['rua'], $postData['numero'], $bairro);
+                $modelEndereco = new Endereco($postData['id_end'], $postData['rua'], $postData['numero'],"0,0","0,0", $bairro);
                 $this->getEnderecoTable()->update($modelEndereco);
 
                 // aqui vai a lógica para atualizar os dados à tabela no banco

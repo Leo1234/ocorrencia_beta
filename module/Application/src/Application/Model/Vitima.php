@@ -37,7 +37,7 @@ class Vitima implements InputFilterAwareInterface {
         $this->telefone = (!empty($data['telefone'])) ? $data['telefone'] : null;
         $this->data_nasc = (!empty($data['data_nasc'])) ? $data['data_nasc'] : null;
         $this->sexo = (!empty($data['sexo'])) ? $data['sexo'] : null;
-        $this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'], $data['numero'], $data['lat'] , $data['lng'], new Bairro($data['id_bai'], $data['bairro'], new Municipio($data['id_muni'], $data['municipio']))) : null;
+        $this->end = (!empty($data['id_end'])) ? new Endereco($data['id_end'], $data['rua'], $data['numero'], null , null, new Bairro($data['id_bai'], $data['bairro'], new Municipio($data['id_muni'], $data['municipio']))) : null;
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter) {
