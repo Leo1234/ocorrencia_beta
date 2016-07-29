@@ -29,9 +29,9 @@ function removepontos() {
 
 function plotapontos() {
     
-    if ($("#crimeR option:selected").val() == '1')
+    if ($("#crimeP option:selected").val() == '1')
         var image = '/ocorrencia_beta/public/img/morte7.png';
-    if ($("#crimeR option:selected").val() == '2')
+    if ($("#crimeP option:selected").val() == '2')
         var image = '/ocorrencia_beta/public/img/armasangue.png';
 
     var waypts = [];

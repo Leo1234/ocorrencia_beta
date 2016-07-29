@@ -811,6 +811,25 @@ class OcorrenciaController extends AbstractActionController {
 
         return new \Zend\View\Model\JsonModel($result);
     }
+        
+   function pontosAction(){
+       
+        $id_muniO = $_POST['municipioP'];
+        $id_crimeM = $_POST['crimeP'];
+        $datai = $_POST['dataiP'];
+        $dataf = $_POST['datafP'];
+      
+        
+   
+
+        if (isset($_POST['municipioP'])) {
+            $result = (array) $this->getOcorrenciaTable()->searchPontos($id_muniO, $id_crimeM, $datai, $dataf);
+        } else {
+            $result = [];
+        }
+
+        return new \Zend\View\Model\JsonModel($result);
+    }
 
        function graficoAction(){
 

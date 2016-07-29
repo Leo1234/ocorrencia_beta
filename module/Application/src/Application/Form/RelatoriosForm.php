@@ -51,6 +51,20 @@ class RelatoriosForm extends Form {
                 'empty_option' => 'Escolha o município',
                 'value_options' => $this->getOptionsForSelectM()),
         ));
+        
+             $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'municipioP',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'municipioP',
+                ' style' => 'width:350px',
+            ),
+            'options' => array(
+                'label' => 'Município',
+                'empty_option' => 'Escolha o município',
+                'value_options' => $this->getOptionsForSelectM()),
+        ));
 
         
                 $this->add(array(
@@ -71,6 +85,23 @@ class RelatoriosForm extends Form {
           
         ));
                 
+                            $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
+            'name' => 'crimeP',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'crimeP',
+                ' style' => 'width:350px',
+                //'multiple' => 'multiple'
+            ),
+            'options' => array(
+                 'disable_inarray_validator' => true,
+                'data-placeholder' => 'Escolha o crime',
+                //'empty_option' => 'Escolha a viatura',
+                'value_options' => $this->getOptionsForSelectC()),
+           
+          
+        ));
                         
                 $this->add(array(
             'type' => 'Zend\Form\Element\Select',
@@ -170,6 +201,15 @@ class RelatoriosForm extends Form {
             ),
         ));
 
+               $this->add(array(
+            'type' => 'Text', # ou 'type' => 'ZendFormElementText'
+            'name' => 'dataiP',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'dataiP',
+                'placeholder' => 'Data/hora Início',
+            ),
+        ));
              $this->add(array(
             'type' => 'Text', # ou 'type' => 'ZendFormElementText'
             'name' => 'dataiG',
@@ -195,6 +235,16 @@ class RelatoriosForm extends Form {
             'attributes' => array(
                 'class' => 'form-control',
                 'id' => 'inputDatafR',
+                'placeholder' => 'Data/hora Fim',
+            ),
+        ));
+        
+               $this->add(array(
+            'type' => 'Text', # ou 'type' => 'ZendFormElementText'
+            'name' => 'datafP',
+            'attributes' => array(
+                'class' => 'form-control',
+                'id' => 'datafP',
                 'placeholder' => 'Data/hora Fim',
             ),
         ));

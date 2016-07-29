@@ -39,13 +39,13 @@ async></script>
                 <div class="col-lg-3  col-md-3">
                     <?php
                     // renderiza html input
-                    echo $this->formSelect($formRelarorio->get('id_crimeR'));
+                    echo $this->formSelect($formRelarorio->get('crimeP'));
                     // renderiza elemento de erro
                     echo $this->formElementErrors()
                             ->setMessageOpenFormat('<small class="text-danger">')
                             ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                             ->setMessageCloseString('</small>')
-                            ->render($formRelarorio->get('id_crimeR'));
+                            ->render($formRelarorio->get('crimeP'));
                     ?>
                     <br>
                 </div>
@@ -55,13 +55,13 @@ async></script>
                     <div class='input-group date' id='datetimepickerF'>
                         <?php
                         // renderiza html input
-                        echo $this->formInput($formRelarorio->get('datai'));
+                        echo $this->formInput($formRelarorio->get('dataiP'));
                         // renderiza elemento de erro
                         echo $this->formElementErrors()
                                 ->setMessageOpenFormat('<small class="text-danger">')
                                 ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                                 ->setMessageCloseString('</small>')
-                                ->render($formRelarorio->get('datai'));
+                                ->render($formRelarorio->get('dataiP'));
                         ?>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -75,13 +75,13 @@ async></script>
                     <div class='input-group date' id='datetimepickerI'>
                         <?php
                         // renderiza html input
-                        echo $this->formInput($formRelarorio->get('dataf'));
+                        echo $this->formInput($formRelarorio->get('datafP'));
                         // renderiza elemento de erro
                         echo $this->formElementErrors()
                                 ->setMessageOpenFormat('<small class="text-danger">')
                                 ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                                 ->setMessageCloseString('</small>')
-                                ->render($formRelarorio->get('dataf'));
+                                ->render($formRelarorio->get('datafP'));
                         ?>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
@@ -94,13 +94,13 @@ async></script>
                 <div class="col-lg-3  col-md-3">
                     <?php
                     // renderiza html input
-                    echo $this->formSelect($formRelarorio->get('id_muniO'));
+                    echo $this->formSelect($formRelarorio->get('municipioP'));
                     // renderiza elemento de erro
                     echo $this->formElementErrors()
                             ->setMessageOpenFormat('<small class="text-danger">')
                             ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                             ->setMessageCloseString('</small>')
-                            ->render($formRelarorio->get('id_muniO'));
+                            ->render($formRelarorio->get('municipioP'));
                     ?>
                     <br>
                 </div>
