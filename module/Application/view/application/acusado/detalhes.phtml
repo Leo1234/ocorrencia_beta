@@ -1,0 +1,33 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">
+            Detalhes Vitima ID <?php echo $vitima->getId_vitima(); ?>
+        </div>
+    </div>
+    <div class="panel-body">
+        <dl class="dl-horizontal">
+            <dt>ID:</dt>
+            <dd><?php echo $vitima->getId_vitima(); ?></dd>
+            <dt>Nome:</dt>
+            <dd><?php echo $vitima->getNome(); ?></dd>
+            <dt>Telefone:</dt>
+            <dd><?php echo $vitima->getTelefone(); ?></dd>
+              <dt>Data Nascimento.:</dt>
+            <dd><?php echo (new \DateTime($vitima->getData_nasc()))->format('d/m/Y H:i:s'); ?></dd>
+              <dt>Sexo:</dt>
+            <dd><?php echo $vitima->getSexo(); ?></dd>
+              <dt>Rua:</dt>
+             <dd><?php echo $vitima->getEnd()->getRua(); ?></dd>
+              <dt>Número:</dt>
+             <dd><?php echo $vitima->getEnd()->getNumero(); ?></dd>
+              <dt>Bairro:</dt>
+           <dd><?php echo $vitima->getEnd()->getId_bai()->getBairro(); ?></dd>
+           <dt>Município:</dt>
+           <dd><?php echo $vitima->getEnd()->getId_bai()->getMunicipio()->getMunicipio(); ?></dd>
+        </dl>
+    </div>
+    <div class="panel-footer">
+        <a href="<?php echo $this->url('vitimas', array('action' => 'editar','id' => $vitima->getId_vitima())); ?>" class="btn btn-warning btn-sm">Editar Vitima</a>
+        <a href="<?php echo $this->url('vitimas'); ?>" class="btn btn-default btn-sm">Voltar</a>
+    </div>
+</div>

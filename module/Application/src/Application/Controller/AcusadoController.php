@@ -4,7 +4,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Application\Form\VitimaForm;
+use Application\Form\AcusadoForm;
 use Application\Model\Graduacao;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Adapter;
@@ -12,14 +12,14 @@ use \Application\Model\Endereco;
 use Application\Model\EnderecoTable as ModelEndereco;
 use \Application\Model\Bairro;
 use Application\Model\BairroTable as ModelBairro;
-use Application\Model\Vitima;
-use Application\Model\VitimaTable as ModelVitima;
+use Application\Model\Acusado;
+use Application\Model\AcusadoTable as ModelAcusado;
 
-class VitimaController extends AbstractActionController {
+class AcusadoController extends AbstractActionController {
 
-    private function getVitimaTable() {
+    private function getAcusadoTable() {
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-        return new ModelVitima($dbAdapter);
+        return new ModelAcusado($dbAdapter);
     }
 
     public function indexAction(){
@@ -33,7 +33,7 @@ class VitimaController extends AbstractActionController {
         ];
 
         // configuar método de paginação
-        $paginacao = $this->getVitimaTable()->fetchPaginator(
+        $paginacao = $this->getAcusadoTable()->fetchPaginator(
                 /* $pagina */ $paramsUrl['pagina_atual'],
                 /* $itensPagina */ $paramsUrl['itens_pagina'],
                 /* $ordem */ "{$paramsUrl['coluna_nome']} {$paramsUrl['coluna_sort']}",
@@ -42,14 +42,14 @@ class VitimaController extends AbstractActionController {
         );
        //var_dump($paginacao); die();
         // retonar paginação mais os params de url para view
-        return new ViewModel(['vitima' => $paginacao] + $paramsUrl);
+        return new ViewModel(['acusado' => $paginacao] + $paramsUrl);
     }
 
-// GET /vitimas/novo
+// GET /acusados/novo
     public function novoAction(){
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-        $form = new VitimaForm($dbAdapter);
-        return ['formVitima' => $form];
+        $form = new AcusadoForm($dbAdapter);
+        return ['formAcusado' => $form];
     }
 
     public function adicionarAction() {
@@ -60,79 +60,79 @@ class VitimaController extends AbstractActionController {
         if ($request->isPost()) {
             // instancia formulário
             $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-            $form = new VitimaForm($dbAdapter);
-            // instancia model vitima com regras de filtros e validações
-            $modelVitima = new Vitima();
+            $form = new AcusadoForm($dbAdapter);
+            // instancia model acusado com regras de filtros e validações
+            $modelAcusado = new Acusado();
             // passa para o objeto formulário as regras de viltros e validações
-            // contidas na entity vitima
-            $form->setInputFilter($modelVitima->getInputFilter());
+            // contidas na entity acusado
+            $form->setInputFilter($modelAcusado->getInputFilter());
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());
             // verifica se o formulário segue a validação proposta
             if ($form->isValid()) {
                 $bairro = $this->getBairroTable()->find($postData['id_bai']);
-               $modelEndereco = new Endereco(null, $postData['rua'], $postData['numero'], null,null, $bairro);
+                 $modelEndereco = new Endereco(null, $postData['rua'], $postData['numero'], null, null, $bairro);
                 $ultimo_idEnd = $this->getEnderecoTable()->saveSemLatLng($modelEndereco);
                 // aqui vai a lógica para adicionar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
-                $modelVitima->exchangeArray($form->getData());
+                $modelAcusado->exchangeArray($form->getData());
                 // 2 - persistir dados do model para banco de dados
-                $modelVitima->setEnd($ultimo_idEnd);
-                $this->getVitimaTable()->save($modelVitima);
+                $modelAcusado->setEnd($ultimo_idEnd);
+                $this->getAcusadoTable()->save($modelAcusado);
                 // adicionar mensagem de sucesso
                 $this->flashMessenger()
-                        ->addSuccessMessage("Vitima criada com sucesso!");
-                // redirecionar para action index no controller vitimas
-                return $this->redirect()->toRoute('vitimas');
+                        ->addSuccessMessage("Acusado criado com sucesso!");
+                // redirecionar para action index no controller acusados
+                return $this->redirect()->toRoute('acusados');
             } else { // em caso da validação não seguir o que foi definido
                 // renderiza para action novo com o objeto form populado,
                 // com isso os erros serão tratados pelo helpers view
                 return (new ViewModel())
-                                ->setVariable('formVitima', $form)
-                                ->setTemplate('application/vitima/novo');
+                                ->setVariable('formAcusado', $form)
+                                ->setTemplate('application/acusado/novo');
             }
         }
     }
 
-// GET /vitimas/editar/id
+// GET /acusados/editar/id
     public function editarAction() {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
-        // se id = 0 ou não informado redirecione para vitimas
+        // se id = 0 ou não informado redirecione para acusados
         if (!$id) {
             // adicionar mensagem de erro
-            $this->flashMessenger()->addMessage("Vitima não encotrado");
+            $this->flashMessenger()->addMessage("Acusado não encotrado");
             // redirecionar para action index
-            return $this->redirect()->toRoute('vitimas');
+            return $this->redirect()->toRoute('acusados');
         }
         try {
-            // variável com objeto vitima localizado em formato de array
-            $vitima = (array) $this->getVitimaTable()->find($id);
+            // variável com objeto acusado localizado em formato de array
+            $acusado = (array) $this->getAcusadoTable()->find($id);
         
-            $vitimaObj = $this->getVitimaTable()->find($id);
+            $acusadoObj = $this->getAcusadoTable()->find($id);
             
-            $vitima['data_nasc'] = $this->getVitimaTable()->toDateDMY($vitimaObj->getData_nasc());
-            $vitima['rua'] = $vitimaObj->getEnd()->getRua();
-            $vitima['numero'] = $vitimaObj->getEnd()->getNumero();
-            $vitima['id_end'] = $vitimaObj->getEnd()->getId_end();
+            $acusado['data_nasc'] = $this->getAcusadoTable()->toDateDMY($acusadoObj->getData_nasc());
+            $acusado['rua'] = $acusadoObj->getEnd()->getRua();
+            $acusado['numero'] = $acusadoObj->getEnd()->getNumero();
+            $acusado['id_end'] = $acusadoObj->getEnd()->getId_end();
         } catch (Exception $exc) {
             // adicionar mensagem
             $this->flashMessenger()->addErrorMessage($exc->getMessage());
             // redirecionar para action index
-            return $this->redirect()->toRoute('vitimas');
+            return $this->redirect()->toRoute('acusados');
         }
-        // objeto form vitima vazio
+        // objeto form acusado vazio
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-        $form = new VitimaForm($dbAdapter);
+        $form = new AcusadoForm($dbAdapter);
         //configura o campo select com valor vindo da view index
 
-        $form->get('id_muniO')->setAttributes(array('value' => $vitimaObj->getEnd()->getId_bai()->getMunicipio()->getId_muni(), 'selected' => true));
-        $form->get('id_bai')->setAttributes(array('value' => $vitimaObj->getEnd()->getId_bai()->getId_bai(), 'selected' => true));
+        $form->get('id_muniO')->setAttributes(array('value' => $acusadoObj->getEnd()->getId_bai()->getMunicipio()->getId_muni(), 'selected' => true));
+        $form->get('id_bai')->setAttributes(array('value' => $acusadoObj->getEnd()->getId_bai()->getId_bai(), 'selected' => true));
         //$form->get('data_nasc')->setAttribute('value',"Leonildo");
         // popula objeto form viatura com objeto model viatura
-        $form->setData($vitima);
+        $form->setData($acusado);
         // dados eviados para editar.phtml
-        return ['formVitima' => $form];
+        return ['formAcusado' => $form];
     }
 
     public function atualizarAction() {
@@ -146,13 +146,13 @@ class VitimaController extends AbstractActionController {
 
             // instancia formulário
             $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
-            $form = new VitimaForm($dbAdapter);
+            $form = new AcusadoForm($dbAdapter);
             // $form = new ViaturaForm();
-            // instancia model vitima com regras de filtros e validações
-            $modelVitima = new Vitima();
+            // instancia model acusado com regras de filtros e validações
+            $modelAcusado = new Acusado();
             // passa para o objeto formulário as regras de viltros e validações
-            // contidas na entity vitima
-            $form->setInputFilter($modelVitima->getInputFilter());
+            // contidas na entity acusado
+            $form->setInputFilter($modelAcusado->getInputFilter());
             // passa para o objeto formulário os dados vindos da submissão 
             $form->setData($request->getPost());
             // verifica se o formulário segue a validação proposta
@@ -164,42 +164,42 @@ class VitimaController extends AbstractActionController {
 
                 // aqui vai a lógica para atualizar os dados à tabela no banco
                 // 1 - popular model com valores do formulário
-                $modelVitima->vitima($form->getData());
+                $modelAcusado->acusado($form->getData());
 
                 // 2 - atualizar dados do model para banco de dados
 
-                $this->getVitimaTable()->update($modelVitima);
+                $this->getAcusadoTable()->update($modelAcusado);
 
                 // adicionar mensagem de sucesso
                 $this->flashMessenger()
-                        ->addSuccessMessage("Vitima editado com sucesso");
+                        ->addSuccessMessage("Acusado editado com sucesso");
 
                 // redirecionar para action detalhes
-                return $this->redirect()->toRoute('vitimas', array("action" => "detalhes", "id" => $modelVitima->getId_vitima()));
+                return $this->redirect()->toRoute('acusados', array("action" => "detalhes", "id" => $modelAcusado->getId_acusado()));
             } else { // em caso da validação não seguir o que foi definido
                 // renderiza para action editar com o objeto form populado,
                 // com isso os erros serão tratados pelo helpers view
                 return (new ViewModel())
-                                ->setVariable('formVitima', $form)
-                                ->setTemplate('application/vitima/editar');
+                                ->setVariable('formAcusado', $form)
+                                ->setTemplate('application/acusado/editar');
             }
         }
     }
 
-    // DELETE /vitimas/deletar/id
+    // DELETE /acusados/deletar/id
 
     public function deletarAction() {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        // se id = 0 ou não informado redirecione para vitimas
+        // se id = 0 ou não informado redirecione para acusados
         if (!$id) {
             // adicionar mensagem de erro
-            $this->flashMessenger()->addMessage("Vitima não encotrado");
+            $this->flashMessenger()->addMessage("Acusado não encotrado");
         } else {
-            // aqui vai a lógica para deletar o vitima no banco
+            // aqui vai a lógica para deletar o acusado no banco
             // 1 - solicitar serviço para pegar o model responsável pelo delete
-            // 2 - deleta vitima
+            // 2 - deleta acusado
             $this->getViaturaTable()->delete($id);
 
             // adicionar mensagem de sucesso
@@ -210,37 +210,37 @@ class VitimaController extends AbstractActionController {
         return $this->redirect()->toRoute('viaturas');
     }
 
-    // GET /vitimas/detalhes/id
+    // GET /acusados/detalhes/id
     public function detalhesAction() {
         // filtra id passsado pela url
         $id = (int) $this->params()->fromRoute('id', 0);
 
-        // se id = 0 ou não informado redirecione para vitimas
+        // se id = 0 ou não informado redirecione para acusados
         if (!$id) {
             // adicionar mensagem
-            $this->flashMessenger()->addMessage("Vitima não encotrado");
+            $this->flashMessenger()->addMessage("Acusado não encotrado");
 
             // redirecionar para action index
-            return $this->redirect()->toRoute('vitimas');
+            return $this->redirect()->toRoute('acusados');
         }
 
         try {
-            // aqui vai a lógica para pegar os dados refetchAllrente ao vitima
+            // aqui vai a lógica para pegar os dados refetchAllrente ao acusado
             // 1 - solicitar serviço para pegar o model responsável pelo find
-            // 2 - solicitar form com dados desse vitima encontrado
+            // 2 - solicitar form com dados desse acusado encontrado
             // formulário com dados preenchidos
 
-            $vitima = $this->getVitimaTable()->find($id);
+            $acusado = $this->getAcusadoTable()->find($id);
         } catch (Exception $exc) {
             // adicionar mensagem
             $this->flashMessenger()->addErrorMessage($exc->getMessage());
 
             // redirecionar para action index
-            return $this->redirect()->toRoute('vitimas');
+            return $this->redirect()->toRoute('acusados');
         }
 
         // dados eviados para detalhes.phtml
-        return ['vitima' => $vitima];
+        return ['acusado' => $acusado];
     }
 
     private function getEnderecoTable() {

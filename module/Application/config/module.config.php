@@ -17,6 +17,7 @@ return array(
             'Application\Controller\Ocorrencia' => 'Application\Controller\OcorrenciaController',
             'MunicipioController' => 'Application\Controller\MunicipioController',
             'VitimaController' => 'Application\Controller\VitimaController',
+            'AcusadoController' => 'Application\Controller\AcusadoController',
             'PolicialController' => 'Application\Controller\PolicialController',
             //'OcorrenciaController' => 'Application\Controller\OcorrenciaController',
             'ViaturaController' => 'Application\Controller\ViaturaController'
@@ -84,6 +85,21 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'VitimaController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+                   # segment para controller acusados
+            'acusados' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/acusados[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'AcusadoController',
                         'action' => 'index',
                     ),
                 ),

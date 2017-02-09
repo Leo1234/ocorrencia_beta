@@ -34,6 +34,10 @@ use Application\Model\ApreVeic;
 use Application\Model\ApreVeicTable as ModelVeiculo;
 use Application\Model\DadosExtras;
 use Application\Form\RelatoriosForm;
+use Application\Form\VitimaForm;
+use Application\Model\Vitima;
+use Application\Form\AcusadoForm;
+use Application\Model\Acusado;
 
 
 use Zend\Authentication\Result;
@@ -110,11 +114,15 @@ class OcorrenciaController extends AbstractActionController {
 
         
         $this->redirecionaUsuarioNaoLogado();
-        
+      
         $dbAdapter = $this->getServiceLocator()->get('AdapterDb');
         $form = new OcorrenciaForm($dbAdapter);
+        $formV = new VitimaForm($dbAdapter);
+        $formA = new AcusadoForm($dbAdapter);
         $html = $this->iniciarMapa();
-        return new ViewModel(array('map_html' => $html, 'formOcorrencia' => $form));
+        
+        
+        return new ViewModel(array('map_html' => $html, 'formOcorrencia' => $form,'formVitima' => $formV,'formAcusado' => $formA));
     }
 
     public function mapaAction(){

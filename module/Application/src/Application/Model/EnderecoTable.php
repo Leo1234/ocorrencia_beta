@@ -82,7 +82,17 @@ class EnderecoTable {
         $this->tableGateway->insert($data);
         return $this->tableGateway->lastInsertValue;
     }
+    public function saveSemLatLng(Endereco $endereco) {
+        $data = [
+            'id_end' => $endereco->getId_end(),
+            'rua' => $endereco->getRua(),
+            'numero' => $endereco->getNumero(),
+            'id_bai' => $endereco->getId_bai()->getId_bai(),
+        ];
 
+        $this->tableGateway->insert($data);
+        return $this->tableGateway->lastInsertValue;
+    }
     public function find($id) {
         $id = (int) $id;
         $select = new Select;

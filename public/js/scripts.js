@@ -645,4 +645,11 @@ $(function() {
     });
 });
 
+$(function(){
 
+    $("#datetimepickerNascA").datetimepicker({
+        locale: "pt-br",
+        showClear: true
+
+    });
+});

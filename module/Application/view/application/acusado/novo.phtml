@@ -3,32 +3,32 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
         <div class="panel-title">
-            Nova Vítima          
+            Novo Acusado         
         </div>
     </div>
     <?php
     // objeto form contato
-    $formVitima = $this->formVitima;
+    $formAcusado = $this->formAcusado;
     // preparar elementos do formulário
-    $formVitima->prepare();
+    $formAcusado->prepare();
     // configurar url formulário
-    $formVitima->setAttribute('action', $this->url('vitimas', array('action' => 'adicionar')));
+    $formAcusado->setAttribute('action', $this->url('acusados', array('action' => 'adicionar')));
     ?>
     <?php // renderiza html <form> com atributos configurados no objeto ?>
-    <?php echo $this->form()->openTag($formVitima) ?>
+    <?php echo $this->form()->openTag($formAcusado) ?>
     <div class="panel-body">
         <div class="form-group">
-            <label for="inputIdGrad" class="col-lg-3 col-md-3 control-label">Nome*:</label>
+            <label for="inputIdNome" class="col-lg-3 col-md-3 control-label">Nome*:</label>
             <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
-                echo $this->formInput($formVitima->get('nome'));
+                echo $this->formInput($formAcusado->get('nome'));
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formVitima->get('nome'));
+                        ->render($formAcusado->get('nome'));
                 ?>
             </div>
 
@@ -39,13 +39,13 @@
             <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
-                echo $this->formInput($formVitima->get('telefone'));
+                echo $this->formInput($formAcusado->get('telefone'));
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formVitima->get('telefone'));
+                        ->render($formAcusado->get('telefone'));
                 ?>
             </div>
         </div>
@@ -53,16 +53,16 @@
         <div class="form-group">
             <label for="inputDataV" class="col-lg-3 col-md-3 control-label">Data Nascimento*:</label>
             <div class="col-lg-3  col-md-3">
-                <div class='input-group date' id='datetimepickerNascV'>
+                <div class='input-group date' id='datetimepickerNascA'>
                     <?php
                     // renderiza html input
-                    echo $this->formInput($formVitima->get('data_nasc'));
+                    echo $this->formInput($formAcusado->get('data_nasc'));
                     // renderiza elemento de erro
                     echo $this->formElementErrors()
                             ->setMessageOpenFormat('<small class="text-danger">')
                             ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                             ->setMessageCloseString('</small>')
-                            ->render($formVitima->get('data_nasc'));
+                            ->render($formAcusado->get('data_nasc'));
                     ?>
 
                     <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
@@ -76,16 +76,49 @@
                 <div class="checkbox">
                     <?php
                     // renderiza html input
-                    echo $this->formRadio($formVitima->get('sexo'));
+                    echo $this->formRadio($formAcusado->get('sexo'));
                     // renderiza elemento de erro
                     echo $this->formElementErrors()
                             ->setMessageOpenFormat('<small class="text-danger">')
                             ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                             ->setMessageCloseString('</small>')
-                            ->render($formVitima->get('sexo'));
+                            ->render($formAcusado->get('sexo'));
                     ?>
                 </div>
             </div>
+        </div>
+        
+          <div class="form-group">
+                    <label for="inputBNCaracteristicas" class="col-lg-3 col-md-3 control-label">Características*:</label>
+                    <div class="col-lg-5  col-md-5">
+                        <?php
+                        // renderiza html input
+                        echo $this->formElement($formAcusado->get('caracteristicas'));
+                        // renderiza elemento de erro
+                        echo $this->formElementErrors()
+                                ->setMessageOpenFormat('<small class="text-danger">')
+                                ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                                ->setMessageCloseString('</small>')
+                                ->render($formAcusado->get('caracteristicas'));
+                        ?>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+            <label for="inputIdGenitora" class="col-lg-3 col-md-3 control-label">Genitora*:</label>
+            <div class="col-lg-3  col-md-3">
+                <?php
+                // renderiza html input
+                echo $this->formInput($formAcusado->get('genitora'));
+                // renderiza elemento de erro
+                echo $this->formElementErrors()
+                        ->setMessageOpenFormat('<small class="text-danger">')
+                        ->setMessageSeparatorString('</small><br/><small class="text-danger">')
+                        ->setMessageCloseString('</small>')
+                        ->render($formAcusado->get('genitora'));
+                ?>
+            </div>
+
         </div>
 
              <div class="form-group">
@@ -93,13 +126,13 @@
             <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
-                echo $this->formInput($formVitima->get('rua'));
+                echo $this->formInput($formAcusado->get('rua'));
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formVitima->get('rua'));
+                        ->render($formAcusado->get('rua'));
                 ?>
             </div>
         </div>
@@ -110,59 +143,61 @@
             <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
-                echo $this->formInput($formVitima->get('numero'));
+                echo $this->formInput($formAcusado->get('numero'));
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formVitima->get('numero'));
+                        ->render($formAcusado->get('numero'));
                 ?>
             </div>
         </div>
-
+        
         <div class="form-group">
             <label for="inputMunicipio" class="col-lg-3 col-md-3 control-label">Município*:</label>
             <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
-                echo $this->formSelect($formVitima->get('id_muniO'));
+                echo $this->formSelect($formAcusado->get('id_muniO'));
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formVitima->get('id_muniO'));
+                        ->render($formAcusado->get('id_muniO'));
                 ?>
             </div>
         </div>
-
-        <div class="form-group">
+                <div class="form-group">
             <label for="inputBairro" class="col-lg-3 col-md-3 control-label">Bairro*:</label>
             <div class="col-lg-3  col-md-3">
                 <?php
                 // renderiza html input
-                echo $this->formSelect($formVitima->get('id_bai'));
+                echo $this->formSelect($formAcusado->get('id_bai'));
                 // renderiza elemento de erro
                 echo $this->formElementErrors()
                         ->setMessageOpenFormat('<small class="text-danger">')
                         ->setMessageSeparatorString('</small><br/><small class="text-danger">')
                         ->setMessageCloseString('</small>')
-                        ->render($formVitima->get('id_bai'));
+                        ->render($formAcusado->get('id_bai'));
                 ?>
             </div>
         </div>
+
+
+
     </div>
 </div>
 
 <div class="panel-footer">
     <?php
     // renderiza html input hidden para id
-    echo $this->formHidden($formVitima->get('id_vitima'));
+    echo $this->formHidden($formAcusado->get('id_acusado'));
     ?>
 
-    <button type="submit" class="btn btn-primary">Salvar Vitima</button>
-    <a href="<?php echo $this->url('vitimas'); ?>" class="btn btn-default">Voltar</a>
+    <button type="submit" class="btn btn-primary">Salvar Acusado</button>
+    <a href="<?php echo $this->url('acusados'); ?>" class="btn btn-default">Voltar</a>
 </div>
 
 <?php // renderiza html </form>  ?>
